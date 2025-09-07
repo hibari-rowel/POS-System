@@ -5,7 +5,7 @@ import Orders from '@/components/BaseComponents/Orders.vue';
 </script>
 
 <template>
-    <div class="flex h-screen bg-gray-200 overflow-hidden">
+    <div class="flex flex-col h-screen overflow-hidden bg-gray-200 md:flex-row">
         <Sidebar />
         <Content />
         <Orders />

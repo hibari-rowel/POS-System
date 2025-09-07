@@ -9,8 +9,8 @@ const isOpen = ref(false);
 </script>
 
 <template>
-    <div class="flex-1 flex flex-col w-full m-2">
-        <div class="flex items-center justify-between h-17 px-5 py-4 mb-4 shadow-sm rounded-sm bg-white">
+    <div class="flex-1 flex flex-col w-120 h-full mx-2 my-2">
+        <div class="flex items-center justify-between h-17 px-7 md:px-5 py-4 mb-4 shadow-sm rounded-sm bg-white sticky top-0 z-40">
             <div class="flex items-center p-2 rounded-full max-w-80 gap-3 bg-gray-100 hover:border-1 hover:border-gray-400 hover:shadow-sm focus-within:border-1 focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out">
                 <img src="/icons/search.svg" class="p-0 h-full" alt="">
                 
@@ -35,13 +35,8 @@ const isOpen = ref(false);
                 </button>
             </div>
         </div>
-<!-- 
-        <div class="flex px-5 py-3 h-50 mb-4 rounded-sm shadow-sm bg-white">
-            category FOR SMALL SCREENS
-        </div> -->
 
-        <div class="flex flex-row h-screen rounded-sm shadow-sm bg-gray-100">
-            <!-- hide me when screen is small -->
+        <div class="flex flex-row h-200 rounded-sm shadow-sm bg-gray-100">
             <div class="flex flex-col py-3 rounded-sm shadow-sm transition-all duration-900 ease-in-out bg-white" :class="isOpen ? 'w-50 px-5' : 'w-0 px-0'">
                 <div class="relative flex justify-between mb-3 items-center"> 
                     <span class="text-lg font-bold text-wrap overflow-hidden">Categories:</span>

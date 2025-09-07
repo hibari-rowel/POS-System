@@ -5,7 +5,8 @@ const isOpen = ref(true);
 </script>
 
 <template>
-    <div class="flex flex-col shadow-sm py-3 mr-0 rounded-sm transition-all duration-900 ease-in-out origin-left min-w-0 bg-gray-50" :class="isOpen ? 'w-90 ml-5' : 'w-0 ml-10'">
+    <div class="flex flex-col shadow-sm py-3 mr-0 rounded-sm transition-all duration-900 ease-in-out origin-left min-w-0 bg-gray-50 fixed md:static top-0 right-0 h-full z-40" 
+        :class="isOpen ? 'w-90 ml-5' : 'w-0 ml-10'">
         <div class="relative flex justify-between text-2xl font-bold mb-6 h-16 items-center"> 
             <div class="flex px-5 gap-4 overflow-hidden transition-all duration-1000 ease-in-out" :class="isOpen ? 'opacity-100 w-full' : 'opacity-0'"> 
                 <div class="h-10 w-10 flex shrink-0 items-center justify-center rounded-full group-hover:shadow-sm bg-gray-200 p-1">

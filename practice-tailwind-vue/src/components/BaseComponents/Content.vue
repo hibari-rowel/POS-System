@@ -9,7 +9,7 @@ const isOpen = ref(false);
 </script>
 
 <template>
-    <div class="flex-1 flex flex-col w-120 h-full mx-2 my-2">
+    <div class="flex-1 flex flex-col w-[97%] h-full mx-2 my-2">
         <div class="flex items-center justify-between h-17 px-7 md:px-5 py-4 mb-4 shadow-sm rounded-sm bg-white sticky top-0 z-40">
             <div class="flex items-center p-2 rounded-full max-w-80 gap-3 bg-gray-100 hover:border-1 hover:border-gray-400 hover:shadow-sm focus-within:border-1 focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out">
                 <img src="/icons/search.svg" class="p-0 h-full" alt="">

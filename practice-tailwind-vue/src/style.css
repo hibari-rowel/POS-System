@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 @layer components {
+    .base-container {
+        @apply flex flex-col h-screen overflow-hidden bg-gray-200 md:flex-row;
+    }
+
     .sidebar-container {
         @apply flex flex-col shadow-sm px-0 py-3 mr-5 rounded-sm transition-all duration-700 ease-in-out bg-gray-50 fixed md:static top-0 left-0 h-full z-50;
     }

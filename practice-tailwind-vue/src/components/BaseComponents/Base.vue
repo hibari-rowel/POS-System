@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import Sidebar from '@/components/BaseComponents/Sidebar.vue';
-import Content from '@/components/BaseComponents/Content.vue';
-import Orders from '@/components/BaseComponents/Orders.vue';
+    import Sidebar from '@/components/BaseComponents/Sidebar.vue';
+    import Content from '@/components/BaseComponents/Content.vue';
 </script>
 
 <template>
-    <div class="flex flex-col h-screen overflow-hidden bg-gray-200 md:flex-row">
+    <div class="base-container">
         <Sidebar />
-        <Content />
-        <Orders />
+        <Content>
+            <slot name="content"></slot>
+        </Content>
+        <slot></slot>
     </div>
 </template>
 
 <style scoped>
-
 </style>

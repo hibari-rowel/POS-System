@@ -1,11 +1,9 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
-  <RouterView />
+    register view
 </template>
 
 <style scoped>
-
 </style>

@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 @layer components {
+    .sidebar-container {
+        @apply flex flex-col shadow-sm px-0 py-3 mr-5 rounded-sm transition-all duration-700 ease-in-out bg-gray-50 fixed md:static top-0 left-0 h-full z-50;
+    }
+
     .sidebar-link {
         @apply flex gap-4 h-14 px-5 rounded-tr-sm rounded-br-sm items-center border-r-4 border-transparent transition-all duration-250 ease-in-out hover:bg-blue-300 hover:shadow-sm hover:border-blue-500;
     }
@@ -11,5 +15,13 @@
 
     .sidebar-link-label {
         @apply text-nowrap text-lg font-semibold overflow-x-hidden;
+    }
+
+    .content-container {
+        @apply flex-1 flex flex-col w-[97%] h-full mx-2 my-2;
+    }
+
+    .content-topbar {
+        @apply flex items-center justify-between h-17 px-7 md:px-5 py-4 mb-4 shadow-sm rounded-sm bg-white sticky top-0 z-40;
     }
 }

@@ -5,8 +5,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col shadow-sm px-0 py-3 mr-5 rounded-sm transition-all duration-700 ease-in-out bg-gray-50 fixed md:static top-0 left-0 h-full z-50" 
-        :class="isOpen ? 'w-64' : 'w-0 md:w-20'">
+    <div class="sidebar-container" :class="isOpen ? 'w-64' : 'w-0 md:w-20'">
         <div class="relative flex justify-between text-2xl font-bold mb-6 h-16 items-center"> 
             <div class="flex px-5 gap-4 overflow-hidden transition-opacity duration-300 ease-in-out md:opacity-100" :class="isOpen ? '' : 'opacity-0'"> 
                 <div class="h-10 w-10 flex shrink-0 items-center justify-center rounded-full group-hover:shadow-sm bg-gray-200 p-1 overflow-hidden">

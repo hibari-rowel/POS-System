@@ -6,12 +6,12 @@ import Base from '@/components/BaseComponents/Base.vue';
     <Base>
         <template v-slot:content>
             <div class="content-topbar">
-                <span class="text-2xl font-bold"> Products </span>
+                <span class="text-2xl font-bold"> Show Product Categories </span>
             </div>
 
             <div class="flex flex-row h-[89%] rounded-sm shadow-sm bg-gray-100">
                 <div class="rounded-r-sm w-full px-5 py-2 bg-gray-100">
-                    <span class="text-2xl font-bold"> Products Content </span>
+                    <span class="text-2xl font-bold"> Show Product Categories Content </span>
                 </div>
             </div>
         </template>

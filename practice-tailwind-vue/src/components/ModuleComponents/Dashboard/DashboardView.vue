@@ -1,19 +1,28 @@
 <script setup lang="ts">
+import axios from '@/lib/axios';
+
 import Base from '@/components/BaseComponents/Base.vue';
+
+const getUser = async () => {
+    try {
+        const response = await axios.get('/api/user');
+        console.log('User data:', response.data);
+    } catch (error) {
+        console.error('Error fetching user data:', error.response.data);
+    }
+}
+
+// getUser();
 </script>
 
 <template>
     <Base>
-        <template v-slot:content>
-            <div class="content-topbar">
-                <span class="text-2xl font-bold"> Dashboard </span>
-            </div>
+        <template v-slot:topbar-content>
+            <span class="text-2xl font-bold"> Dashboard </span>
+        </template>
 
-            <div class="flex flex-row h-[89%] rounded-sm shadow-sm bg-gray-100">
-                <div class="rounded-r-sm w-full px-5 py-2 bg-gray-100">
-                    <span class="text-2xl font-bold"> Dashboard Content </span>
-                </div>
-            </div>
+        <template v-slot:main-content>
+            
         </template>
     </Base>
 </template>

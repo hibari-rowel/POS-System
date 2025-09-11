@@ -5,20 +5,20 @@ const isOpen = ref(true);
 </script>
 
 <template>
-    <div class="flex flex-col shadow-sm py-3 mr-0 rounded-sm transition-all duration-900 ease-in-out origin-left min-w-0 bg-gray-50 fixed md:static top-0 right-0 h-full z-40" 
-        :class="isOpen ? 'w-90 ml-5' : 'w-0 ml-10'">
+    <div class="flex flex-col shadow-sm py-3 mr-0 rounded-sm transition-all duration-900 ease-in-out origin-left min-w-0 bg-gray-50 h-full" 
+        :class="isOpen ? 'w-90' : 'w-0'">
         <div class="relative flex justify-between text-2xl font-bold mb-6 h-16 items-center"> 
-            <div class="flex px-5 gap-4 overflow-hidden transition-all duration-1000 ease-in-out" :class="isOpen ? 'opacity-100 w-full' : 'opacity-0'"> 
+            <div class="flex px-5 gap-4 overflow-hidden transition-all items-center justify-center duration-1000 ease-in-out" :class="isOpen ? 'opacity-100 w-full' : 'opacity-0'"> 
                 <div class="h-10 w-10 flex shrink-0 items-center justify-center rounded-full group-hover:shadow-sm bg-gray-200 p-1">
                     <img src="/icons/remove.svg" alt="">
                 </div>
 
-                <span class="text-nowrap"> Current Orders </span>
+                <span class=""> Current Orders </span>
             </div>
 
-            <button class="hover-left-border absolute cursor-pointer border-l-4 border-transparent p-0 h-10 w-10 flex items-center justify-center shrink-0 rounded-l-sm bg-gray-50 hover:border-blue-500
+            <button class="hover-left-border absolute cursor-pointer border-l-4 border-b-1 border-t-1 border-transparent p-0 h-10 w-8 flex items-center justify-center shrink-0 rounded-l-sm bg-gray-50 hover:border-blue-500
                     transition-left duration-900 ease-in-out" 
-                    :class="isOpen ? '-left-6' : '-left-10'" @click="isOpen = !isOpen">
+                    :class="isOpen ? '-left-8' : '-left-8'" @click="isOpen = !isOpen">
                 <img src="/icons/shopping_cart.svg" class="p-0 h-7 w-7" alt="">
             </button>
         </div>

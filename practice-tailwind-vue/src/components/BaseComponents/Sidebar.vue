@@ -15,7 +15,7 @@
                 <span class="text-nowrap overflow-hidden"> My App </span>
             </div>
 
-            <button @click="isOpen = !isOpen" class="absolute cursor-pointer border-r-4 border-transparent transition-all duration-250 ease-in-out -right-8 md:-right-6 p-0 h-10 w-10 flex items-center justify-center shrink-0 rounded-r-sm hover:border-blue-500 bg-gray-50" >
+            <button @click="isOpen = !isOpen" class="absolute cursor-pointer border-r-4 md:shadow-none border-transparent transition-all duration-250 ease-in-out -right-8 md:-right-6 p-0 h-10 w-8 flex items-center justify-center shrink-0 rounded-r-sm hover:border-blue-500 bg-gray-100" :class="isOpen ? '' : 'shadow-sm'">
                 <img src="/icons/arrow_right.svg" class="p-0 h-full w-full transition-transform duration-1000 ease-in-out" :class="isOpen ? '-rotate-180' : 'rotate-none'" alt="">
             </button>
         </div>

@@ -3,17 +3,13 @@ import Base from '@/components/BaseComponents/Base.vue';
 </script>
 
 <template>
-    <Base>
-        <template v-slot:content>
-            <div class="content-topbar">
-                <span class="text-2xl font-bold"> Products </span>
-            </div>
+   <Base>
+        <template v-slot:topbar-content>
+            <span class="text-2xl font-bold"> List Report </span>
+        </template>
 
-            <div class="flex flex-row h-[89%] rounded-sm shadow-sm bg-gray-100">
-                <div class="rounded-r-sm w-full px-5 py-2 bg-gray-100">
-                    <span class="text-2xl font-bold"> Products Content </span>
-                </div>
-            </div>
+        <template v-slot:main-content>
+            
         </template>
     </Base>
 </template>

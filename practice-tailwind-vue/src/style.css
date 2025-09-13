@@ -2,11 +2,11 @@
 
 @layer components {
     .base-container {
-        @apply flex flex-col h-screen w-full overflow-hidden bg-gray-200 md:flex-row;
+        @apply flex flex-col h-screen w-full overflow-hidden bg-gray-50 md:flex-row;
     }
 
     .sidebar-container {
-        @apply flex flex-col shadow-sm px-0 py-3 transition-all duration-700 ease-in-out bg-gray-100 fixed md:static top-0 left-0 h-full z-50;
+        @apply flex flex-col shadow-sm px-0 py-3 transition-all duration-700 ease-in-out bg-white fixed md:static top-0 left-0 h-full z-50;
     }
 
     .sidebar-link {
@@ -21,6 +21,18 @@
         @apply text-nowrap text-lg font-semibold overflow-x-hidden;
     }
 
+    .sidebar-link-active {
+        @apply bg-blue-500 text-white shadow-sm border-blue-500;
+    }
+
+    .sidebar-link-active .sidebar-link-img {
+        @apply bg-white;
+    }
+
+    .sidebar-link-active .sidebar-link-label {
+        @apply text-white;
+    }
+
     .content-container {
         @apply flex-1 flex flex-col w-full h-full;
     }
@@ -30,7 +42,7 @@
     }
 
     .main-content {
-        @apply flex flex-row h-[89%] w-[98%] mb-4 rounded-sm shadow-sm bg-gray-100 mx-auto;
+        @apply flex flex-col h-[89%] w-[98%] mb-4 rounded-sm mx-auto;
     }
 
     .login-bg-img {

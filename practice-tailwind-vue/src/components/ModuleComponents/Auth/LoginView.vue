@@ -1,18 +1,10 @@
 <script setup lang="ts">
-import axios from '@/lib/axios';
+import { ref, reactive } from 'vue';
+import { useAuthStore } from "@/stores/auth";
 
-const login = async () => {
-    await axios.get('/sanctum/csrf-cookie');
+const authStore = useAuthStore();
 
-    try {
-        const response = await axios.post('/api/login', {
-            email: 'testwelf@gmail.com',
-            password: 'testpassword',
-        });
-    } catch (error) {
-        
-    }
-}
+
 </script>
 
 <template>

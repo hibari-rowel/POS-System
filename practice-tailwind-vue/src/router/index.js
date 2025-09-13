@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from "@/stores/auth.js";
 
 import LoginView from '@/components/ModuleComponents/Auth/LoginView.vue';
 import PurchaseView from '@/components/ModuleComponents/Purchases/PurchaseView.vue';
@@ -76,6 +77,21 @@ const router = createRouter({
             ],
         },
     ]
+});
+
+router.beforeEach(async (to, from, next) => {
+    const authStore = useAuthStore();
+    await authStore.fetchUser();
+
+    if (!authStore.isAuthenticated && to.meta.requiresAuth) {
+        return next('/');
+    }
+
+    if (authStore.isAuthenticated && !to.meta.requiresAuth) {
+        return next('/dashboard');
+    }
+
+    next();
 });
 
 export default router;

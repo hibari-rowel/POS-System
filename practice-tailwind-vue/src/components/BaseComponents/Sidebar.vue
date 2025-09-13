@@ -2,9 +2,11 @@
     import { ref, onMounted } from 'vue';
     import {useRouter} from "vue-router";
     import _ from 'lodash';
+    import { useAuthStore } from "@/stores/auth.js";
 
     const isOpen = ref(true);
     const router = useRouter();
+    const authStore = useAuthStore();
 
     onMounted(() => {
         const storedState = localStorage.getItem('is_open');
@@ -20,7 +22,7 @@
 
     const logout = () => {
         localStorage.removeItem('is_open');
-        router.push('/');
+        authStore.logout();
     }
 </script>
 

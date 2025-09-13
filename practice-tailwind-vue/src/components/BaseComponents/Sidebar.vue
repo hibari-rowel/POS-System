@@ -103,6 +103,16 @@
                 </span>
             </router-link>
 
+            <router-link :to="'/users'" class="sidebar-link group" active-class="sidebar-link-active">
+                <div class="sidebar-link-img group-hover:shadow-sm">
+                    <img src="/icons/remove.svg" alt="">
+                </div>
+
+                <span class="sidebar-link-label group-hover:text-black">
+                    Users
+                </span>
+            </router-link>
+
             <a href="#" class="mt-auto sidebar-link group" @click="logout()">
                 <div class="sidebar-link-img group-hover:shadow-sm">
                     <img src="/icons/logout.svg" alt="">

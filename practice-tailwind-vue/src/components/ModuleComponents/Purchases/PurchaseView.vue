@@ -3,11 +3,18 @@ import { ref } from 'vue';
 import _ from 'lodash';
 
 import Base from '@/components/BaseComponents/Base.vue';
+import Header from '@/components/BaseComponents/Header.vue';
 
 const isLoading = ref(false);
 const searchQuery = ref('');
 const isCategoryOpen = ref(false);
 const isOrderOpen = ref(true);
+const header = { 
+    title: 'Purchases',
+    bread_crumbs: [
+        {name: "Purchases",},
+    ],
+};
 </script>
 
 <template>
@@ -33,7 +40,7 @@ const isOrderOpen = ref(true);
         </template>
 
         <template v-slot:main-content>
-            
+            <Header :header="header"></Header>
         </template>
     </Base>
 </template>

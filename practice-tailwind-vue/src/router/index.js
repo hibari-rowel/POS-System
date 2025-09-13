@@ -20,6 +20,11 @@ import ReportsListView from '@/components/ModuleComponents/Reports/ListView.vue'
 import ReportsCreateView from '@/components/ModuleComponents/Reports/CreateView.vue';
 import ReportsShowView from '@/components/ModuleComponents/Reports/ShowView.vue';
 
+import UsersListView from '@/components/ModuleComponents/Users/ListView.vue';
+import UsersCreateView from '@/components/ModuleComponents/Users/CreateView.vue';
+import UsersShowView from '@/components/ModuleComponents/Users/ShowView.vue';
+import UsersEditView from '@/components/ModuleComponents/Users/EditView.vue';
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -74,6 +79,16 @@ const router = createRouter({
                 { path: '', component: ReportsListView },
                 { path: 'create', component: ReportsCreateView },
                 { path: 'show/:id', component: ReportsShowView },
+            ],
+        },
+        {
+            path: '/users',
+            meta: { requiresAuth: true, allowedUsers: ['admin',] },
+            children: [
+                { path: '', component: UsersListView },
+                { path: 'create', component: UsersCreateView },
+                { path: 'show/:id', component: UsersShowView },
+                { path: 'edit/:id', component: UsersEditView },
             ],
         },
     ]

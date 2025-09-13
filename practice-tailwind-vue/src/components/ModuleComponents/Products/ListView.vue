@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import Base from '@/components/BaseComponents/Base.vue';
+import Header from '@/components/BaseComponents/Header.vue';
+
+const header = { 
+    title: 'Products',
+    bread_crumbs: [
+        {name: "Products",},
+    ],
+};
 </script>
 
 <template>
     <Base>
-        <template v-slot:topbar-content>
-            <span class="text-2xl font-bold"> List Product </span>
-        </template>
-
         <template v-slot:main-content>
-            
+            <Header :header="header"></Header>
         </template>
     </Base>
 </template>

@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import Base from '@/components/BaseComponents/Base.vue';
+import Header from '@/components/BaseComponents/Header.vue';
+
+const header = { 
+    title: 'Users',
+    bread_crumbs: [
+        {name: "Users", path: '/users'},
+        {name: "Show",},
+    ],
+};
 </script>
 
 <template>
     <Base>
-        <template v-slot:topbar-content>
-            <span class="text-2xl font-bold"> Show User </span>
-        </template>
-
         <template v-slot:main-content>
-            
+            <Header :header="header"></Header>
         </template>
     </Base>
 </template>

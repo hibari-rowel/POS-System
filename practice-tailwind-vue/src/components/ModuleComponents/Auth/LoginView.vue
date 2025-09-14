@@ -34,7 +34,7 @@ onBeforeRouteLeave(() => {
                 </div>
             </div>
 
-            <div class="bg-blue-100 w-full md:w-[40%] rounded-lg md:rounded-r-lg md:rounded-l-none border-t-5  border-blue-500 shadow-sm">
+            <div class="bg-blue-100 w-full md:w-[40%] rounded-lg md:rounded-r-lg md:rounded-l-none border-t-5 border-blue-500 shadow-sm">
                 <div class="flex flex-col items-center justify-center h-full p-5">
                     <h2 class="text-3xl font-bold mb-6"> Sign In </h2>
 

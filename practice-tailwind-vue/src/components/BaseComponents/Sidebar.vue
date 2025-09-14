@@ -27,7 +27,7 @@
 </script>
 
 <template>
-    <div class="sidebar-container" :class="isOpen ? 'w-64' : 'w-0 md:w-20'">
+    <div class="sidebar-container" :class="isOpen ? 'w-65' : 'w-0 md:w-20'">
         <div class="relative flex justify-between text-2xl font-bold mb-6 h-16 items-center"> 
             <div class="flex px-5 gap-4 overflow-hidden transition-opacity duration-300 ease-in-out md:opacity-100" :class="isOpen ? '' : 'opacity-0'"> 
                 <div class="h-10 w-10 flex shrink-0 items-center justify-center rounded-full group-hover:shadow-sm bg-gray-200 p-1 overflow-hidden">
@@ -42,7 +42,7 @@
             </button>
         </div>
 
-        <nav class="flex flex-col h-full gap-1 overflow-hidden">
+        <nav class="flex flex-col h-full gap-3 md:gap-2 overflow-x-hidden">
             <router-link :to="'/dashboard'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
                     <img src="/icons/remove.svg" alt="">
@@ -53,23 +53,23 @@
                 </span>
             </router-link>
 
-            <router-link :to="'/purchases'" class="sidebar-link group" active-class="sidebar-link-active">
+            <router-link :to="'/transactions'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
                     <img src="/icons/remove.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
-                    Purchases
+                    Transactions
                 </span>
             </router-link>
 
-            <router-link :to="'/purchase-history'" class="sidebar-link group" active-class="sidebar-link-active">
+            <router-link :to="'/transaction-history'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
                     <img src="/icons/remove.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
-                    Purchase History
+                    Transaction History
                 </span>
             </router-link>
 

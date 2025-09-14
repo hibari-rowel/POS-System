@@ -10,9 +10,9 @@ const searchQuery = ref('');
 const isCategoryOpen = ref(false);
 const isOrderOpen = ref(true);
 const header = { 
-    title: 'Purchases',
+    title: 'Transactions',
     bread_crumbs: [
-        {name: "Purchases",},
+        {name: "Transactions",},
     ],
 };
 </script>
@@ -41,6 +41,7 @@ const header = {
 
         <template v-slot:main-content>
             <Header :header="header"></Header>
+            <div class="h-full py-4 mb-2 bg-white rounded-lg shadow">02</div>
         </template>
     </Base>
 </template>

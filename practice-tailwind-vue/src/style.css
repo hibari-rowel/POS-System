@@ -2,7 +2,7 @@
 
 @layer components {
     .base-container {
-        @apply flex flex-col h-screen w-full overflow-hidden bg-gray-50 md:flex-row;
+        @apply flex flex-col h-screen w-full overflow-hidden bg-gray-100 md:flex-row;
     }
 
     .sidebar-container {
@@ -42,7 +42,7 @@
     }
 
     .main-content {
-        @apply flex flex-col h-[89%] w-[98%] mb-4 rounded-sm mx-auto;
+        @apply flex flex-col h-[89%] w-[98%] mb-2 rounded-sm mx-auto;
     }
 
     .login-bg-img {

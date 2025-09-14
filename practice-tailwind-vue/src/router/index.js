@@ -41,14 +41,14 @@ const router = createRouter({
             meta: { requiresAuth: true, allowedUsers: ['admin', 'staff'] },
         },
         {
-            path: '/purchases',
-            name: 'purchases',
+            path: '/transactions',
+            name: 'transactions',
             component: PurchaseView,
             meta: { requiresAuth: true, allowedUsers: ['admin', 'staff'] },
         },
         {
-            path: '/purchase-history',
-            name: 'purchase-history',
+            path: '/transaction-history',
+            name: 'transaction-history',
             component: PurchaseHistoryListView,
             meta: { requiresAuth: true, allowedUsers: ['admin', 'staff'] },
         },

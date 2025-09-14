@@ -13,7 +13,13 @@ const header = {
 <template>
     <Base>
         <template v-slot:main-content>
-            <Header :header="header"></Header>
+            <Header :header="header">
+                <template v-slot:right-side>
+                    <div class="flex items-center">
+                        <router-link :to="'/products/create'" class="btn-primary"> Create </router-link>
+                    </div>
+                </template>
+            </Header>
 
             <div class="h-full py-4 mb-2 bg-white rounded-lg shadow">02</div>
         </template>

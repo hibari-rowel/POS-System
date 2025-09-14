@@ -4,7 +4,7 @@
     import _ from 'lodash';
     import { useAuthStore } from "@/stores/auth.js";
 
-    const isOpen = ref(true);
+    const isOpen = ref(window.innerWidth >= 768);
     const router = useRouter();
     const authStore = useAuthStore();
 
@@ -42,7 +42,7 @@
             </button>
         </div>
 
-        <nav class="flex flex-col h-full gap-3 md:gap-2 overflow-x-hidden">
+        <nav class="flex flex-col h-full gap-1 md:gap-2 overflow-x-hidden">
             <router-link :to="'/dashboard'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
                     <img src="/icons/remove.svg" alt="">

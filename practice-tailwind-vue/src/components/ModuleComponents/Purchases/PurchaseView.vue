@@ -41,6 +41,7 @@ const header = {
 
         <template v-slot:main-content>
             <Header :header="header"></Header>
+            
             <div class="h-full py-4 mb-2 bg-white rounded-lg shadow">02</div>
         </template>
     </Base>

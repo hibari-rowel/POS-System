@@ -8,7 +8,7 @@ defineProps({
 
 <template>
     <div class="flex flex-col gap-2 py-2 mb-4">
-        <div class="flex flex-row justify-between">
+        <div class="flex flex-row justify-between items-center">
             <span class="font-bold text-3xl items-center"> {{ header?.title }} </span>
             <slot name="right-side"></slot>
         </div>

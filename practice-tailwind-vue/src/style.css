@@ -64,4 +64,12 @@
     .bread-crumb-list-item {
         @apply flex items-center
     }
+
+    .btn-primary {
+        @apply flex w-18 bg-blue-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold
+    }
+
+    .btn-danger {
+        @apply flex w-18 bg-red-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold
+    }
 }

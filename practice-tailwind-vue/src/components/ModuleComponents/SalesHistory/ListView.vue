@@ -3,9 +3,9 @@ import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
 
 const header = { 
-    title: 'Transaction History',
+    title: 'Sales History',
     bread_crumbs: [
-        {name: "Transaction History",},
+        {name: "Sales History",},
     ],
 };
 </script>

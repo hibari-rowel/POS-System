@@ -10,9 +10,9 @@ const searchQuery = ref('');
 const isCategoryOpen = ref(false);
 const isOrderOpen = ref(true);
 const header = { 
-    title: 'Transactions',
+    title: 'Sales',
     bread_crumbs: [
-        {name: "Transactions",},
+        {name: "Sales",},
     ],
 };
 </script>

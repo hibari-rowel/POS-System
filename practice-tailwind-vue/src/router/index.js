@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from "@/stores/auth.js";
 
 import LoginView from '@/components/ModuleComponents/Auth/LoginView.vue';
-import PurchaseView from '@/components/ModuleComponents/Purchases/PurchaseView.vue';
+import SalesView from '@/components/ModuleComponents/Sales/SalesView.vue';
 import DashboardView from '@/components/ModuleComponents/Dashboard/DashboardView.vue';
-import PurchaseHistoryListView from '@/components/ModuleComponents/PurchaseHistory/ListView.vue';
+import SalesHistoryListView from '@/components/ModuleComponents/salesHistory/ListView.vue';
 
 import ProductsListView from '@/components/ModuleComponents/Products/ListView.vue';
 import ProductsCreateView from '@/components/ModuleComponents/Products/CreateView.vue';
@@ -41,15 +41,15 @@ const router = createRouter({
             meta: { requiresAuth: true, allowedUsers: ['admin', 'staff'] },
         },
         {
-            path: '/transactions',
-            name: 'transactions',
-            component: PurchaseView,
+            path: '/sales',
+            name: 'sales',
+            component: SalesView,
             meta: { requiresAuth: true, allowedUsers: ['admin', 'staff'] },
         },
         {
-            path: '/transaction-history',
-            name: 'transaction-history',
-            component: PurchaseHistoryListView,
+            path: '/sales-history',
+            name: 'sales-history',
+            component: SalesHistoryListView,
             meta: { requiresAuth: true, allowedUsers: ['admin', 'staff'] },
         },
         {

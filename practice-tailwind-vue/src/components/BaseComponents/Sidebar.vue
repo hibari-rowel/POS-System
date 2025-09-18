@@ -53,23 +53,23 @@
                 </span>
             </router-link>
 
-            <router-link :to="'/transactions'" class="sidebar-link group" active-class="sidebar-link-active">
+            <router-link :to="'/sales'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
                     <img src="/icons/remove.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
-                    Transactions
+                    Sales
                 </span>
             </router-link>
 
-            <router-link :to="'/transaction-history'" class="sidebar-link group" active-class="sidebar-link-active">
+            <router-link :to="'/sales-history'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
                     <img src="/icons/remove.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
-                    Transaction History
+                    Sales History
                 </span>
             </router-link>
 

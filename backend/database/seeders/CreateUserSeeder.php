@@ -19,6 +19,7 @@ class CreateUserSeeder extends Seeder
             'middle_name' => 'Duma',
             'last_name' => 'Pangue',
             'role' => 'admin',
+            'status' => 'active',
             'email' => 'rcdpangue@gmail.com',
             'password' => Hash::make('test123'),
         ]);

@@ -18,7 +18,17 @@ class Report extends Model
     protected $table = 'reports';
 
     protected $fillable = [
-
+        'name',
+        'description',
+        'start_date',
+        'end_date',
+        'report_type',
+        'status',
+        'product_id',
+        'user_id',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     protected $appends = [

@@ -1,0 +1,105 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
+use App\Services\UserService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+
+class UserController extends Controller
+{
+    private $service;
+
+    public function __construct(UserService $userService)
+    {
+        $this->service = $userService;
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function getList(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function get(User $user)
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreUserRequest $request)
+    {
+        $user = new User();
+        Gate::authorize('store', $user);
+
+        try {
+            DB::beginTransaction();
+            $user = $this->service->createRecord($request->validated(), $user);
+            DB::commit();
+
+            return response()->json([
+                'message' => 'User record successfully created.',
+                'data' => $user,
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('[User][store]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[User][store]: ' . $e->getMessage());
+            Log::error('[User][store]: ' . $e->getLine());
+
+            return response()->json([
+                'message' => 'Something went wrong. Please contact support for assistance.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        Gate::authorize('update', $user);
+
+        try {
+            DB::beginTransaction();
+            $user = $this->service->updateRecord($request->validated(), $user);
+            DB::commit();
+
+            return response()->json([
+                'message' => 'User record successfully updated',
+                'data' => $user,
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            \Log::error('[User][update]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            \Log::error('[User][update]: ' . $e->getMessage());
+            \Log::error('[User][update]: ' . $e->getLine());
+
+            return response()->json([
+                'message' => 'Something went wrong. Please contact support for assistance.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $user)
+    {
+        //
+    }
+}

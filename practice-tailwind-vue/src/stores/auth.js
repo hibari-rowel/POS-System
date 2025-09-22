@@ -23,6 +23,26 @@ export const useAuthStore = defineStore('auth-store', {
             try {
                 const response = await axios.post('/api/login', data);
                 this.is_loading = false;
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#22c55e';
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: 'Logged in successfully.',
+                });
+
                 this.router.push('/dashboard');
             } catch (error) {
                 this.is_loading = false;

@@ -4,6 +4,9 @@ import { onBeforeRouteLeave } from 'vue-router';
 import { useAuthStore } from "@/stores/auth.js";
 import _ from 'lodash';
 
+import TextField from '@/components/FieldComponents/TextField.vue';
+import PasswordField from '@/components/FieldComponents/PasswordField.vue';
+
 const authStore = useAuthStore();
 
 interface LoginForm {
@@ -40,35 +43,13 @@ onBeforeRouteLeave(() => {
 
                     <div class="w-full">
                         <div class="mb-4">
-                            <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-
-                            <div class="flex items-center p-2 rounded-md w-full md:max-w-80 gap-3 bg-gray-100 focus-within:ring-blue-500 focus-within:ring-2 focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out" 
-                                 :class="!_.isEmpty(authStore.errors.email) ? 'ring-red-500 ring-2 border-red-400 shadow-sm' : ''">
-                                <img src="/icons/email.svg" class="p-0 h-full" alt="">
-                                
-                                <input type="email" id="email" class="border-0 outline-none bg-transparent w-75 placeholder-gray-400" 
-                                       placeholder="Enter Email" v-model="formData.email">
-                            </div>
-
-                            <div class="text-red-500 text-sm mt-1" v-if="authStore.errors.email">
-                                {{ _.join(authStore.errors.email, '<br>') }}
-                            </div>
+                            <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" :is_disabled="false" 
+                                :errors="authStore.errors.email" @clearErrors="authStore.errors.email = null" v-model="formData.email"/>
                         </div>
 
                         <div class="mb-4">
-                            <label for="password" class="block text-gray-700 font-semibold mb-2"> Password </label>
-
-                            <div class="flex items-center p-2 rounded-md w-full md:max-w-80 gap-3 bg-gray-100 focus-within:ring-blue-500 focus-within:ring-2 focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out" 
-                                 :class="!_.isEmpty(authStore.errors.password) ? 'ring-red-500 ring-2 border-red-400 shadow-sm' : ''">
-                                <img src="/icons/password.svg" class="p-0 h-full" alt="">
-
-                                <input type="password" id="password" class="border-0 outline-none bg-transparent w-75 placeholder-gray-400" 
-                                       placeholder="Enter Password" v-model="formData.password">
-                            </div>
-
-                            <div class="text-red-500 text-sm mt-1" v-if="authStore.errors.password">
-                                {{ _.join(authStore.errors.password, '<br>') }}
-                            </div>
+                            <PasswordField :id="'password'" :label="'Password'" :placeholder="'Enter Password'" :is_required="true" :is_disabled="false" 
+                                :errors="authStore.errors.password" @clearErrors="authStore.errors.password = null" v-model="formData.password"/>
                         </div>
 
                         <div class="mb-6 flex items-center justify-between">

@@ -4,6 +4,9 @@ import router from '@/router/index.js'
 import './style.css'
 import App from './App.vue'
 
+import VueSelect from 'vue-select'
+import "vue-select/dist/vue-select.css"
+
 const app = createApp(App)
 const pinia = createPinia()
 
@@ -11,6 +14,7 @@ pinia.use(({ store }) => {
     store.router = markRaw(router);
 })
 
+app.component("v-select", VueSelect)
 app.use(pinia)
 app.use(router)
 app.mount('#app')

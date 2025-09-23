@@ -38,11 +38,11 @@
     }
 
     .content-topbar {
-        @apply flex items-center justify-between h-20 pl-9 pr-3 py-4 mb-4 shadow-sm bg-white sticky top-0 z-40;
+        @apply flex items-center justify-between h-20 pl-9 pr-3 py-4 shadow-sm bg-white sticky top-0 z-40;
     }
 
     .main-content {
-        @apply flex flex-col h-[89%] w-[98%] mb-2 rounded-sm mx-auto;
+        @apply flex flex-col h-full w-[98%] mb-1 pt-4 rounded-sm mx-auto overflow-y-scroll;
     }
 
     .login-bg-img {
@@ -78,7 +78,7 @@
     }
 
     .text-box {
-        @apply flex items-center p-2 rounded-md w-full gap-3 bg-gray-100 focus-within:ring-blue-500 focus-within:ring-2 focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out
+        @apply flex items-center p-2 rounded-md w-full gap-3 bg-gray-50 focus-within:ring-blue-500 focus-within:ring-2 focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out
     }
 
     .text-box-danger {
@@ -90,12 +90,12 @@
     }
 
     .vs__dropdown-toggle {
-        @apply flex items-center p-2 rounded-md w-full gap-3 bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out;
+        @apply flex items-center p-2 rounded-md w-full gap-3 bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out;
         height: 42px;
     }
 
     .vs__dropdown-menu {
-        @apply bg-white border border-gray-200 rounded-md shadow-lg;
+        @apply bg-gray-50 border border-gray-200 rounded-md shadow-lg;
     }
 
     .vs__selected {

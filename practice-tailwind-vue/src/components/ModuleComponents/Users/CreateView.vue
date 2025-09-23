@@ -44,13 +44,13 @@ const header = {
                         <TextField :id="'last_name'" :label="'Last Name'" :placeholder="'Enter Last Name'" :is_required="true" :is_disabled="false" :errors="[]"/>
                     </div>
 
+                    <div class="grid grid-cols-1 md:grid-cols-1 gap-1 md:gap-5">
+                        <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" :is_disabled="false" :errors="[]"/>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">
                         <DropdownField :id="'role'" :label="'Role'" :is_required="true" :options="UserRoleDropdownList" :placeholder="'Select Role'"/>
                         <DropdownField :id="'status'" :label="'Active Status'" :is_required="true" :options="UserStatusDropdownList" :placeholder="'Select Active Status'"/>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-1 gap-1 md:gap-5">
-                        <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" :is_disabled="false" :errors="[]"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">

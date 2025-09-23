@@ -18,7 +18,7 @@ import Sidebar from '@/components/BaseComponents/Sidebar.vue';
                 </div>
             </div>
             
-            <div class="main-content">
+            <div class="main-content hide-scrollbar">
                 <slot name="main-content"></slot>
             </div>
         </div>
@@ -26,4 +26,12 @@ import Sidebar from '@/components/BaseComponents/Sidebar.vue';
 </template>
 
 <style scoped>
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
 </style>

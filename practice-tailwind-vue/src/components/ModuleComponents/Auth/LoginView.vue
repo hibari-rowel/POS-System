@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, reactive, } from 'vue';
+import { reactive, computed } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useAuthStore } from "@/stores/auth.js";
+import { helpers, required, email } from "@vuelidate/validators";
 import _ from 'lodash';
 
 import TextField from '@/components/FieldComponents/TextField.vue';
@@ -9,18 +10,23 @@ import PasswordField from '@/components/FieldComponents/PasswordField.vue';
 
 const authStore = useAuthStore();
 
-interface LoginForm {
-    email: string,
-    password: string,
-}
-
-const formData = reactive<LoginForm>({
+const form = reactive({
     email: '',
     password: '',
 });
 
-const submitForm = (formData: LoginForm) => {
-    authStore.login(formData);
+const rules = computed(() => ({
+    email: {
+        required: helpers.withMessage("Email is required", required),
+        email: helpers.withMessage("Please enter a valid Email", email)
+    },
+    password: { 
+        required:  helpers.withMessage("Password is required", required),
+    },
+}));
+
+const submitForm = () => {
+    authStore.login(form, rules);
 };
 
 onBeforeRouteLeave(() => {
@@ -44,12 +50,12 @@ onBeforeRouteLeave(() => {
                     <div class="w-full">
                         <div class="mb-4">
                             <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" :is_disabled="false" 
-                                :errors="authStore.errors.email" @clearErrors="authStore.errors.email = null" v-model="formData.email"/>
+                                :errors="authStore.errors.email" @clearErrors="authStore.cleanErrors('email')" v-model="form.email"/>
                         </div>
 
                         <div class="mb-4">
                             <PasswordField :id="'password'" :label="'Password'" :placeholder="'Enter Password'" :is_required="true" :is_disabled="false" 
-                                :errors="authStore.errors.password" @clearErrors="authStore.errors.password = null" v-model="formData.password"/>
+                                :errors="authStore.errors.password" @clearErrors="authStore.cleanErrors('password')" v-model="form.password"/>
                         </div>
 
                         <div class="mb-6 flex items-center justify-between">
@@ -65,7 +71,7 @@ onBeforeRouteLeave(() => {
                         </div>
 
                         <button class="flex items-center justify-center w-full cursor-pointer bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300" 
-                                @click="submitForm(formData)" :disabled="authStore.is_loading">
+                                @click="submitForm()" :disabled="authStore.is_loading">
                             <span v-if="authStore.is_loading" class="inline-flex gap-2 items-center justify-center"> 
                                 <div class="loader"></div> Signing In...
                             </span>

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from '@/lib/axios';
 import _ from 'lodash';
 import Swal from 'sweetalert2';
+import useVuelidate from "@vuelidate/core"
 
 export const useAuthStore = defineStore('auth-store', {
     state: () => ({
@@ -15,61 +16,70 @@ export const useAuthStore = defineStore('auth-store', {
     },
 
     actions: {
-        async login(data) {
+        async login(data, rules) {
             this.is_loading = true;
             this.resetErrors();
-            await axios.get('/sanctum/csrf-cookie');
 
-            try {
-                const response = await axios.post('/api/login', data);
-                this.is_loading = false;
+            const v$ = useVuelidate(rules, data);
+            v$.value.$touch();
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#22c55e';
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
+            if (v$.value.$invalid) {
+                for (const key in v$.value.$errors) {
+                    let field = v$.value.$errors[key].$property;
+                    this.errors[field] = [v$.value.$errors[key].$message];
+                }
+            } else {
+                await axios.get('/sanctum/csrf-cookie');
 
-                Toast.fire({
-                    icon: "success",
-                    title: 'Logged in successfully.',
-                });
+                try {
+                    const response = await axios.post('/api/login', data);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#22c55e';
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
 
-                this.router.push('/dashboard');
-            } catch (error) {
-                this.is_loading = false;
+                    Toast.fire({
+                        icon: "success",
+                        title: 'Logged in successfully.',
+                    });
 
-                let errors = error.response?.data?.errors || {};
-                const mergedErrors = _.flatten(_.values(errors)).join(' ');
-                this.errors = errors;
+                    this.router.push('/dashboard');
+                } catch (error) {
+                    let errors = error.response?.data?.errors || {};
+                    const mergedErrors = _.flatten(_.values(errors)).join(' ');
+                    this.errors = errors;
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#ef4444';
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#ef4444';
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
 
-                Toast.fire({
-                    icon: "error",
-                    title: mergedErrors,
-                });
+                    Toast.fire({
+                        icon: "error",
+                        title: mergedErrors,
+                    });
+                }
             }
+
+            this.is_loading = false;
         },
         async logout() {
             try {
@@ -130,6 +140,9 @@ export const useAuthStore = defineStore('auth-store', {
         },
         resetErrors() {
             this.errors = {};
+        },
+        cleanErrors(field) {
+            this.errors[field] = null
         }
     }
 });

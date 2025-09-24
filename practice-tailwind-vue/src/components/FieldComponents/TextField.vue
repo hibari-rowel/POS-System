@@ -28,9 +28,7 @@ const onInput = () => {
                 :placeholder="placeholder" v-model="model" :disabled="is_disabled" @input="onInput">
         </div>
 
-        <div class="text-red-500 text-sm mt-1" v-if="errors">
-            {{ _.join(errors, '<br>') }}
-        </div>
+        <div class="text-red-500 text-sm mt-1" v-if="!_.isEmpty(errors)" v-html="_.join(errors, '<br>')"></div>
     </div>
 </template>
 

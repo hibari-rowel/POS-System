@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import axios from '@/lib/axios';
 import _ from 'lodash';
-import Swal from 'sweetalert2';
 import useVuelidate from "@vuelidate/core"
+import { fireToast } from "@/lib/toast";
 
 export const useUserStore = defineStore('user-store', {
     state: () => ({
@@ -31,10 +31,19 @@ export const useUserStore = defineStore('user-store', {
                 return;
             }
 
-            // API here
-            console.log('form sent');
+            try {
+                const response = await axios.post('/api/users/create', data);
+                fireToast("success", 'User created successfully.');
+                this.router.push('/users');
+            } catch (error) {
+                let errors = error.response?.data?.errors || {};
+                const mergedErrors = _.flatten(_.values(errors)).join(' ');
+                this.errors = errors;
+
+                fireToast("error", mergedErrors);
+            }
         },
-        async updateUser(data, rules) {
+        async updateUser(data, rules, id) {
             this.resetErrors();
 
             const v$ = useVuelidate(rules, data);
@@ -49,7 +58,17 @@ export const useUserStore = defineStore('user-store', {
                 return;
             }
 
+            try {
+                const response = await axios.post(`/api/users/update/${id}`, data);
+                fireToast("success", 'User created successfully.');
+                this.router.push('/users');
+            } catch (error) {
+                let errors = error.response?.data?.errors || {};
+                const mergedErrors = _.flatten(_.values(errors)).join(' ');
+                this.errors = errors;
 
+                fireToast("error", mergedErrors);
+            }
         },
         async getUser(data) {
 

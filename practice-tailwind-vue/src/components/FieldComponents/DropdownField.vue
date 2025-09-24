@@ -28,9 +28,7 @@ const onChange = () => {
                   v-model="model" :options="options" :disabled="is_disabled" :label="'name'" :reduce="option => option.id"
                   @update:modelValue="onChange"/>
 
-        <div class="text-red-500 text-sm mt-1" v-if="errors">
-            {{ _.join(errors, '<br>') }}
-        </div>
+        <div class="text-red-500 text-sm mt-1" v-if="!_.isEmpty(errors)" v-html="_.join(errors, '<br>')"></div>
     </div>
 </template>
 

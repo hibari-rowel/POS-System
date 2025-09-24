@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import axios from '@/lib/axios';
 import _ from 'lodash';
-import Swal from 'sweetalert2';
 import useVuelidate from "@vuelidate/core"
+import { fireToast } from "@/lib/toast";
 
 export const useAuthStore = defineStore('auth-store', {
     state: () => ({
@@ -37,49 +37,14 @@ export const useAuthStore = defineStore('auth-store', {
 
             try {
                 const response = await axios.post('/api/login', data);
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#22c55e';
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-
-                Toast.fire({
-                    icon: "success",
-                    title: 'Logged in successfully.',
-                });
-
+                fireToast("success", 'Logged in successfully.');
                 this.router.push('/dashboard');
             } catch (error) {
                 let errors = error.response?.data?.errors || {};
                 const mergedErrors = _.flatten(_.values(errors)).join(' ');
                 this.errors = errors;
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#ef4444';
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-
-                Toast.fire({
-                    icon: "error",
-                    title: mergedErrors,
-                });
+                fireToast("error", mergedErrors);
             }
 
             this.is_loading = false;
@@ -90,45 +55,11 @@ export const useAuthStore = defineStore('auth-store', {
                 this.user = null;
                 this.resetErrors();
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#22c55e';
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-
-                Toast.fire({
-                    icon: "success",
-                    title: 'Logged out successfully.',
-                });
+                fireToast("success", 'Logged out successfully.');
 
                 this.router.push('/');
             } catch (error) {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#ef4444';
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-
-                Toast.fire({
-                    icon: "error",
-                    title: 'Something went wrong. Please contact the administration.',
-                });
+                fireToast("error", "Something went wrong. Please contact the administration.");
             }
         },
         async fetchUser() {

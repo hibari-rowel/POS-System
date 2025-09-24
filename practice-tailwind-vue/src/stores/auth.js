@@ -28,55 +28,58 @@ export const useAuthStore = defineStore('auth-store', {
                     let field = v$.value.$errors[key].$property;
                     this.errors[field] = [v$.value.$errors[key].$message];
                 }
-            } else {
-                await axios.get('/sanctum/csrf-cookie');
 
-                try {
-                    const response = await axios.post('/api/login', data);
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        showCloseButton: true,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#22c55e';
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
+                this.is_loading = false;
+                return;
+            }
 
-                    Toast.fire({
-                        icon: "success",
-                        title: 'Logged in successfully.',
-                    });
+            await axios.get('/sanctum/csrf-cookie');
 
-                    this.router.push('/dashboard');
-                } catch (error) {
-                    let errors = error.response?.data?.errors || {};
-                    const mergedErrors = _.flatten(_.values(errors)).join(' ');
-                    this.errors = errors;
+            try {
+                const response = await axios.post('/api/login', data);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#22c55e';
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
 
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        showCloseButton: true,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#ef4444';
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
+                Toast.fire({
+                    icon: "success",
+                    title: 'Logged in successfully.',
+                });
 
-                    Toast.fire({
-                        icon: "error",
-                        title: mergedErrors,
-                    });
-                }
+                this.router.push('/dashboard');
+            } catch (error) {
+                let errors = error.response?.data?.errors || {};
+                const mergedErrors = _.flatten(_.values(errors)).join(' ');
+                this.errors = errors;
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.querySelector('.swal2-timer-progress-bar').style.backgroundColor = '#ef4444';
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "error",
+                    title: mergedErrors,
+                });
             }
 
             this.is_loading = false;

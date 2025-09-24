@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, computed } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
+import { useUserStore } from "@/stores/user.js";
+import { helpers, required, email } from "@vuelidate/validators";
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
@@ -10,6 +13,8 @@ import DropdownField from '@/components/FieldComponents/DropdownField.vue';
 import UserRoleDropdownList from '@/lib/dropdowns/UserRoleDropdownList';
 import UserStatusDropdownList from '@/lib/dropdowns/UserStatusDropdownList';
 
+const userStore = useUserStore();
+
 const header = { 
     title: 'Users',
     bread_crumbs: [
@@ -17,6 +22,53 @@ const header = {
         {name: "Create",},
     ],
 };
+
+const form = reactive({
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    role: '',
+    status: '',
+    email: '',
+    password: '',
+    confirm_password: '',
+});
+
+const rules = computed(() => ({
+    first_name: {
+        required: helpers.withMessage("First Name is required", required),
+    },
+    middle_name: {
+        required: helpers.withMessage("Middle Name is required", required),
+    },
+    last_name: {
+        required: helpers.withMessage("Last Name is required", required),
+    },
+    role: {
+        required: helpers.withMessage("Role is required", required),
+    },
+    status: {
+        required: helpers.withMessage("Active Status is required", required),
+    },
+    email: {
+        required: helpers.withMessage("Email is required", required),
+        email: helpers.withMessage("Please enter a valid Email", email)
+    },
+    password: {
+        required: helpers.withMessage("Password is required", required),
+    },
+    confirm_password: {
+        required: helpers.withMessage("Confirm Password is required", required),
+    },
+}));
+
+const submitForm = () => {
+    userStore.createUser(form, rules);
+};
+
+onBeforeRouteLeave(() => {
+    userStore.resetErrors();
+});
 </script>
 
 <template>
@@ -27,7 +79,7 @@ const header = {
                     <div class="flex items-center gap-1">
                         <router-link :to="'/users'" class="btn-danger"> Cancel </router-link>
                         
-                        <button class="btn-primary"> Save </button>
+                        <button class="btn-primary" @click="submitForm()"> Save </button>
                     </div>
                 </template>
             </Header>
@@ -39,23 +91,35 @@ const header = {
 
                 <div class="flex flex-col gap-1 md:gap-3 bg-white md:col-span-3 rounded-lg shadow p-5">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-5">
-                        <TextField :id="'first_name'" :label="'First Name'" :placeholder="'Enter First Name'" :is_required="true" :is_disabled="false" :errors="[]"/>
-                        <TextField :id="'middle_name'" :label="'Middle Name'" :placeholder="'Enter Middle Name'" :is_required="true" :is_disabled="false" :errors="[]"/>
-                        <TextField :id="'last_name'" :label="'Last Name'" :placeholder="'Enter Last Name'" :is_required="true" :is_disabled="false" :errors="[]"/>
+                        <TextField :id="'first_name'" :label="'First Name'" :placeholder="'Enter First Name'" :is_required="true" 
+                                   :is_disabled="false" v-model="form.first_name" :errors="userStore.errors.first_name"/>
+
+                        <TextField :id="'middle_name'" :label="'Middle Name'" :placeholder="'Enter Middle Name'" :is_required="true" 
+                                   :is_disabled="false" v-model="form.middle_name" :errors="userStore.errors.middle_name"/>
+
+                        <TextField :id="'last_name'" :label="'Last Name'" :placeholder="'Enter Last Name'" :is_required="true" 
+                                   :is_disabled="false" v-model="form.last_name" :errors="userStore.errors.last_name"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-1 gap-1 md:gap-5">
-                        <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" :is_disabled="false" :errors="[]"/>
+                        <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" 
+                                   :is_disabled="false" v-model="form.email" :errors="userStore.errors.last_name"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">
-                        <DropdownField :id="'role'" :label="'Role'" :is_required="true" :options="UserRoleDropdownList" :placeholder="'Select Role'"/>
-                        <DropdownField :id="'status'" :label="'Active Status'" :is_required="true" :options="UserStatusDropdownList" :placeholder="'Select Active Status'"/>
+                        <DropdownField :id="'role'" :label="'Role'" :placeholder="'Select Role'" :is_required="true" :is_disabled="false" 
+                                       :options="UserRoleDropdownList" v-model="form.role" :errors="userStore.errors.role"/>
+
+                        <DropdownField :id="'status'" :label="'Active Status'" :placeholder="'Select Active Status'" :is_required="true" :is_disabled="false" 
+                                       :options="UserStatusDropdownList" v-model="form.status" :errors="userStore.errors.status"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">
-                        <PasswordField :id="'password'" :label="'Password'" :placeholder="'Enter Password'" :is_required="true" :is_disabled="false" :errors="[]"/>
-                        <PasswordField :id="'confirm_password'" :label="'Confirm Password'" :placeholder="'Confirm Password'" :is_required="true" :is_disabled="false" :errors="[]"/>
+                        <PasswordField :id="'password'" :label="'Password'" :placeholder="'Enter Password'" :is_required="true" 
+                                       :is_disabled="false" v-model="form.password" :errors="userStore.errors.password"/>
+                                       
+                        <PasswordField :id="'confirm_password'" :label="'Confirm Password'" :placeholder="'Confirm Password'" :is_required="true" 
+                                       :is_disabled="false" v-model="form.confirm_password" :errors="userStore.errors.confirm_password"/>
                     </div>                
                 </div>
             </div>
@@ -63,4 +127,6 @@ const header = {
     </Base>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

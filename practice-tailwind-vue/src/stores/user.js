@@ -17,9 +17,38 @@ export const useUserStore = defineStore('user-store', {
 
     actions: {
         async createUser(data, rules) {
+            this.resetErrors();
 
+            const v$ = useVuelidate(rules, data);
+            v$.value.$touch();
+
+            if (v$.value.$invalid) {
+                for (const key in v$.value.$errors) {
+                    let field = v$.value.$errors[key].$property;
+                    this.errors[field] = [v$.value.$errors[key].$message];
+                }
+
+                return;
+            }
+
+            // API here
+            console.log('form sent');
         },
         async updateUser(data, rules) {
+            this.resetErrors();
+
+            const v$ = useVuelidate(rules, data);
+            v$.value.$touch();
+
+            if (v$.value.$invalid) {
+                for (const key in v$.value.$errors) {
+                    let field = v$.value.$errors[key].$property;
+                    this.errors[field] = [v$.value.$errors[key].$message];
+                }
+
+                return;
+            }
+
 
         },
         async getUser(data) {

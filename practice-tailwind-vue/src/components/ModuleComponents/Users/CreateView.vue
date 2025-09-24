@@ -92,34 +92,42 @@ onBeforeRouteLeave(() => {
                 <div class="flex flex-col gap-1 md:gap-3 bg-white md:col-span-3 rounded-lg shadow p-5">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-5">
                         <TextField :id="'first_name'" :label="'First Name'" :placeholder="'Enter First Name'" :is_required="true" 
-                                   :is_disabled="false" v-model="form.first_name" :errors="userStore.errors.first_name"/>
+                                   :is_disabled="false" v-model="form.first_name" :errors="userStore.errors.first_name"
+                                   @clearErrors="userStore.cleanErrors('first_name')"/>
 
                         <TextField :id="'middle_name'" :label="'Middle Name'" :placeholder="'Enter Middle Name'" :is_required="true" 
-                                   :is_disabled="false" v-model="form.middle_name" :errors="userStore.errors.middle_name"/>
+                                   :is_disabled="false" v-model="form.middle_name" :errors="userStore.errors.middle_name"
+                                   @clearErrors="userStore.cleanErrors('middle_name')"/>
 
                         <TextField :id="'last_name'" :label="'Last Name'" :placeholder="'Enter Last Name'" :is_required="true" 
-                                   :is_disabled="false" v-model="form.last_name" :errors="userStore.errors.last_name"/>
+                                   :is_disabled="false" v-model="form.last_name" :errors="userStore.errors.last_name"
+                                   @clearErrors="userStore.cleanErrors('last_name')"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-1 gap-1 md:gap-5">
                         <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" 
-                                   :is_disabled="false" v-model="form.email" :errors="userStore.errors.last_name"/>
+                                   :is_disabled="false" v-model="form.email" :errors="userStore.errors.email"
+                                   @clearErrors="userStore.cleanErrors('email')"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">
                         <DropdownField :id="'role'" :label="'Role'" :placeholder="'Select Role'" :is_required="true" :is_disabled="false" 
-                                       :options="UserRoleDropdownList" v-model="form.role" :errors="userStore.errors.role"/>
+                                       :options="UserRoleDropdownList" v-model="form.role" :errors="userStore.errors.role" 
+                                       @clearErrors="userStore.cleanErrors('role')"/>
 
                         <DropdownField :id="'status'" :label="'Active Status'" :placeholder="'Select Active Status'" :is_required="true" :is_disabled="false" 
-                                       :options="UserStatusDropdownList" v-model="form.status" :errors="userStore.errors.status"/>
+                                       :options="UserStatusDropdownList" v-model="form.status" :errors="userStore.errors.status"
+                                       @clearErrors="userStore.cleanErrors('status')"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">
                         <PasswordField :id="'password'" :label="'Password'" :placeholder="'Enter Password'" :is_required="true" 
-                                       :is_disabled="false" v-model="form.password" :errors="userStore.errors.password"/>
+                                       :is_disabled="false" v-model="form.password" :errors="userStore.errors.password"
+                                       @clearErrors="userStore.cleanErrors('password')"/>
                                        
                         <PasswordField :id="'confirm_password'" :label="'Confirm Password'" :placeholder="'Confirm Password'" :is_required="true" 
-                                       :is_disabled="false" v-model="form.confirm_password" :errors="userStore.errors.confirm_password"/>
+                                       :is_disabled="false" v-model="form.confirm_password" :errors="userStore.errors.confirm_password"
+                                       @clearErrors="userStore.cleanErrors('confirm_password')"/>
                     </div>                
                 </div>
             </div>

@@ -13,6 +13,11 @@ const props = defineProps({
     'errors': Array,
 });
 
+const emit = defineEmits(['clearErrors']);
+
+const onChange = () => {
+  emit('clearErrors');
+};
 </script>
 
 <template>
@@ -20,7 +25,8 @@ const props = defineProps({
         <label :for="id" class="form-label"> {{ label }} <span class="text-red-500" v-if="is_required">*</span></label>
 
         <v-select :id="id" :placeholder="placeholder" :class="!_.isEmpty(errors) ? 'dropdown-danger' : 'dropdown-default'" 
-                  v-model="model" :options="options" :disabled="is_disabled" :label="'name'" :reduce="option => option.id"/>
+                  v-model="model" :options="options" :disabled="is_disabled" :label="'name'" :reduce="option => option.id"
+                  @update:modelValue="onChange"/>
 
         <div class="text-red-500 text-sm mt-1" v-if="errors">
             {{ _.join(errors, '<br>') }}

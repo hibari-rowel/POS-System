@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import axios from '@/lib/axios';
 import _ from 'lodash';
 import useVuelidate from "@vuelidate/core"
-import { fireToast } from "@/lib/toast";
 
 export const useUserStore = defineStore('user-store', {
     state: () => ({
@@ -23,24 +22,16 @@ export const useUserStore = defineStore('user-store', {
             v$.value.$touch();
 
             if (v$.value.$invalid) {
-                for (const key in v$.value.$errors) {
-                    let field = v$.value.$errors[key].$property;
-                    this.errors[field] = [v$.value.$errors[key].$message];
-                }
-
-                return;
+                this.assignFrontEndValidationErrors(v$.value.$errors);
+                return false;
             }
 
             try {
                 const response = await axios.post('/api/users/create', data);
-                fireToast("success", 'User created successfully.');
-                this.router.push('/users');
+                return true;
             } catch (error) {
-                let errors = error.response?.data?.errors || {};
-                const mergedErrors = _.flatten(_.values(errors)).join(' ');
-                this.errors = errors;
-
-                fireToast("error", mergedErrors);
+                this.errors = error.response?.data?.errors || {};
+                return false;
             }
         },
         async updateUser(data, rules, id) {
@@ -50,24 +41,16 @@ export const useUserStore = defineStore('user-store', {
             v$.value.$touch();
 
             if (v$.value.$invalid) {
-                for (const key in v$.value.$errors) {
-                    let field = v$.value.$errors[key].$property;
-                    this.errors[field] = [v$.value.$errors[key].$message];
-                }
-
-                return;
+                this.assignFrontEndValidationErrors(v$.value.$errors);
+                return false;
             }
 
             try {
                 const response = await axios.post(`/api/users/update/${id}`, data);
-                fireToast("success", 'User created successfully.');
-                this.router.push('/users');
+                return true;
             } catch (error) {
-                let errors = error.response?.data?.errors || {};
-                const mergedErrors = _.flatten(_.values(errors)).join(' ');
-                this.errors = errors;
-
-                fireToast("error", mergedErrors);
+                this.errors = error.response?.data?.errors || {};
+                return false;
             }
         },
         async getUser(data) {
@@ -76,11 +59,17 @@ export const useUserStore = defineStore('user-store', {
         async getUsers(data) {
 
         },
+        assignFrontEndValidationErrors(errors) {
+            for (const key in errors) {
+                let field = errors[key].$property;
+                this.errors[field] = [errors[key].$message];
+            }
+        },
         resetErrors() {
             this.errors = {};
         },
         cleanErrors(field) {
             this.errors[field] = null
-        }
+        },
     },
 });

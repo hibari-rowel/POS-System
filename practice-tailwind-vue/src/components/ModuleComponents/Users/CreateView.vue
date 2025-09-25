@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
+import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user.js";
-import { helpers, required, email } from "@vuelidate/validators";
+import { helpers, required, email, sameAs, minLength } from "@vuelidate/validators";
+import Swal from 'sweetalert2';
+import { fireToast } from "@/lib/toast";
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
@@ -13,6 +16,9 @@ import DropdownField from '@/components/FieldComponents/DropdownField.vue';
 import UserRoleDropdownList from '@/lib/dropdowns/UserRoleDropdownList';
 import UserStatusDropdownList from '@/lib/dropdowns/UserStatusDropdownList';
 
+import { createUserValidation } from '@/lib/validations/CreateUserValidation';
+
+const router = useRouter();
 const userStore = useUserStore();
 
 const header = { 
@@ -22,6 +28,8 @@ const header = {
         {name: "Create",},
     ],
 };
+
+const rules = computed(() => createUserValidation(form));
 
 const form = reactive({
     first_name: '',
@@ -34,36 +42,38 @@ const form = reactive({
     confirm_password: '',
 });
 
-const rules = computed(() => ({
-    first_name: {
-        required: helpers.withMessage("First Name is required", required),
-    },
-    middle_name: {
-        required: helpers.withMessage("Middle Name is required", required),
-    },
-    last_name: {
-        required: helpers.withMessage("Last Name is required", required),
-    },
-    role: {
-        required: helpers.withMessage("Role is required", required),
-    },
-    status: {
-        required: helpers.withMessage("Active Status is required", required),
-    },
-    email: {
-        required: helpers.withMessage("Email is required", required),
-        email: helpers.withMessage("Please enter a valid Email", email)
-    },
-    password: {
-        required: helpers.withMessage("Password is required", required),
-    },
-    confirm_password: {
-        required: helpers.withMessage("Confirm Password is required", required),
-    },
-}));
+const submitForm = async () => {
+    const confirmation = await Swal.fire({
+        icon: "question",
+        title: "Confirmation",
+        text: "Are you sure you want to save this user?",
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        buttonsStyling: false,
+        customClass: {
+            confirmButton: "btn-primary mx-10",
+            cancelButton: "btn-danger mx-10",
+        }
+    });
 
-const submitForm = () => {
-    userStore.createUser(form, rules);
+    if (confirmation.isConfirmed) {
+        Swal.fire({
+            title: 'Saving...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()  
+            }
+        });
+
+        let isSuccessfull = await userStore.createUser(form, rules);
+
+        Swal.close();
+
+        if (isSuccessfull) {
+            fireToast("success", 'User created successfully.');
+            router.push('/users');
+        }
+    }
 };
 
 onBeforeRouteLeave(() => {

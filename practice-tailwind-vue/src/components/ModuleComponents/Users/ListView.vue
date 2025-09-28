@@ -15,7 +15,23 @@ const header = {
 
 const isLoading = ref(false);
 
+const recordsPerPage = ref(5);
+
 const users = ref([
+  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "admin", status: "active" },
+  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "staff", status: "inactive" },
+  { id: 3, name: "Charlie Brown", email: "charlie@example.com", role: "customer", status: "active" },
+  { id: 4, name: "David Lee", email: "david@example.com", role: "staff", status: "active" },
+  { id: 5, name: "Eva Green", email: "eva@example.com", role: "customer", status: "inactive" },
+  { id: 6, name: "Frank Wright", email: "frank@example.com", role: "admin", status: "active" },
+  { id: 7, name: "Grace Hall", email: "grace@example.com", role: "customer", status: "active" },
+  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "admin", status: "active" },
+  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "staff", status: "inactive" },
+  { id: 3, name: "Charlie Brown", email: "charlie@example.com", role: "customer", status: "active" },
+  { id: 4, name: "David Lee", email: "david@example.com", role: "staff", status: "active" },
+  { id: 5, name: "Eva Green", email: "eva@example.com", role: "customer", status: "inactive" },
+  { id: 6, name: "Frank Wright", email: "frank@example.com", role: "admin", status: "active" },
+  { id: 7, name: "Grace Hall", email: "grace@example.com", role: "customer", status: "active" },
   { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "admin", status: "active" },
   { id: 2, name: "Bob Smith", email: "bob@example.com", role: "staff", status: "inactive" },
   { id: 3, name: "Charlie Brown", email: "charlie@example.com", role: "customer", status: "active" },
@@ -39,7 +55,7 @@ const users = ref([
                 </template>
             </Header>
 
-            <div class="flex flex-col h-full mb-2 bg-white rounded-lg shadow">
+            <div class="flex flex-col h-auto mb-2 bg-white rounded-lg shadow">
                 <div class="flex flex-col sm:flex-row items-center sm:justify-between h-auto border-b-2 border-gray-50 p-2 mb-1 shadow-sm">
                     <div class="flex items-center w-full mb-0 sm:max-w-100">
                         <div class="flex items-center p-2 rounded-md w-full gap-2 bg-gray-100 border-1 border-gray-300 hover:border-gray-400 hover:shadow-sm focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out">
@@ -47,6 +63,15 @@ const users = ref([
                                 
                             <input type="text" placeholder="Search Products" class="border-0 outline-none bg-transparent h-full w-full placeholder-gray-400">
                         </div>
+                    </div>
+
+                    <div class="flex items-center justify-center mt-3 sm:mt-0 gap-5">
+                        <span>Entries per Page:</span>
+                        <select v-model="recordsPerPage" class="border-1 border-gray-300 rounded-md p-1 hover:border-gray-400 hover:shadow-sm focus:border-gray-400 focus:shadow-sm transition-all duration-250 ease-in-out">
+                            <option value="5"> 5 </option>
+                            <option value="10"> 10 </option>
+                            <option value="25"> 25 </option>
+                        </select> 
                     </div>
                 </div>
             

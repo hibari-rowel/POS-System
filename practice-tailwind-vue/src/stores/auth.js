@@ -45,6 +45,8 @@ export const useAuthStore = defineStore('auth-store', {
                 this.errors = errors;
 
                 fireToast("error", mergedErrors);
+
+                this.is_loading = false;
             }
 
             this.is_loading = false;

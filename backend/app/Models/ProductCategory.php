@@ -32,4 +32,20 @@ class ProductCategory extends Model
     protected $appends = [
 
     ];
+
+    public static function getFieldValidations($params): array
+    {
+        return [
+            'name' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10048'],
+        ];
+    }
+
+    public static function getValidationMessages()
+    {
+        return [
+
+        ];
+    }
 }

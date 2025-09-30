@@ -25,7 +25,22 @@ class UserController extends Controller
      */
     public function getList(Request $request)
     {
-        //
+        $params = $request->only(['start', 'records_per_page', 'search']);
+
+        try {
+            list($data, $total) = $this->service->getDTList($params);
+
+            return response()->json(['data' => $data, 'total_records' => $total], 200);
+        } catch (\Exception $e) {
+            Log::error('[User][store]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[User][store]: ' . $e->getMessage());
+            Log::error('[User][store]: ' . $e->getLine());
+
+            return response()->json([
+                'data' => null,
+                'message' => 'Something went wrong. Please contact support for assistance.'
+            ], 500);
+        }
     }
 
     /**
@@ -100,6 +115,26 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        Gate::authorize('destroy', $user);
+
+        try {
+            DB::beginTransaction();
+            $user->delete();
+            DB::commit();
+
+            return response()->json([
+                'message' => 'User record successfully deleted'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            \Log::error('[User][destroy]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            \Log::error('[User][destroy]: ' . $e->getMessage());
+            \Log::error('[User][destroy]: ' . $e->getLine());
+
+            return response()->json([
+                'message' => 'Something went wrong. Please contact support for assistance.'
+            ], 500);
+        }
     }
 }

@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import _ from 'lodash';
+import { ref, computed, reactive, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import _ from 'lodash';
+import Swal from 'sweetalert2';
+import { fireToast } from "@/lib/toast";
+import { useUserStore } from "@/stores/user.js";
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
 
+const router = useRouter();
+const userStore = useUserStore();
 const header = { 
     title: 'Users',
     bread_crumbs: [
@@ -13,35 +18,96 @@ const header = {
     ],
 };
 
+let searchTimeout : ReturnType<typeof setTimeout>;
 const isLoading = ref(false);
-
+const searchQuery = ref("");
 const recordsPerPage = ref(5);
+const currentPage = ref(1);
+const startIndex = ref(0);
+const endIndex = computed(() => {
+    let end = startIndex.value + recordsPerPage.value;
 
-const users = ref([
-  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "admin", status: "active" },
-  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "staff", status: "inactive" },
-  { id: 3, name: "Charlie Brown", email: "charlie@example.com", role: "customer", status: "active" },
-  { id: 4, name: "David Lee", email: "david@example.com", role: "staff", status: "active" },
-  { id: 5, name: "Eva Green", email: "eva@example.com", role: "customer", status: "inactive" },
-  { id: 6, name: "Frank Wright", email: "frank@example.com", role: "admin", status: "active" },
-  { id: 7, name: "Grace Hall", email: "grace@example.com", role: "customer", status: "active" },
-  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "admin", status: "active" },
-  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "staff", status: "inactive" },
-  { id: 3, name: "Charlie Brown", email: "charlie@example.com", role: "customer", status: "active" },
-  { id: 4, name: "David Lee", email: "david@example.com", role: "staff", status: "active" },
-  { id: 5, name: "Eva Green", email: "eva@example.com", role: "customer", status: "inactive" },
-  { id: 6, name: "Frank Wright", email: "frank@example.com", role: "admin", status: "active" },
-  { id: 7, name: "Grace Hall", email: "grace@example.com", role: "customer", status: "active" },
-  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "admin", status: "active" },
-  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "staff", status: "inactive" },
-  { id: 3, name: "Charlie Brown", email: "charlie@example.com", role: "customer", status: "active" },
-  { id: 4, name: "David Lee", email: "david@example.com", role: "staff", status: "active" },
-  { id: 5, name: "Eva Green", email: "eva@example.com", role: "customer", status: "inactive" },
-  { id: 6, name: "Frank Wright", email: "frank@example.com", role: "admin", status: "active" },
-  { id: 7, name: "Grace Hall", email: "grace@example.com", role: "customer", status: "active" },
-]);
+    return (end > userStore.total_records) ? userStore.total_records : end;
+});
 
+const totalPages = computed(() => {
+    return Math.ceil(userStore.total_records / recordsPerPage.value);
+});
 
+function clickPaginationNavigation(offset: number) {
+    startIndex.value += offset; 
+    currentPage.value = Math.ceil((startIndex.value + 1) / recordsPerPage.value);
+    
+    fetchUsers();
+}
+
+async function fetchUsers() {
+    isLoading.value = true;
+
+    await userStore.getUsers({
+        start: startIndex.value,
+        records_per_page: recordsPerPage.value,
+        search: searchQuery.value,
+    });
+
+    isLoading.value = false;
+}
+
+const deleteUser = async (userId) => {
+    const confirmation = await Swal.fire({
+        icon: "question",
+        title: "Confirmation",
+        text: "Are you sure you delete this user?",
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        buttonsStyling: false,
+        customClass: {
+            confirmButton: "btn-primary mx-10",
+            cancelButton: "btn-danger mx-10",
+        }
+    });
+    
+    if (confirmation.isConfirmed) {
+        Swal.fire({
+            title: 'Deleting...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()  
+            }
+        });
+
+        let isSuccessfull = await userStore.deleteUser(userId);
+
+        Swal.close();
+
+        if (isSuccessfull) {
+            fireToast("success", 'User deleted successfully.');
+            await fetchUsers();
+        }
+    }
+};
+
+watch(recordsPerPage, async () => {
+    startIndex.value = 0;
+    currentPage.value = 1;
+
+    await fetchUsers();
+});
+
+watch(searchQuery, async () => {
+    clearTimeout(searchTimeout);
+
+    searchTimeout = setTimeout(async () => {
+        startIndex.value = 0;
+        currentPage.value = 1;
+
+        await fetchUsers();
+    }, 300);
+});
+
+onMounted(async () => {
+    await fetchUsers();
+});
 </script>
 
 <template>
@@ -60,17 +126,17 @@ const users = ref([
                     <div class="flex items-center w-full mb-0 sm:max-w-100">
                         <div class="flex items-center p-2 rounded-md w-full gap-2 bg-gray-100 border-1 border-gray-300 hover:border-gray-400 hover:shadow-sm focus-within:border-gray-400 focus-within:shadow-sm transition-all duration-250 ease-in-out">
                             <img src="/icons/search.svg" class="p-0 h-full" alt="">
-                                
-                            <input type="text" placeholder="Search Products" class="border-0 outline-none bg-transparent h-full w-full placeholder-gray-400">
+
+                            <input type="text" class="border-0 outline-none bg-transparent h-full w-full placeholder-gray-400" placeholder="Search User" v-model="searchQuery" />
                         </div>
                     </div>
 
                     <div class="flex items-center justify-center mt-3 sm:mt-0 gap-5">
                         <span>Entries per Page:</span>
                         <select v-model="recordsPerPage" class="border-1 border-gray-300 rounded-md p-1 hover:border-gray-400 hover:shadow-sm focus:border-gray-400 focus:shadow-sm transition-all duration-250 ease-in-out">
-                            <option value="5"> 5 </option>
-                            <option value="10"> 10 </option>
-                            <option value="25"> 25 </option>
+                            <option :value="5"> 5 </option>
+                            <option :value="10"> 10 </option>
+                            <option :value="15"> 15 </option>
                         </select> 
                     </div>
                 </div>
@@ -97,7 +163,7 @@ const users = ref([
                             </tr>
                         </tbody>
 
-                        <tbody v-else-if="_.isEmpty(users)">
+                        <tbody v-else-if="_.isEmpty(userStore.users)">
                             <tr class="border-b-1 border-gray-200 hover:bg-gray-50 transition">
                                 <td class="px-6 py-3 text-center items-center justify-center w-full text-base font-bold" colspan="5">
                                     No Users Found.
@@ -106,13 +172,13 @@ const users = ref([
                         </tbody>
 
                         <tbody v-else>
-                            <tr v-for="user in users" :key="user.id" class="border-b-1 border-gray-200 hover:bg-gray-50 transition">
+                            <tr v-for="user in userStore.users" :key="user.id" class="border-b-1 border-gray-200 hover:bg-gray-50 transition">
                                 <td class="flex flex-col sm:flex-row gap-2 px-6 py-3 items-center">
-                                    <button class="btn-primary w-8 h-8 p-1">
+                                    <router-link :to="`/users/edit/${user.id}`" class="btn-primary w-8 h-8 p-1">
                                         <img src="/icons/edit.svg" class="p-0 h-[95%] w-[95%]" alt="">
-                                    </button>
+                                    </router-link>
 
-                                    <button class="btn-danger w-8 h-8 p-1">
+                                    <button class="btn-danger w-8 h-8 p-1" @click="deleteUser(user.id)">
                                         <img src="/icons/delete.svg" class="p-0 h-[95%] w-[95%]" alt="">
                                     </button>
                                 </td>
@@ -123,6 +189,22 @@ const users = ref([
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center sm:justify-between h-full w-full p-4">
+                    <span class="text-gray-600">Showing {{ startIndex + 1 }} to {{ endIndex }} of {{ userStore.total_records }} entries</span>
+                    
+                    <div class="flex flex-row items-center gap-2">
+                        <button class="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed" @click="clickPaginationNavigation(-recordsPerPage)" :disabled="currentPage === 1">
+                            Prev
+                        </button>
+
+                        {{ currentPage }} / {{ totalPages }}
+
+                        <button class="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed" @click="clickPaginationNavigation(recordsPerPage)" :disabled="currentPage === totalPages">
+                            Next
+                        </button>
+                    </div>
                 </div>
             </div>
         </template>

@@ -8,6 +8,8 @@ export const useUserStore = defineStore('user-store', {
         user: null,
         users: {},
         errors: {},
+        is_loading: false,
+        total_records: 0,
     }),
 
     getters: {
@@ -57,7 +59,24 @@ export const useUserStore = defineStore('user-store', {
 
         },
         async getUsers(data) {
-
+            try {
+                const response = await axios.post('/api/users/get_list', data);
+                let responseData = response.data;
+                this.users = responseData.data;
+                this.total_records = responseData.total_records;
+            } catch (error) {
+                console.error("Error fetching users:", error.response.data.message);
+                this.users = {};
+            }
+        },
+        async deleteUser(id) {
+            try {
+                await axios.delete(`/api/users/destroy/${id}`);
+                return true;
+            } catch (error) {
+                console.error("Error deleting user:", error.response.data.message);
+                return false;
+            }
         },
         assignFrontEndValidationErrors(errors) {
             for (const key in errors) {

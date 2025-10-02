@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, computed } from 'vue';
+import { reactive, computed, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user.js";
@@ -12,6 +12,7 @@ import Header from '@/components/BaseComponents/Header.vue';
 import TextField from '@/components/FieldComponents/TextField.vue';
 import PasswordField from '@/components/FieldComponents/PasswordField.vue';
 import DropdownField from '@/components/FieldComponents/DropdownField.vue';
+import ModalField from '@/components/FieldComponents/ModalField.vue';
 
 import UserRoleDropdownList from '@/lib/dropdowns/UserRoleDropdownList';
 import UserStatusDropdownList from '@/lib/dropdowns/UserStatusDropdownList';
@@ -20,6 +21,7 @@ import { createUserValidation } from '@/lib/validations/CreateUserValidation';
 
 const router = useRouter();
 const userStore = useUserStore();
+const isModalOpen = ref(false);
 
 const header = { 
     title: 'Users',
@@ -79,6 +81,10 @@ const submitForm = async () => {
 onBeforeRouteLeave(() => {
     userStore.resetErrors();
 });
+
+const toggleModal = (isOpen: boolean) => {
+    isModalOpen.value = isOpen;
+};
 </script>
 
 <template>
@@ -96,7 +102,33 @@ onBeforeRouteLeave(() => {
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 h-full mb-2 bg-gray-100 rounded-lg">
                 <div class="bg-white md:col-span-1 rounded-lg shadow p-5">
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" @click="toggleModal(true)">
+                        Open Modal
+                    </button>
 
+                    <ModalField :show="isModalOpen" :size="'max-w-4xl'">
+                        <template v-slot:modal-content>
+                            <div class="modal-header">
+                                <h2 class="font-semibold text-xl"> Modal Title </h2>
+                            
+                                <button @click="toggleModal(false)" class="text-red-400 hover:text-red-600 font-extrabold text-xl cursor-pointer">
+                                    &times;
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>This is the content of the modal.</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="flex flex-row gap-3">
+                                    <button class="btn-danger" @click="toggleModal(false)"> Close </button>
+
+                                    <button class="btn-primary"> Save </button>
+                                </div>
+                            </div>
+                        </template>
+                    </ModalField>
                 </div>
 
                 <div class="flex flex-col gap-1 md:gap-3 bg-white md:col-span-3 rounded-lg shadow p-5">

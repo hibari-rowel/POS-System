@@ -53,7 +53,7 @@ async function fetchUsers() {
     isLoading.value = false;
 }
 
-const deleteUser = async (userId) => {
+const deleteUser = async (userId: string) => {
     const confirmation = await Swal.fire({
         icon: "question",
         title: "Confirmation",

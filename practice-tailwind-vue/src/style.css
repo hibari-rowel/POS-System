@@ -70,11 +70,11 @@
     }
 
     .btn-primary {
-        @apply flex w-18 bg-blue-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold
+        @apply flex w-auto bg-blue-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold
     }
 
     .btn-danger {
-        @apply flex w-18 bg-red-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold
+        @apply flex w-auto bg-red-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold
     }
 
     .form-label {
@@ -112,5 +112,22 @@
 
     .dropdown-default {
         @apply ring-gray-500 ring-2 border-gray-500 shadow-sm rounded-md
+    }
+
+    .modal-container-bg {
+        @apply fixed inset-0 flex items-center justify-center bg-black/50 z-50
+    }
+
+    .modal-header {
+        @apply flex flex-row h-auto justify-between items-center border-b-2 border-gray-50 shadow-sm p-2
+    }
+
+    .modal-footer {
+        @apply flex flex-row h-auto justify-end items-center border-t-2 border-gray-50 p-2;
+        box-shadow: 0 -2px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-body {
+        @apply h-auto p-2
     }
 }

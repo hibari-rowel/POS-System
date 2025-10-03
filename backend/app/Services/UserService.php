@@ -2,17 +2,22 @@
 
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserService extends BaseRepository implements ServiceInterface
 {
+    CONST PROFILE_IMAGE_BASE_PATH = "uploads/users/profile_image/";
 
     public function createRecord($data, $model)
     {
         $data['created_by'] = $this->user->id;
         $data['updated_by'] = $this->user->id;
+
+        $this->getImageParams($data);
 
         return $this->save($data, $model);
     }
@@ -21,7 +26,29 @@ class UserService extends BaseRepository implements ServiceInterface
     {
         $data['updated_by'] = $this->user->id;
 
+        $this->getImageParams($data);
+
         return $this->save($data, $model);
+    }
+
+    public function afterSave($data, $model)
+    {
+        $image = !empty($data['image']) ? $data['image'] : null;
+        if (!empty($image) && $image instanceof UploadedFile && $image->isValid()) {
+            $filename = $data['image_name'] . '.' . $data['image_extension'];
+            Storage::disk('public')->putFileAs(self::PROFILE_IMAGE_BASE_PATH, $image, $filename);
+        }
+
+        if (!empty($this->dirtyValues['image_name']) && !empty($this->dirtyValues['image_extension'])) {
+            $oldFilename = $this->dirtyValues['image_name'] . '.' . $this->dirtyValues['image_extension'];
+            if (!$model->wasRecentlyCreated
+                && in_array('image_name', $this->dirtyKeyValues)
+                && in_array('image_extension', $this->dirtyKeyValues)
+                && Storage::disk('public')->exists(self::PROFILE_IMAGE_BASE_PATH . $oldFilename)
+            ) {
+                Storage::disk('public')->delete(self::PROFILE_IMAGE_BASE_PATH . $oldFilename);
+            }
+        }
     }
 
     public function getDTList($params)

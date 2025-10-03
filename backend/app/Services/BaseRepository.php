@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class BaseRepository
 {
@@ -60,5 +62,17 @@ class BaseRepository
         }
 
         return $params;
+    }
+
+    public function getImageParams(&$data)
+    {
+        $image = !empty($data['image']) ? $data['image'] : null;
+        if (!empty($image) && $image instanceof UploadedFile && $image->isValid()) {
+            $newFilename = Str::uuid();
+            $data['image_name'] = $newFilename;
+            $data['original_image_name'] = $image->getClientOriginalName();
+            $data['image_extension'] = $image->getClientOriginalExtension();
+            $data['image_mime_type'] = $image->getClientMimeType();
+        }
     }
 }

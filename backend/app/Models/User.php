@@ -89,7 +89,7 @@ class User extends Authenticatable
             'last_name' => ['required', 'string'],
             'role' => ['required', new Enum(UserRoleEnum::class)],
             'status' => ['required', new Enum(UserStatusEnum::class)],
-            'email' => ['required', 'email', Rule::unique('users')->ignore($userID)],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($userID)->whereNull('deleted_at')],
             'password' => ['required', 'string', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
             'confirm_password' => ['required', 'same:password'],
             'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10048'],

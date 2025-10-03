@@ -13,6 +13,7 @@ import TextField from '@/components/FieldComponents/TextField.vue';
 import PasswordField from '@/components/FieldComponents/PasswordField.vue';
 import DropdownField from '@/components/FieldComponents/DropdownField.vue';
 import ModalField from '@/components/FieldComponents/ModalField.vue';
+import ImageUploadField from '@/components/FieldComponents/ImageUploadField.vue';
 
 import UserRoleDropdownList from '@/lib/dropdowns/UserRoleDropdownList';
 import UserStatusDropdownList from '@/lib/dropdowns/UserStatusDropdownList';
@@ -100,9 +101,11 @@ const toggleModal = (isOpen: boolean) => {
                 </template>
             </Header>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 h-full mb-2 bg-gray-100 rounded-lg">
-                <div class="bg-white md:col-span-1 rounded-lg shadow p-5">
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" @click="toggleModal(true)">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 h-full mb-2 bg-gray-100 rounded-lg">
+                <div class="bg-white md:col-span-1 rounded-lg shadow p-5 h-fit">
+                    <ImageUploadField :label="'Profile Picture'" :size="'h-75'" :is_required="false" :errors="[]"/>
+
+                    <!-- <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer" @click="toggleModal(true)">
                         Open Modal
                     </button>
 
@@ -128,10 +131,10 @@ const toggleModal = (isOpen: boolean) => {
                                 </div>
                             </div>
                         </template>
-                    </ModalField>
+                    </ModalField> -->
                 </div>
 
-                <div class="flex flex-col gap-1 md:gap-3 bg-white md:col-span-3 rounded-lg shadow p-5">
+                <div class="flex flex-col gap-1 md:gap-3 bg-white md:col-span-4 rounded-lg shadow p-5">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-5">
                         <TextField :id="'first_name'" :label="'First Name'" :placeholder="'Enter First Name'" :is_required="true" 
                                    :is_disabled="false" v-model="form.first_name" :errors="userStore.errors.first_name"

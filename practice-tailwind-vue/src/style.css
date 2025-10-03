@@ -70,11 +70,11 @@
     }
 
     .btn-primary {
-        @apply flex w-auto bg-blue-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold
+        @apply flex w-auto bg-blue-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold active:bg-blue-600 active:shadow-sm transition-all duration-300 ease-in-out;
     }
 
     .btn-danger {
-        @apply flex w-auto bg-red-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold
+        @apply flex w-auto bg-red-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold active:bg-red-600 active:shadow-sm transition-all duration-300 ease-in-out;
     }
 
     .form-label {
@@ -129,5 +129,13 @@
 
     .modal-body {
         @apply h-auto p-2
+    }
+
+    .upload-image-container {
+        @apply flex items-center justify-center bg-gray-50 hover:bg-gray-300 p-3 rounded-sm transition-all duration-300 ease-in-out cursor-pointer
+    }
+
+    .upload-image-button {
+        @apply flex items-center w-fit h-fit p-2 justify-center rounded-full cursor-pointer bg-gray-50 opacity-0 border-transparent border-2 active:bg-gray-300 active:border-gray-500 transition-all duration-300 ease-in-out
     }
 }

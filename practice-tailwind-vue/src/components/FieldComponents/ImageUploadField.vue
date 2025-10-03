@@ -15,11 +15,9 @@ const props = defineProps({
 const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
     const file = target.files ? target.files[0] : null;
-    if (file) {
-        previewImage.value = URL.createObjectURL(file);
-    } else {
-        previewImage.value = defaultImage;
-    }
+    model.value = file;
+
+    previewImage.value = (file) ? URL.createObjectURL(file) : defaultImage;
 };
 </script>
 

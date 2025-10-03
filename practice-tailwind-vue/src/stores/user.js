@@ -29,7 +29,10 @@ export const useUserStore = defineStore('user-store', {
             }
 
             try {
-                const response = await axios.post('/api/users/create', data);
+                const response = await axios.post('/api/users/create', data, {
+                    headers: { "Content-Type": "multipart/form-data", },
+                });
+
                 return true;
             } catch (error) {
                 this.errors = error.response?.data?.errors || {};

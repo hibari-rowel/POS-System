@@ -43,6 +43,7 @@ const form = reactive({
     email: '',
     password: '',
     confirm_password: '',
+    image: null,
 });
 
 const submitForm = async () => {
@@ -67,6 +68,8 @@ const submitForm = async () => {
                 Swal.showLoading()  
             }
         });
+
+        console.log(form);
 
         let isSuccessfull = await userStore.createUser(form, rules);
 
@@ -103,7 +106,7 @@ const toggleModal = (isOpen: boolean) => {
 
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4 h-full mb-2 bg-gray-100 rounded-lg">
                 <div class="bg-white md:col-span-1 rounded-lg shadow p-5 h-fit">
-                    <ImageUploadField :label="'Profile Picture'" :size="'h-75'" :is_required="false" :errors="[]"/>
+                    <ImageUploadField :label="'Profile Picture'" :size="'h-75'" :is_required="false" :errors="userStore.errors.image" v-model="form.image"/>
 
                     <!-- <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer" @click="toggleModal(true)">
                         Open Modal

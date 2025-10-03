@@ -20,6 +20,18 @@ const hasSymbol = helpers.withMessage(
     value => /[^A-Za-z0-9]/.test(value)
 )
 
+const maxSize = (sizeKb: number) =>
+    helpers.withMessage(
+        `File size must be less than ${sizeKb}KB`,
+        (value: File | null) => !value || value.size / 1024 <= sizeKb
+    );
+
+const allowedTypes = (types: string[]) =>
+    helpers.withMessage(
+        `Only ${types.join(", ")} files are allowed`,
+        (value: File | null) => !value || types.includes(value.type)
+    );
+
 export function createUserValidation(form) {
     return {
         first_name: {
@@ -53,5 +65,9 @@ export function createUserValidation(form) {
             required: helpers.withMessage("Confirm Password is required", required),
             sameAsPassword: helpers.withMessage("Confirm Password doesn't match with Password", sameAs(form.password))
         },
+        image: {
+            maxSize: maxSize(10048), // 10048KB = 10MB
+            allowedTypes: allowedTypes(['image/jpg', 'image/jpeg', 'image/png', 'image/gif']),
+        }
     }
 }

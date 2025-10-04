@@ -3,7 +3,6 @@ import { reactive, computed, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user.js";
-import { helpers, required, email, sameAs, minLength } from "@vuelidate/validators";
 import Swal from 'sweetalert2';
 import { fireToast } from "@/lib/toast";
 

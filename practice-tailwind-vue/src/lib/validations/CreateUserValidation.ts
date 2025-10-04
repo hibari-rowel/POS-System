@@ -1,4 +1,5 @@
 import { helpers, required, email, sameAs, minLength } from "@vuelidate/validators";
+import _ from 'lodash';
 
 const hasLetter = helpers.withMessage(
     'Password must contain at least one letter',
@@ -33,7 +34,7 @@ const allowedTypes = (types: string[]) =>
     );
 
 export function createUserValidation(form) {
-    return {
+    let rules = {
         first_name: {
             required: helpers.withMessage("First Name is required", required),
         },
@@ -53,21 +54,29 @@ export function createUserValidation(form) {
             required: helpers.withMessage("Email is required", required),
             email: helpers.withMessage("Please enter a valid Email", email)
         },
-        password: {
+        image: {
+            maxSize: maxSize(10048), // 10048KB = 10MB
+            allowedTypes: allowedTypes(['image/jpg', 'image/jpeg', 'image/png', 'image/gif']),
+        }
+    };
+
+    if (_.has(form, 'password')) {
+        rules.password = {
             required: helpers.withMessage("Password is required", required),
             minLength: helpers.withMessage("Password must be at least 8 characters.", minLength(8)),
             hasLetter,
             hasMixedCase,
             hasNumber,
             hasSymbol,
-        },
-        confirm_password: {
+        };
+    }
+
+    if (_.has(form, 'confirm_password')) {
+        rules.confirm_password = {
             required: helpers.withMessage("Confirm Password is required", required),
             sameAsPassword: helpers.withMessage("Confirm Password doesn't match with Password", sameAs(form.password))
-        },
-        image: {
-            maxSize: maxSize(10048), // 10048KB = 10MB
-            allowedTypes: allowedTypes(['image/jpg', 'image/jpeg', 'image/png', 'image/gif']),
-        }
+        };
     }
+
+    return rules;
 }

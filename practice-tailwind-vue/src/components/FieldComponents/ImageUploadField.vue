@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import _ from 'lodash';
 
 const defaultImage = '/icons/default_profile.svg';
@@ -16,9 +16,17 @@ const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
     const file = target.files ? target.files[0] : null;
     model.value = file;
-
-    previewImage.value = (file) ? URL.createObjectURL(file) : defaultImage;
 };
+
+watch(model, (newVal) => {
+    if (typeof newVal === 'string' && newVal !== '') {
+        previewImage.value = newVal;
+    } else if (newVal instanceof File) {
+        previewImage.value = URL.createObjectURL(newVal);
+    } else {
+        previewImage.value = defaultImage;
+    }
+}, { immediate: true });
 </script>
 
 <template>

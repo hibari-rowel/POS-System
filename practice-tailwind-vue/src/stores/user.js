@@ -5,7 +5,7 @@ import useVuelidate from "@vuelidate/core"
 
 export const useUserStore = defineStore('user-store', {
     state: () => ({
-        user: null,
+        user: {},
         users: {},
         errors: {},
         is_loading: false,
@@ -41,25 +41,49 @@ export const useUserStore = defineStore('user-store', {
         },
         async updateUser(data, rules, id) {
             this.resetErrors();
+            if (!(data.image instanceof File)) {
+                data.image = null;
+            }
 
             const v$ = useVuelidate(rules, data);
             v$.value.$touch();
-
             if (v$.value.$invalid) {
                 this.assignFrontEndValidationErrors(v$.value.$errors);
                 return false;
             }
 
             try {
-                const response = await axios.post(`/api/users/update/${id}`, data);
+                const formData = new FormData();
+                formData.append('user_id', id);
+                formData.append('_method', "PUT");
+                for (const key in data) {
+                    if (key === 'image' && !(data[key] instanceof File)) {
+                        continue;
+                    }
+
+                    if (data[key] !== null && data[key] !== undefined) {
+                        formData.append(key, data[key]);
+                    }
+                }
+
+                const response = await axios.post(`/api/users/update/${id}`, formData, {
+                    headers: { "Content-Type": "multipart/form-data", },
+                });
+
                 return true;
             } catch (error) {
                 this.errors = error.response?.data?.errors || {};
                 return false;
             }
         },
-        async getUser(data) {
-
+        async getUser(id) {
+            try {
+                const response = await axios.get(`/api/users/get/${id}`);
+                return response.data.user;
+            } catch (error) {
+                console.error("Error fetching user:", error.response.data.message);
+                return null;
+            }
         },
         async getUsers(data) {
             try {

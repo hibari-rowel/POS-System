@@ -12,6 +12,10 @@ class BaseRepository
 
     public array $dirtyKeyValues = [];
 
+    public array $oldValues = [];
+
+    public array $oldKeyValues = [];
+
     public $user;
 
     public function __construct()
@@ -27,6 +31,9 @@ class BaseRepository
 
         $this->dirtyValues = $model->getDirty();
         $this->dirtyKeyValues = array_keys($this->dirtyValues);
+
+        $this->oldValues = $model->getOriginal();
+        $this->oldKeyValues = array_keys($this->oldValues);
 
         $model = $this->afterModelFill($data, $model);
         if ($model->save()) {

@@ -20,9 +20,6 @@ class UserController extends Controller
         $this->service = $userService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function getList(Request $request)
     {
         $params = $request->only(['start', 'records_per_page', 'search']);
@@ -43,17 +40,11 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function get(User $user)
     {
-        //
+        return response()->json(['user' => $user]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreUserRequest $request)
     {
         $user = new User();
@@ -81,9 +72,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateUserRequest $request, User $user)
     {
         Gate::authorize('update', $user);
@@ -110,9 +98,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(User $user)
     {
         Gate::authorize('destroy', $user);

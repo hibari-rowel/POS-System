@@ -7,6 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
 {
+    private $excludedFields = [
+        'confirm_password',
+        'password',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -22,7 +27,14 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return User::getFieldValidations(request()->all());
+        $rules = User::getFieldValidations(request()->all());
+        foreach ($this->excludedFields as $field) {
+            if (array_key_exists($field, $rules)) {
+                unset($rules[$field]);
+            }
+        }
+
+        return $rules;
     }
 
     public function messages(): array

@@ -42,8 +42,8 @@ class UserService extends BaseRepository implements ServiceInterface
         if (!empty($this->dirtyValues['image_name']) && !empty($this->dirtyValues['image_extension'])) {
             $oldFilename = $this->oldValues['image_name'] . '.' . $this->oldValues['image_extension'];
             if (!$model->wasRecentlyCreated
-                && in_array('image_name', $this->oldKeyValues)
-                && in_array('image_extension', $this->oldKeyValues)
+                && in_array('image_name', $this->dirtyKeyValues)
+                && in_array('image_extension', $this->dirtyKeyValues)
                 && Storage::disk('public')->exists(self::PROFILE_IMAGE_BASE_PATH . $oldFilename)
             ) {
                 Storage::disk('public')->delete(self::PROFILE_IMAGE_BASE_PATH . $oldFilename);

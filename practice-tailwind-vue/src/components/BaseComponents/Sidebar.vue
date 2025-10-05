@@ -45,7 +45,7 @@
         <nav class="flex flex-col h-full gap-1 md:gap-2 overflow-x-hidden">
             <router-link :to="'/dashboard'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/remove.svg" alt="">
+                    <img src="/icons/dashboard.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
@@ -55,7 +55,7 @@
 
             <router-link :to="'/sales'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/remove.svg" alt="">
+                    <img src="/icons/sales.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
@@ -65,7 +65,7 @@
 
             <router-link :to="'/sales-history'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/remove.svg" alt="">
+                    <img src="/icons/history.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
@@ -75,7 +75,7 @@
 
             <router-link :to="'/reports'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/remove.svg" alt="">
+                    <img src="/icons/report.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
@@ -85,7 +85,7 @@
 
             <router-link :to="'/product-categories'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/remove.svg" alt="">
+                    <img src="/icons/category.svg" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
@@ -95,7 +95,7 @@
 
             <router-link :to="'/products'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/remove.svg" alt="">
+                    <img src="/icons/product.svg" alt="" class="object-cover rounded-full">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
@@ -105,7 +105,7 @@
 
             <router-link :to="'/users'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/remove.svg" alt="">
+                    <img src="/icons/user.svg" alt="" class="object-cover rounded-full">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">

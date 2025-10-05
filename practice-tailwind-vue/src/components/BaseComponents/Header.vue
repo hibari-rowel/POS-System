@@ -13,7 +13,7 @@ defineProps({
             <slot name="right-side"></slot>
         </div>
 
-        <nav class="bread-crumb">
+        <nav class="bread-crumb" v-if="!_.isEmpty(header?.bread_crumbs)">
             <ol class="bread-crumb-list">
                 <li class="bread-crumb-list-item">
                     <router-link :to="'/dashboard'" class="flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">

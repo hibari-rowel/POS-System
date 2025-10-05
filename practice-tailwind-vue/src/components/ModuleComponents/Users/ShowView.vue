@@ -18,15 +18,7 @@ const header = {
 <template>
     <Base>
         <template v-slot:main-content>
-            <Header :header="header">
-                <template v-slot:right-side>
-                    <div class="flex items-center gap-1">
-                        <router-link :to="'/users'" class="btn-danger"> Cancel </router-link>
-                        <router-link :to="'/users/edit/' + recordID" class="btn-primary"> Edit </router-link>
-                    </div>
-                </template>
-            </Header>
-
+            <div class="h-fit py-4 mb-2 bg-white rounded-lg shadow">02</div>
             <div class="h-full py-4 mb-2 bg-white rounded-lg shadow">02</div>
         </template>
     </Base>

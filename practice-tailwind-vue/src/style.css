@@ -2,11 +2,11 @@
 
 @layer components {
     .base-container {
-        @apply flex flex-col h-screen w-full overflow-hidden bg-gray-100 md:flex-row;
+        @apply flex flex-col h-screen w-full overflow-hidden bg-gray-100 sm:flex-row;
     }
 
     .sidebar-container {
-        @apply flex flex-col shadow-sm px-0 py-3 transition-all duration-700 ease-in-out bg-white fixed md:static top-0 left-0 h-full z-50;
+        @apply flex flex-col shadow-sm px-0 py-3 transition-all duration-700 ease-in-out bg-white fixed lg:static top-0 left-0 h-full z-50;
     }
 
     .sidebar-link {
@@ -18,7 +18,7 @@
     }
 
     .sidebar-link-label {
-        @apply text-nowrap text-lg font-semibold overflow-x-hidden;
+        @apply text-nowrap text-lg font-bold overflow-x-hidden;
     }
 
     .sidebar-link-active {

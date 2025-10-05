@@ -57,6 +57,7 @@ class User extends Authenticatable
 
     protected $appends = [
         'image',
+        'full_name',
     ];
 
     protected function casts(): array

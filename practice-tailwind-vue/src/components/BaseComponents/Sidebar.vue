@@ -27,9 +27,9 @@
 </script>
 
 <template>
-    <div class="sidebar-container" :class="isOpen ? 'w-65' : 'w-0 md:w-20'">
+    <div class="sidebar-container" :class="isOpen ? 'w-65' : 'w-0 lg:w-20'">
         <div class="relative flex justify-between text-2xl font-bold mb-6 h-16 items-center"> 
-            <div class="flex px-5 gap-4 overflow-hidden transition-opacity duration-300 ease-in-out md:opacity-100" :class="isOpen ? '' : 'opacity-0'"> 
+            <div class="flex px-5 gap-4 overflow-hidden transition-opacity duration-300 ease-in-out lg:opacity-100" :class="isOpen ? '' : 'opacity-0'"> 
                 <div class="h-10 w-10 flex shrink-0 items-center justify-center rounded-full group-hover:shadow-sm bg-gray-200 p-1 overflow-hidden">
                     <img src="/icons/remove.svg" alt="" class="overflow-hidden">
                 </div>

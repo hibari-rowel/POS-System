@@ -5,6 +5,7 @@ import _ from 'lodash';
 import Swal from 'sweetalert2';
 import { fireToast } from "@/lib/toast";
 import { useUserStore } from "@/stores/user.js";
+import DateFormatter from "@/lib/date.ts";
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
@@ -150,6 +151,7 @@ onMounted(async () => {
                                 <th scope="col" class="px-6 py-3"> Email </th>
                                 <th scope="col" class="px-6 py-3"> Role </th>
                                 <th scope="col" class="px-6 py-3"> Status </th>
+                                <th scope="col" class="px-6 py-3"> Created At </th>
                             </tr>
                         </thead>
 
@@ -182,10 +184,15 @@ onMounted(async () => {
                                         <img src="/icons/delete.svg" class="p-0 h-[95%] w-[95%]" alt="">
                                     </button>
                                 </td>
-                                <td class="px-6 py-3 font-medium text-gray-900">{{ user.name }}</td>
+                                <td class="px-6 py-3 font-medium text-gray-900">
+                                    <router-link :to="`/users/show/${user.id}`" class="hover:underline">
+                                        {{ user.name }}
+                                    </router-link>
+                                </td>
                                 <td class="px-6 py-3">{{ user.email }}</td>
                                 <td class="px-6 py-3 capitalize">{{ user.role }}</td>
                                 <td class="px-6 py-3 capitalize">{{ user.status }}</td>
+                                <td class="px-6 py-3 capitalize">{{ DateFormatter.toReadable(user.created_at) }}</td>
                             </tr>
                         </tbody>
                     </table>

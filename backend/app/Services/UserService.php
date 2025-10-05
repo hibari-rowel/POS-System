@@ -39,10 +39,12 @@ class UserService extends BaseRepository implements ServiceInterface
             Storage::disk('public')->putFileAs(self::PROFILE_IMAGE_BASE_PATH, $image, $filename);
         }
 
-        if (!empty($this->dirtyValues['image_name']) && !empty($this->dirtyValues['image_extension'])) {
+        if (!empty($this->dirtyValues['image_name'])
+            && !empty($this->dirtyValues['image_extension'])
+            && !$model->wasRecentlyCreated
+        ) {
             $oldFilename = $this->oldValues['image_name'] . '.' . $this->oldValues['image_extension'];
-            if (!$model->wasRecentlyCreated
-                && in_array('image_name', $this->dirtyKeyValues)
+            if (in_array('image_name', $this->dirtyKeyValues)
                 && in_array('image_extension', $this->dirtyKeyValues)
                 && Storage::disk('public')->exists(self::PROFILE_IMAGE_BASE_PATH . $oldFilename)
             ) {

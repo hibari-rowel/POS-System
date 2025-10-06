@@ -5,7 +5,8 @@ import { useUserStore } from "@/stores/user.js";
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
-import { use } from 'vue/types/umd';
+import Tabs from '@/components/BaseComponents/Tabs.vue';
+import Tab from '@/components/BaseComponents/Tab.vue';
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -75,22 +76,22 @@ onMounted(async () => {
                     </div>
                     
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
-                        <div class="flex flex-col w-full items-start bg-gradient-to-br from-blue-200 to-white shadow-sm rounded-lg p-4 hover:shadow-md transition cursor-pointer ring-2 ring-gray-200">
+                        <div class="flex flex-col w-full items-start bg-gradient-to-br from-blue-200 to-white shadow-sm rounded-lg p-4 hover:shadow-md transition ring-2 ring-gray-200">
                             <h3 class="text-sm font-medium text-gray-500">Attendance</h3>
                             <h2 class="text-2xl font-bold text-blue-600">1</h2>
                         </div>
 
-                        <div class="flex flex-col w-full items-start bg-gradient-to-br from-blue-200 to-white shadow-sm rounded-lg p-4 hover:shadow-md transition cursor-pointer ring-2 ring-gray-200">
+                        <div class="flex flex-col w-full items-start bg-gradient-to-br from-blue-200 to-white shadow-sm rounded-lg p-4 hover:shadow-md transition ring-2 ring-gray-200">
                             <h3 class="text-sm font-medium text-gray-500">Total Sales</h3>
                             <h2 class="text-2xl font-bold text-blue-600">1</h2>
                         </div>
 
-                        <div class="flex flex-col w-full items-start bg-gradient-to-br from-blue-200 to-white shadow-sm rounded-lg p-4 hover:shadow-md transition cursor-pointer ring-2 ring-gray-200">
+                        <div class="flex flex-col w-full items-start bg-gradient-to-br from-blue-200 to-white shadow-sm rounded-lg p-4 hover:shadow-md transition ring-2 ring-gray-200">
                             <h3 class="text-sm font-medium text-gray-500">Avg. Time-In</h3>
                             <h2 class="text-2xl font-bold text-blue-600">1</h2>
                         </div>
 
-                        <div class="flex flex-col w-full items-start bg-gradient-to-br from-blue-200 to-white shadow-sm rounded-lg p-4 hover:shadow-md transition cursor-pointer ring-2 ring-gray-200">
+                        <div class="flex flex-col w-full items-start bg-gradient-to-br from-blue-200 to-white shadow-sm rounded-lg p-4 hover:shadow-md transition ring-2 ring-gray-200">
                             <h3 class="text-sm font-medium text-gray-500">Avg. Time-Out</h3>
                             <h2 class="text-2xl font-bold text-blue-600">1</h2>
                         </div>
@@ -98,8 +99,23 @@ onMounted(async () => {
                 </div>
             </div>
 
-            <div class="h-auto py-4 mb-2 bg-white rounded-lg shadow">
-                tabs here <br>
+            <div class="flex flex-col h-auto py-4 px-2 mb-2 bg-white rounded-lg shadow">
+                <Tabs defaultTab="attendance">
+                    <template #tabs>
+                        <Tab name="attendance" label="Attendance" />
+                        <Tab name="sales" label="Sales" />
+                    </template>
+
+                    <Tab name="attendance" label="Attendance">
+                        <h2 class="text-lg font-semibold">Attendance</h2>
+                        <p>Your profile Attendance go here.</p>
+                    </Tab>
+                    
+                    <Tab name="sales" label="Sales">
+                        <h2 class="text-lg font-semibold">Sales</h2>
+                        <p>Manage your Sales here.</p>
+                    </Tab>
+                </Tabs>
             </div>
         </template>
     </Base>

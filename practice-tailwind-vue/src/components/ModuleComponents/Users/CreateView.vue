@@ -8,10 +8,10 @@ import { fireToast } from "@/lib/toast";
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
+import Modal from '@/components/BaseComponents/Modal.vue';
 import TextField from '@/components/FieldComponents/TextField.vue';
 import PasswordField from '@/components/FieldComponents/PasswordField.vue';
 import DropdownField from '@/components/FieldComponents/DropdownField.vue';
-import ModalField from '@/components/FieldComponents/ModalField.vue';
 import ImageUploadField from '@/components/FieldComponents/ImageUploadField.vue';
 
 import UserRoleDropdownList from '@/lib/dropdowns/UserRoleDropdownList';
@@ -111,7 +111,7 @@ const toggleModal = (isOpen: boolean) => {
                         Open Modal
                     </button>
 
-                    <ModalField :show="isModalOpen" :size="'max-w-4xl'">
+                    <Modal :show="isModalOpen" :size="'max-w-4xl'">
                         <template v-slot:modal-content>
                             <div class="modal-header">
                                 <h2 class="font-semibold text-xl"> Modal Title </h2>
@@ -133,7 +133,7 @@ const toggleModal = (isOpen: boolean) => {
                                 </div>
                             </div>
                         </template>
-                    </ModalField> -->
+                    </Modal> -->
                 </div>
 
                 <div class="flex flex-col gap-1 md:gap-3 bg-white md:col-span-4 rounded-lg shadow p-5">

@@ -7,9 +7,9 @@ import { fireToast } from "@/lib/toast";
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
+import Modal from '@/components/BaseComponents/Modal.vue';
 import TextField from '@/components/FieldComponents/TextField.vue';
 import DropdownField from '@/components/FieldComponents/DropdownField.vue';
-import ModalField from '@/components/FieldComponents/ModalField.vue';
 import ImageUploadField from '@/components/FieldComponents/ImageUploadField.vue';
 
 import UserRoleDropdownList from '@/lib/dropdowns/UserRoleDropdownList';

@@ -103,81 +103,74 @@ const toggleModal = (isOpen: boolean) => {
                 </template>
             </Header>
 
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 h-full mb-2 bg-gray-100 rounded-lg">
-                <div class="bg-white md:col-span-1 rounded-lg shadow p-5 h-fit">
-                    <ImageUploadField :label="'Profile Picture'" :size="'h-75'" :is_required="false" :errors="userStore.errors.image" v-model="form.image"/>
-
-                    <!-- <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer" @click="toggleModal(true)">
-                        Open Modal
-                    </button>
-
-                    <Modal :show="isModalOpen" :size="'max-w-4xl'">
-                        <template v-slot:modal-content>
-                            <div class="modal-header">
-                                <h2 class="font-semibold text-xl"> Modal Title </h2>
-                            
-                                <button @click="toggleModal(false)" class="text-red-400 hover:text-red-600 font-extrabold text-xl cursor-pointer">
-                                    &times;
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-                                <p>This is the content of the modal.</p>
-                            </div>
-
-                            <div class="modal-footer">
-                                <div class="flex flex-row gap-3">
-                                    <button class="btn-danger" @click="toggleModal(false)"> Close </button>
-
-                                    <button class="btn-primary"> Save </button>
-                                </div>
-                            </div>
-                        </template>
-                    </Modal> -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full mb-4 rounded-2xl">
+                <!-- Profile Section -->
+                <div class="bg-white md:col-span-2 xl:col-span-1 rounded-xl shadow-md p-5 flex flex-col items-center justify-start">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 w-full text-center">Profile Picture</h3>
+                    <ImageUploadField :size="'h-72'" :is_required="false" 
+                                      :errors="userStore.errors.image" v-model="form.image"/>
                 </div>
 
-                <div class="flex flex-col gap-1 md:gap-3 bg-white md:col-span-4 rounded-lg shadow p-5">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-5">
-                        <TextField :id="'first_name'" :label="'First Name'" :placeholder="'Enter First Name'" :is_required="true" 
-                                   :is_disabled="false" v-model="form.first_name" :errors="userStore.errors.first_name"
-                                   @clearErrors="userStore.cleanErrors('first_name')"/>
+                <!-- Form Section -->
+                <div class="flex flex-col md:col-span-3 xl:col-span-4 gap-6 bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-2">User Information</h3>
 
-                        <TextField :id="'middle_name'" :label="'Middle Name'" :placeholder="'Enter Middle Name'" :is_required="true" 
-                                   :is_disabled="false" v-model="form.middle_name" :errors="userStore.errors.middle_name"
-                                   @clearErrors="userStore.cleanErrors('middle_name')"/>
+                    <!-- Name Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <TextField id="first_name" label="First Name" placeholder="Enter First Name"
+                            :is_required="true" v-model="form.first_name"
+                            :errors="userStore.errors.first_name"
+                            @clearErrors="userStore.cleanErrors('first_name')" />
 
-                        <TextField :id="'last_name'" :label="'Last Name'" :placeholder="'Enter Last Name'" :is_required="true" 
-                                   :is_disabled="false" v-model="form.last_name" :errors="userStore.errors.last_name"
-                                   @clearErrors="userStore.cleanErrors('last_name')"/>
+                        <TextField id="middle_name" label="Middle Name" placeholder="Enter Middle Name"
+                            :is_required="true" v-model="form.middle_name"
+                            :errors="userStore.errors.middle_name"
+                            @clearErrors="userStore.cleanErrors('middle_name')" />
+
+                        <TextField id="last_name" label="Last Name" placeholder="Enter Last Name"
+                            :is_required="true" v-model="form.last_name"
+                            :errors="userStore.errors.last_name"
+                            @clearErrors="userStore.cleanErrors('last_name')" />
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-1 gap-1 md:gap-5">
-                        <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" 
-                                   :is_disabled="false" v-model="form.email" :errors="userStore.errors.email"
-                                   @clearErrors="userStore.cleanErrors('email')"/>
+                    <!-- Contact Info -->
+                    <div class="grid grid-cols-1 gap-4">
+                        <TextField id="email" label="Email" placeholder="Enter Email"
+                            :is_required="true" v-model="form.email"
+                            :errors="userStore.errors.email"
+                            @clearErrors="userStore.cleanErrors('email')" />
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">
-                        <DropdownField :id="'role'" :label="'Role'" :placeholder="'Select Role'" :is_required="true" :is_disabled="false" 
-                                       :options="UserRoleDropdownList" v-model="form.role" :errors="userStore.errors.role" 
-                                       @clearErrors="userStore.cleanErrors('role')"/>
+                    <!-- Role & Status -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <DropdownField id="role" label="Role" placeholder="Select Role"
+                            :is_required="true" :options="UserRoleDropdownList"
+                            v-model="form.role"
+                            :errors="userStore.errors.role"
+                            @clearErrors="userStore.cleanErrors('role')" />
 
-                        <DropdownField :id="'status'" :label="'Active Status'" :placeholder="'Select Active Status'" :is_required="true" :is_disabled="false" 
-                                       :options="UserStatusDropdownList" v-model="form.status" :errors="userStore.errors.status"
-                                       @clearErrors="userStore.cleanErrors('status')"/>
+                        <DropdownField id="status" label="Active Status" placeholder="Select Active Status"
+                            :is_required="true" :options="UserStatusDropdownList"
+                            v-model="form.status"
+                            :errors="userStore.errors.status"
+                        @clearErrors="userStore.cleanErrors('status')" />
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">
-                        <PasswordField :id="'password'" :label="'Password'" :placeholder="'Enter Password'" :is_required="true" 
-                                       :is_disabled="false" v-model="form.password" :errors="userStore.errors.password"
-                                       @clearErrors="userStore.cleanErrors('password')"/>
-                                       
-                        <PasswordField :id="'confirm_password'" :label="'Confirm Password'" :placeholder="'Confirm Password'" :is_required="true" 
-                                       :is_disabled="false" v-model="form.confirm_password" :errors="userStore.errors.confirm_password"
-                                       @clearErrors="userStore.cleanErrors('confirm_password')"/>
-                    </div>                
+                    <!-- Password Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <PasswordField id="password" label="Password" placeholder="Enter Password"
+                            :is_required="true" v-model="form.password"
+                            :errors="userStore.errors.password"
+                            @clearErrors="userStore.cleanErrors('password')" />
+
+                        <PasswordField id="confirm_password" label="Confirm Password" placeholder="Confirm Password"
+                            :is_required="true" v-model="form.confirm_password"
+                            :errors="userStore.errors.confirm_password"
+                            @clearErrors="userStore.cleanErrors('confirm_password')" />
+                    </div>
                 </div>
             </div>
+
         </template>
     </Base>
 </template>

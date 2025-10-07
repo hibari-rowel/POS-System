@@ -105,13 +105,16 @@ onBeforeRouteLeave(() => {
                 </template>
             </Header>
 
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 h-full mb-2 bg-gray-100 rounded-lg">
-                <div class="bg-white md:col-span-1 rounded-lg shadow p-5 h-fit">
-                    <ImageUploadField :label="'Profile Picture'" :size="'h-75'" :is_required="false" :errors="userStore.errors.image" v-model="form.image"/>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full mb-4 rounded-2xl">
+                <div class="bg-white md:col-span-2 xl:col-span-1 rounded-xl shadow-md p-5 flex flex-col items-center justify-start">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 w-full text-center"> Profile Picture </h3>
+                    <ImageUploadField :size="'h-72'" :is_required="false" :errors="userStore.errors.image" v-model="form.image"/>
                 </div>
 
-                <div class="flex flex-col gap-1 md:gap-3 bg-white md:col-span-4 rounded-lg shadow p-5">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-5">
+                <div class="flex flex-col md:col-span-3 xl:col-span-4 gap-6 bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-2"> User Information </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <TextField :id="'first_name'" :label="'First Name'" :placeholder="'Enter First Name'" :is_required="true" 
                                    :is_disabled="false" v-model="form.first_name" :errors="userStore.errors.first_name"
                                    @clearErrors="userStore.cleanErrors('first_name')"/>
@@ -125,13 +128,13 @@ onBeforeRouteLeave(() => {
                                    @clearErrors="userStore.cleanErrors('last_name')"/>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-1 gap-1 md:gap-5">
+                    <div class="grid grid-cols-1 gap-4">
                         <TextField :id="'email'" :label="'Email'" :placeholder="'Enter Email'" :is_required="true" 
                                    :is_disabled="false" v-model="form.email" :errors="userStore.errors.email"
                                    @clearErrors="userStore.cleanErrors('email')"/>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <DropdownField :id="'role'" :label="'Role'" :placeholder="'Select Role'" :is_required="true" :is_disabled="false" 
                                        :options="UserRoleDropdownList" v-model="form.role" :errors="userStore.errors.role" 
                                        @clearErrors="userStore.cleanErrors('role')"/>

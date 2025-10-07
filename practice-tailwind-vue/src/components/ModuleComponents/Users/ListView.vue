@@ -184,11 +184,13 @@ onMounted(async () => {
                                         <img src="/icons/delete.svg" class="p-0 h-[95%] w-[95%]" alt="">
                                     </button>
                                 </td>
+
                                 <td class="px-6 py-3 font-medium text-gray-900">
                                     <router-link :to="`/users/show/${user.id}`" class="hover:underline">
                                         {{ user.name }}
                                     </router-link>
                                 </td>
+                                
                                 <td class="px-6 py-3">{{ user.email }}</td>
                                 <td class="px-6 py-3 capitalize">{{ user.role }}</td>
                                 <td class="px-6 py-3 capitalize">{{ user.status }}</td>

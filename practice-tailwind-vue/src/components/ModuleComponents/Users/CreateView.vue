@@ -106,8 +106,9 @@ const toggleModal = (isOpen: boolean) => {
             <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full mb-4 rounded-2xl">
                 <!-- Profile Section -->
                 <div class="bg-white md:col-span-2 xl:col-span-1 rounded-xl shadow-md p-5 flex flex-col items-center justify-start">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 w-full text-center">Profile Picture</h3>
-                    <ImageUploadField :size="'h-72'" :is_required="false" 
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 w-full text-center"> Profile Picture </h3>
+                    
+                    <ImageUploadField :size="'h-72'" :is_required="false" :default_image="'/icons/default_profile.svg'"
                                       :errors="userStore.errors.image" v-model="form.image"/>
                 </div>
 
@@ -170,7 +171,6 @@ const toggleModal = (isOpen: boolean) => {
                     </div>
                 </div>
             </div>
-
         </template>
     </Base>
 </template>

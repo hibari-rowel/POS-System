@@ -2,15 +2,16 @@
 import { ref, watch } from 'vue';
 import _ from 'lodash';
 
-const defaultImage = '/icons/default_profile.svg';
-const previewImage = ref <string | null> (defaultImage);
-const model = defineModel();
 const props = defineProps({
     'label': String,
+    'default_image': { type: String, default: '/icons/default_image.svg', },
     'is_required': Boolean,
     'size': { type: String, default: 'h-70', },
     'errors': Array,
 });
+
+const previewImage = ref <string | null> (props.default_image);
+const model = defineModel();
 
 const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
@@ -24,7 +25,7 @@ watch(model, (newVal) => {
     } else if (newVal instanceof File) {
         previewImage.value = URL.createObjectURL(newVal);
     } else {
-        previewImage.value = defaultImage;
+        previewImage.value = props.default_image;
     }
 }, { immediate: true });
 </script>
@@ -34,7 +35,7 @@ watch(model, (newVal) => {
         <label class="form-label"> {{ label }} <span class="text-red-500" v-if="is_required">*</span></label>
 
         <div class="upload-image-container relative bg-center bg-no-repeat group" 
-             :class="[previewImage === defaultImage ? 'bg-contain' : 'bg-cover', size]"
+             :class="[previewImage === default_image ? 'bg-contain' : 'bg-cover', size]"
              :style="previewImage ? { backgroundImage: `url(${previewImage})` } : {}">
             <div class="absolute inset-0 bg-gray-300/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"></div>
 

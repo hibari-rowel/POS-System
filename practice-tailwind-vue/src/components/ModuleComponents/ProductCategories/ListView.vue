@@ -171,7 +171,7 @@ onMounted(async () => {
                         <tbody v-else>
                             <tr v-for="productCategory in productCategoryStore.productCategories" :key="productCategory.id" class="border-b-1 border-gray-200 hover:bg-gray-50 transition">
                                 <td class="flex flex-col sm:flex-row gap-2 px-6 py-3 items-center">
-                                    <router-link :to="`/users/edit/${productCategory.id}`" class="btn-primary w-8 h-8 p-1">
+                                    <router-link :to="`/product-categories/edit/${productCategory.id}`" class="btn-primary w-8 h-8 p-1">
                                         <img src="/icons/edit.svg" class="p-0 h-[95%] w-[95%]" alt="">
                                     </router-link>
 
@@ -181,7 +181,7 @@ onMounted(async () => {
                                 </td>
 
                                 <td class="px-6 py-3 font-medium text-gray-900">
-                                    <router-link :to="`/users/show/${productCategory.id}`" class="hover:underline">
+                                    <router-link :to="`/product-categories/show/${productCategory.id}`" class="hover:underline">
                                         {{ productCategory.name }}
                                     </router-link>
                                 </td>

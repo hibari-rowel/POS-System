@@ -18,17 +18,31 @@ class ProductCategoriesController extends Controller
         $this->service = $productCategoryService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getList(Request $request)
     {
-        //
+        $params = $request->only(['start', 'records_per_page', 'search']);
+
+        try {
+            list($data, $total) = $this->service->getDTList($params);
+
+            return response()->json(['data' => $data, 'total_records' => $total], 200);
+        } catch (\Exception $e) {
+            Log::error('[ProductCategory][getList]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[ProductCategory][getList]: ' . $e->getMessage());
+            Log::error('[ProductCategory][getList]: ' . $e->getLine());
+
+            return response()->json([
+                'data' => null,
+                'message' => 'Something went wrong. Please contact support for assistance.'
+            ], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function get(ProductCategory $productCategory)
+    {
+        return response()->json(['product_category' => $productCategory]);
+    }
+
     public function store(Request $request)
     {
         $productCategories = new ProductCategory();
@@ -56,17 +70,6 @@ class ProductCategoriesController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProductCategory $productCategories)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, ProductCategory $productCategories)
     {
         Gate::authorize('update', $productCategories);
@@ -93,11 +96,28 @@ class ProductCategoriesController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ProductCategory $productCategories)
     {
-        //
+        Gate::authorize('destroy', $productCategories);
+
+        try {
+            DB::beginTransaction();
+            $productCategories->delete();
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Category record successfully deleted'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            \Log::error('[ProductCategory][destroy]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            \Log::error('[ProductCategory][destroy]: ' . $e->getMessage());
+            \Log::error('[ProductCategory][destroy]: ' . $e->getLine());
+
+            return response()->json([
+                'message' => 'Something went wrong. Please contact support for assistance.'
+            ], 500);
+        }
     }
 }

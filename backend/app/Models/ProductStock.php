@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Stock extends Model
+class ProductStock extends Model
 {
     use HasFactory;
     use HasUuids;
@@ -15,14 +15,14 @@ class Stock extends Model
 
     public $incrementing = false;
 
-    protected $table = 'stocks';
+    protected $table = 'product_stocks';
 
     protected $fillable = [
         'name',
         'description',
         'user_id',
         'product_id',
-        'quantity_added',
+        'quantity',
         'stock_date',
         'created_by',
         'updated_by',

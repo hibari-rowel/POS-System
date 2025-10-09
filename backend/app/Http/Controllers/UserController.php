@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -104,7 +105,13 @@ class UserController extends Controller
 
         try {
             DB::beginTransaction();
-            $user->delete();
+
+            $filename = $user['image_name'] . '.' . $user['image_extension'];
+            $filePath = $this->service::PROFILE_IMAGE_BASE_PATH . $filename;
+            if ($user->delete() && Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+
             DB::commit();
 
             return response()->json([

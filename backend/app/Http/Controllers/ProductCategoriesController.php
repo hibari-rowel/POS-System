@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductCategoryRequest;
+use App\Http\Requests\UpdateProductCategoryRequest;
 use App\Models\ProductCategory;
 use App\Services\ProductCategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProductCategoriesController extends Controller
 {
@@ -43,7 +46,7 @@ class ProductCategoriesController extends Controller
         return response()->json(['product_category' => $productCategory]);
     }
 
-    public function store(Request $request)
+    public function store(StoreProductCategoryRequest $request)
     {
         $productCategories = new ProductCategory();
         Gate::authorize('store', $productCategories);
@@ -70,7 +73,7 @@ class ProductCategoriesController extends Controller
         }
     }
 
-    public function update(Request $request, ProductCategory $productCategories)
+    public function update(UpdateProductCategoryRequest $request, ProductCategory $productCategories)
     {
         Gate::authorize('update', $productCategories);
 
@@ -96,13 +99,19 @@ class ProductCategoriesController extends Controller
         }
     }
 
-    public function destroy(ProductCategory $productCategories)
+    public function destroy(ProductCategory $productCategory)
     {
-        Gate::authorize('destroy', $productCategories);
+        Gate::authorize('destroy', $productCategory);
 
         try {
             DB::beginTransaction();
-            $productCategories->delete();
+
+            $filename = $productCategory['image_name'] . '.' . $productCategory['image_extension'];
+            $filePath = $this->service::IMAGE_BASE_PATH . $filename;
+            if ($productCategory->delete() && Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+
             DB::commit();
 
             return response()->json([

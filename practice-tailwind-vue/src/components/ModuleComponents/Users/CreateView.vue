@@ -68,8 +68,6 @@ const submitForm = async () => {
             }
         });
 
-        console.log(form);
-
         let isSuccessfull = await userStore.createUser(form, rules);
 
         Swal.close();

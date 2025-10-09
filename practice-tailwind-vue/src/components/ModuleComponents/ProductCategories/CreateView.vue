@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
+import Swal from 'sweetalert2';
+import { fireToast } from "@/lib/toast";
 import { useProductCategoryStore } from "@/stores/product_category.js";
+import { categoryValidation } from '@/lib/validations/CategoryValidation.ts';
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
@@ -8,6 +12,7 @@ import TextField from '@/components/FieldComponents/TextField.vue';
 import ImageUploadField from '@/components/FieldComponents/ImageUploadField.vue';
 import TextAreaField from '@/components/FieldComponents/TextAreaField.vue';
 
+const router = useRouter();
 const productCategoryStore = useProductCategoryStore();
 const header = { 
     title: 'Product Categories',
@@ -17,10 +22,49 @@ const header = {
     ],
 };
 
+const rules = computed(() => categoryValidation(form));
 const form = reactive({
     name: '',
     description: '',
     image: null,
+});
+
+const submitForm = async () => {
+    const confirmation = await Swal.fire({
+        icon: "question",
+        title: "Confirmation",
+        text: "Are you sure you want to save this category?",
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        buttonsStyling: false,
+        customClass: {
+            confirmButton: "btn-primary mx-10",
+            cancelButton: "btn-danger mx-10",
+        }
+    });
+
+    if (confirmation.isConfirmed) {
+        Swal.fire({
+            title: 'Saving...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()  
+            }
+        });
+
+        let isSuccessfull = await productCategoryStore.createCategory(form, rules);
+
+        Swal.close();
+
+        if (isSuccessfull) {
+            fireToast("success", 'Category created successfully.');
+            router.push('/product-categories');
+        }
+    }
+};
+
+onBeforeRouteLeave(() => {
+    productCategoryStore.resetErrors();
 });
 </script>
 
@@ -32,14 +76,14 @@ const form = reactive({
                     <div class="flex items-center gap-1">
                         <router-link :to="'/product-categories'" class="btn-danger"> Cancel </router-link>
                         
-                        <button class="btn-primary"> Save </button>
+                        <button class="btn-primary" @click="submitForm()"> Save </button>
                     </div>
                 </template>
             </Header>
 
             <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full mb-4 rounded-2xl">
                 <div class="bg-white md:col-span-2 xl:col-span-1 rounded-xl shadow-md p-5 flex flex-col items-center justify-start">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 w-full text-center">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4 border-b pb-2 w-full text-center">
                         Category Image
                     </h3>
 
@@ -51,7 +95,7 @@ const form = reactive({
                 </div>
 
                 <div class="flex flex-col md:col-span-3 xl:col-span-4 gap-6 bg-white rounded-xl shadow-md p-6">
-                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-2"> Category Information </h3>
+                    <h3 class="text-lg font-bold text-gray-700 border-b pb-2"> Category Information </h3>
 
                     <div class="grid grid-cols-1 gap-4">
                         <TextField id="name" label="Category Name" placeholder="Enter category name" :is_required="true" 
@@ -62,8 +106,7 @@ const form = reactive({
                     <div class="grid grid-cols-1 gap-4">
                         <TextAreaField id="description" label="Description" placeholder="Enter category description (optional)"
                                        :is_required="false" v-model="form.description" :errors="productCategoryStore.errors.description"
-                                       @clearErrors="productCategoryStore.cleanErrors('description')" 
-                        />
+                                       @clearErrors="productCategoryStore.cleanErrors('description')" />
                     </div>
                 </div>
             </div>

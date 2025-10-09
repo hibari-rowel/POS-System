@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +31,7 @@ class ProductCategory extends Model
     ];
 
     protected $appends = [
-
+        'image',
     ];
 
     public static function getFieldValidations($params): array
@@ -47,5 +48,17 @@ class ProductCategory extends Model
         return [
 
         ];
+    }
+
+    // ##################### Accessors & Mutators ######################
+    protected function image(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                    return !empty($this->getOriginal('image_name'))
+                        ? asset("storage/uploads/product_categories/image/" . $this->getOriginal('image_name') . '.' . $this->getOriginal('image_extension'))
+                        : null;
+                },
+        );
     }
 }

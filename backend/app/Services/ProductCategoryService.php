@@ -2,16 +2,21 @@
 
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductCategoryService extends BaseRepository implements ServiceInterface
 {
+    CONST IMAGE_BASE_PATH = "uploads/product_categories/image/";
 
     public function createRecord($data, $model)
     {
         $data['created_by'] = $this->user->id;
         $data['updated_by'] = $this->user->id;
+
+        $this->getImageParams($data);
 
         return $this->save($data, $model);
     }
@@ -20,7 +25,31 @@ class ProductCategoryService extends BaseRepository implements ServiceInterface
     {
         $data['updated_by'] = $this->user->id;
 
+        $this->getImageParams($data);
+
         return $this->save($data, $model);
+    }
+
+    public function afterSave($data, $model)
+    {
+        $image = !empty($data['image']) ? $data['image'] : null;
+        if (!empty($image) && $image instanceof UploadedFile && $image->isValid()) {
+            $filename = $data['image_name'] . '.' . $data['image_extension'];
+            Storage::disk('public')->putFileAs(self::IMAGE_BASE_PATH, $image, $filename);
+        }
+
+        if (!empty($this->dirtyValues['image_name'])
+            && !empty($this->dirtyValues['image_extension'])
+            && !$model->wasRecentlyCreated
+        ) {
+            $oldFilename = $this->oldValues['image_name'] . '.' . $this->oldValues['image_extension'];
+            if (in_array('image_name', $this->dirtyKeyValues)
+                && in_array('image_extension', $this->dirtyKeyValues)
+                && Storage::disk('public')->exists(self::IMAGE_BASE_PATH . $oldFilename)
+            ) {
+                Storage::disk('public')->delete(self::IMAGE_BASE_PATH . $oldFilename);
+            }
+        }
     }
 
     public function getDTList($params)

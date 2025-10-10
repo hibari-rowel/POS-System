@@ -18,14 +18,12 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = [
-        'sku',
         'name',
         'description',
+        'sku',
         'product_category_id',
         'unit',
-        'cost_price',
         'selling_price',
-        'quantity',
         'image_name',
         'original_image_name',
         'image_extension',
@@ -38,4 +36,24 @@ class Product extends Model
     protected $appends = [
 
     ];
+
+    public static function getFieldValidations($params): array
+    {
+        return [
+            'name' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'sku' => ['nullable', 'string'],
+            'product_category_id' => ['required', 'exists:product_categories,id'],
+            'unit' => ['required', 'string'],
+            'selling_price' => ['required', 'decimal:2,4'],
+            'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10048'],
+        ];
+    }
+
+    public static function getValidationMessages()
+    {
+        return [
+
+        ];
+    }
 }

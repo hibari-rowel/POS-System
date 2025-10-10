@@ -24,5 +24,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/create', [ProductCategoriesController::class, 'store']);
         Route::put('/update/{product_categories}', [ProductCategoriesController::class, 'update']);
         Route::delete('/destroy/{product_category}', [ProductCategoriesController::class, 'destroy']);
+        Route::get('/get_dropdown_list', [ProductCategoriesController::class, 'getDropdownList']);
     });
 });

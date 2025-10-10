@@ -129,4 +129,19 @@ class ProductCategoriesController extends Controller
             ], 500);
         }
     }
+
+    public function getDropdownList(Request $request)
+    {
+        $data = [];
+
+        $search = $request->query('search');
+        if (!empty($search)) {
+            $data = ProductCategory::select('id', 'name')
+                ->where('name', 'like', "%{$search}%")
+                ->take(5)
+                ->get();
+        }
+
+        return response()->json($data);
+    }
 }

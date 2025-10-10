@@ -7,8 +7,8 @@ import Header from '@/components/BaseComponents/Header.vue';
 import TextField from '@/components/FieldComponents/TextField.vue';
 import ImageUploadField from '@/components/FieldComponents/ImageUploadField.vue';
 import TextAreaField from '@/components/FieldComponents/TextAreaField.vue';
-import PhoneNumberField from '@/components/FieldComponents/PhoneNumberField.vue';
 import DecimalField from '@/components/FieldComponents/DecimalField.vue';
+import DropdownApiSearchField from '@/components/FieldComponents/DropdownApiSearchField.vue';
 
 const productStore = useProductStore();
 const header = { 
@@ -66,9 +66,11 @@ const form = reactive({
                                    v-model="form.sku" :errors="productStore.errors.sku" 
                                    @clearErrors="productStore.cleanErrors('sku')" />
 
-                        <TextField id="category" label="Category" placeholder="Enter category" :is_required="true" 
-                                   v-model="form.product_category_id" :errors="productStore.errors.product_category_id" 
-                                   @clearErrors="productStore.cleanErrors('product_category_id')" />
+                        <DropdownApiSearchField :label="'Category'" :placeholder="'Enter category'" 
+                            :is_required="true" :is_disabled="false" v-model="form.product_category_id" 
+                            :api_url="'/api/product_categories/get_dropdown_list'" 
+                            :errors="productStore.errors.product_category_id" 
+                            @clearErrors="productStore.cleanErrors('status')"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

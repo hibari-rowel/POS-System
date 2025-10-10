@@ -13,6 +13,11 @@ export const useProductStore = defineStore('product-store', {
     },
 
     actions: {
-
+        resetErrors() {
+            this.errors = {};
+        },
+        cleanErrors(field) {
+            this.errors[field] = null
+        },
     },
 });

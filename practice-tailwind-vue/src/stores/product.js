@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 export const useProductStore = defineStore('product-store', {
     state: () => ({
-
+        errors: {},
     }),
 
     getters: {

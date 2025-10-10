@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script setup>
 import _ from 'lodash';
 
-const model = defineModel <string> ();
+const model = defineModel();
 
 const props = defineProps({
     'id': String,
@@ -10,7 +10,7 @@ const props = defineProps({
     'is_required': Boolean,
     'is_disabled': Boolean,
     'errors': Array,
-    'rows': { type: Number, default: 6, },
+    'mask_params': Object,
 });
 
 const emit = defineEmits(['clearErrors']);
@@ -25,9 +25,9 @@ const onInput = () => {
         <label :for="id" class="form-label"> {{ label }} <span class="text-red-500" v-if="is_required">*</span></label>
 
         <div class="text-box" :class="!_.isEmpty(errors) ? 'text-box-danger' : 'text-box-default'">                    
-            <textarea type="text" :id="id" class="border-0 outline-none bg-transparent w-full placeholder-gray-400" 
-                :placeholder="placeholder" :disabled="is_disabled" :rows="rows" v-model="model" @input="onInput">
-            </textarea>
+            <input type="text" :id="id" class="border-0 outline-none bg-transparent w-full placeholder-gray-400" 
+                :placeholder="placeholder" v-model="model" :disabled="is_disabled" @input="onInput" 
+                v-input-mask="_.merge({ alias: 'numeric', placeholder: '0', rightAlign: false }, mask_params)">
         </div>
 
         <div class="text-red-500 text-sm mt-1" v-if="!_.isEmpty(errors)" v-html="_.join(errors, '<br>')"></div>

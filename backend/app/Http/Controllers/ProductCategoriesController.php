@@ -73,13 +73,13 @@ class ProductCategoriesController extends Controller
         }
     }
 
-    public function update(UpdateProductCategoryRequest $request, ProductCategory $productCategories)
+    public function update(UpdateProductCategoryRequest $request, ProductCategory $productCategory)
     {
-        Gate::authorize('update', $productCategories);
+        Gate::authorize('update', $productCategory);
 
         try {
             DB::beginTransaction();
-            $user = $this->service->updateRecord($request->validated(), $productCategories);
+            $user = $this->service->updateRecord($request->validated(), $productCategory);
             DB::commit();
 
             return response()->json([

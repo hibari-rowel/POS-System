@@ -39,16 +39,16 @@ const fetchData = async (search = '', loading) => {
     }
 }
 
-const ensureSelectedInOptions = () => {
-    if (model.value && !options.value.find(option => option.id === model.value.id)) {
-        options.value.push(model.value);
-    }
-};
-
 const handleSearch = (search, loading) => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => fetchData(search, loading), 600);
 }
+
+watch(model, (newVal) => {
+    if (newVal && !options.value.find(o => o.id === newVal.id)) {
+        options.value.push(newVal);
+    }
+}, { immediate: true });
 </script>
 
 <template>

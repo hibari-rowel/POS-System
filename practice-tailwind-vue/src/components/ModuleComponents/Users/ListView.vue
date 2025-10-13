@@ -208,9 +208,9 @@ onMounted(async () => {
                             Prev
                         </button>
 
-                        {{ currentPage }} / {{ totalPages }}
+                        {{ currentPage }} / {{ _.isEmpty(userStore.users) ? 1 : totalPages }}
 
-                        <button class="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed" @click="clickPaginationNavigation(recordsPerPage)" :disabled="currentPage === totalPages">
+                        <button class="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed" @click="clickPaginationNavigation(recordsPerPage)" :disabled="currentPage === totalPages || _.isEmpty(userStore.users)">
                             Next
                         </button>
                     </div>

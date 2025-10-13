@@ -81,7 +81,7 @@ export const useProductCategoryStore = defineStore('product-category-store', {
                 this.total_records = responseData.total_records;
             } catch (error) {
                 console.error("Error fetching categories:", error.response.data.message);
-                this.users = {};
+                this.productCategories = {};
             }
         },
         async getCategory(id) {

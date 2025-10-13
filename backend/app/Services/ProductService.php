@@ -55,7 +55,7 @@ class ProductService extends BaseRepository implements ServiceInterface
     public function getDTList($params)
     {
         $params = $this->getDTParams($params);
-        $select = Arr::pluck($this->userDTColumns(), 'field');
+        $select = array_merge(Arr::pluck($this->userDTColumns(), 'field'), ['products.unit']);
         $alias = Arr::pluck($this->userDTColumns(), 'alias');
 
         $qb = DB::table('products')
@@ -79,23 +79,23 @@ class ProductService extends BaseRepository implements ServiceInterface
     {
         return [
             [
-                'field' => 'product.id',
+                'field' => 'products.id',
                 'alias' => 'id',
             ],
             [
-                'field' => 'product.name',
+                'field' => 'products.name',
                 'alias' => 'name',
             ],
             [
-                'field' => 'product_categories.name',
+                'field' => DB::raw('product_categories.name AS product_categories_name'),
                 'alias' => 'product_categories_name',
             ],
             [
-                'field' => 'product.selling_price',
+                'field' => 'products.selling_price',
                 'alias' => 'selling_price',
             ],
             [
-                'field' => 'product.created_at',
+                'field' => 'products.created_at',
                 'alias' => 'created_at',
             ],
         ];

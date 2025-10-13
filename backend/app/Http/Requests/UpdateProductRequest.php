@@ -15,6 +15,15 @@ class UpdateProductRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        if ($this->has('selling_price')) {
+            $this->merge([
+                'selling_price' => preg_replace('/[^\d.]/', '', $this->selling_price),
+            ]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

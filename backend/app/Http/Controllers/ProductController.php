@@ -9,6 +9,7 @@ use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -29,6 +30,10 @@ class ProductController extends Controller
 
             return response()->json(['data' => $data, 'total_records' => $total], 200);
         } catch (\Exception $e) {
+            Log::error('[Product][getList]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[Product][getList]: ' . $e->getMessage());
+            Log::error('[Product][getList]: ' . $e->getLine());
+
             return response()->json([
                 'data' => null,
                 'message' => 'Something went wrong. Please contact support for assistance.'
@@ -38,7 +43,7 @@ class ProductController extends Controller
 
     public function get(Product $product)
     {
-        return response()->json(['product' => $product]);
+        return response()->json(['product' => $product->append(['product_category', 'image'])]);
     }
 
     public function store(StoreProductRequest $request)
@@ -57,6 +62,10 @@ class ProductController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
+            Log::error('[Product][store]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[Product][store]: ' . $e->getMessage());
+            Log::error('[Product][store]: ' . $e->getLine());
 
             return response()->json([
                 'message' => 'Something went wrong. Please contact support for assistance.'
@@ -79,6 +88,10 @@ class ProductController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
+            Log::error('[Product][update]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[Product][update]: ' . $e->getMessage());
+            Log::error('[Product][update]: ' . $e->getLine());
 
             return response()->json([
                 'message' => 'Something went wrong. Please contact support for assistance.'
@@ -104,6 +117,10 @@ class ProductController extends Controller
             return response()->json([]);
         } catch (\Exception $e) {
             DB::rollBack();
+
+            Log::error('[Product][destroy]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[Product][destroy]: ' . $e->getMessage());
+            Log::error('[Product][destroy]: ' . $e->getLine());
 
             return response()->json([
                 'message' => 'Something went wrong. Please contact support for assistance.'

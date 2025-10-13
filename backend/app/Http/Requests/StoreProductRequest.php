@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class StoreProductRequest extends FormRequest
 {
@@ -13,6 +14,15 @@ class StoreProductRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation()
+    {
+        if ($this->has('selling_price')) {
+            $this->merge([
+                'selling_price' => preg_replace('/[^\d.]/', '', $this->selling_price),
+            ]);
+        }
     }
 
     /**

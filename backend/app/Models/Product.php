@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -37,6 +39,12 @@ class Product extends Model
 
     ];
 
+    protected $hidden = [
+        'created_by',
+        'deleted_by',
+        'updated_by',
+    ];
+
     public static function getFieldValidations($params): array
     {
         return [
@@ -55,5 +63,30 @@ class Product extends Model
         return [
 
         ];
+    }
+
+    // ##################### Accessors & Mutators ######################
+    protected function productCategory(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                return DB::table('product_categories')
+                    ->select(['id', 'name'])
+                    ->whereNull('deleted_at')
+                    ->where('id', $this->getOriginal('product_category_id'))
+                    ->first();
+            },
+        );
+    }
+
+    protected function image(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                return !empty($this->getOriginal('image_name'))
+                    ? asset("storage/uploads/product/image/" . $this->getOriginal('image_name') . '.' . $this->getOriginal('image_extension'))
+                    : null;
+            },
+        );
     }
 }

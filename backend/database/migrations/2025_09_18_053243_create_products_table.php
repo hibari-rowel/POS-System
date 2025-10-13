@@ -23,7 +23,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->string('unit', 50)->nullable();
-            $table->float('selling_price', 8)->nullable();
+            $table->decimal('selling_price', 15, 2)->nullable();
 
             $table->string('image_name', 50)->nullable();
             $table->string('original_image_name', 50)->nullable();

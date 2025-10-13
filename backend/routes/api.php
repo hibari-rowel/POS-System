@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/get_dropdown_list', [ProductCategoriesController::class, 'getDropdownList']);
     });
 
-    Route::prefix('product')->group(function () {
+    Route::prefix('products')->group(function () {
         Route::post('/get_list', [ProductController::class, 'getList']);
         Route::get('/get/{product}', [ProductController::class, 'get']);
         Route::post('/create', [ProductController::class, 'store']);

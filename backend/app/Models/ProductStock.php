@@ -20,9 +20,12 @@ class ProductStock extends Model
     protected $fillable = [
         'name',
         'description',
-        'user_id',
+        'supplier_name',
         'product_id',
+        'price',
         'quantity',
+        'unit',
+        'subtotal',
         'stock_date',
         'created_by',
         'updated_by',
@@ -32,4 +35,25 @@ class ProductStock extends Model
     protected $appends = [
 
     ];
+
+    public static function getFieldValidations($params): array
+    {
+        return [
+            'product_id' => ['required', 'exists:products,id'],
+            'supplier_name' => ['required', 'string'],
+            'stock_date' => ['required', 'date'],
+            'quantity' => ['required', 'decimal:2,4'],
+            'unit' => ['required', 'string'],
+            'price' => ['required', 'decimal:2,4'],
+            'subtotal' => ['required', 'decimal:2,4'],
+            'description' => ['nullable', 'string'],
+        ];
+    }
+
+    public static function getValidationMessages()
+    {
+        return [
+
+        ];
+    }
 }

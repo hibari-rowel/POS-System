@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('supplier_name')->nullable();
             $table->uuid('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products')->nullOnDelete();
-            $table->float('price', 8)->nullable();
-            $table->integer('quantity')->nullable();
-            $table->float('subtotal', 8)->nullable();
+            $table->decimal('price', 15, 2)->nullable();
+            $table->decimal('quantity', 15, 2)->nullable();
+            $table->string('unit', 50)->nullable();
+            $table->decimal('subtotal', 15, 2)->nullable();
             $table->dateTime('stock_date')->nullable();
             $table->uuid('created_by')->nullable();
             $table->uuid('updated_by')->nullable();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -35,5 +36,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/update/{product}', [ProductController::class, 'update']);
         Route::delete('/destroy/{product}', [ProductController::class, 'destroy']);
         Route::get('/get_dropdown_list', [ProductController::class, 'getDropdownList']);
+    });
+
+    Route::prefix('stocks')->group(function () {
+        Route::post('/get_list', [StockController::class, 'getList']);
+        Route::get('/get/{stock}', [StockController::class, 'get']);
+        Route::post('/create', [StockController::class, 'store']);
+        Route::put('/update/{stock}', [StockController::class, 'update']);
+        Route::delete('/destroy/{stock}', [StockController::class, 'destroy']);
+        Route::get('/get_dropdown_list', [StockController::class, 'getDropdownList']);
     });
 });

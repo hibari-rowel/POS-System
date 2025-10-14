@@ -25,6 +25,11 @@ import UsersCreateView from '@/components/ModuleComponents/Users/CreateView.vue'
 import UsersShowView from '@/components/ModuleComponents/Users/ShowView.vue';
 import UsersEditView from '@/components/ModuleComponents/Users/EditView.vue';
 
+import StocksListView from '@/components/ModuleComponents/Stocks/ListView.vue';
+import StocksCreateView from '@/components/ModuleComponents/Stocks/CreateView.vue';
+import StocksShowView from '@/components/ModuleComponents/Stocks/ShowView.vue';
+import StocksEditView from '@/components/ModuleComponents/Stocks/EditView.vue';
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -89,6 +94,17 @@ const router = createRouter({
                 { path: 'create', component: UsersCreateView },
                 { path: 'show/:id', component: UsersShowView },
                 { path: 'edit/:id', component: UsersEditView },
+            ],
+        },
+
+        {
+            path: '/stocks',
+            meta: { requiresAuth: true, allowedUsers: ['admin',] },
+            children: [
+                { path: '', component: StocksListView },
+                { path: 'create', component: StocksCreateView },
+                { path: 'show/:id', component: StocksShowView },
+                { path: 'edit/:id', component: StocksEditView },
             ],
         },
     ]

@@ -76,6 +76,14 @@ const submitForm = async () => {
 };
 
 onMounted(async () => {
+    Swal.fire({
+        title: 'Loading Record...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
     const user = await userStore.getUser(recordID);
     if (user) {
         form.first_name = user.first_name;
@@ -86,6 +94,8 @@ onMounted(async () => {
         form.email = user.email;
         form.image = user.image;
     }
+
+    Swal.close();
 });
 
 onBeforeRouteLeave(() => {

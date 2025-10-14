@@ -2,6 +2,7 @@
 import { reactive, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from "@/stores/user.js";
+import Swal from 'sweetalert2';
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
@@ -20,6 +21,14 @@ const user = reactive({
 });
 
 onMounted(async () => {
+    Swal.fire({
+        title: 'Loading Record...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
     const userData = await userStore.getUser(recordID);
     if (userData) {
         user.name = userData.full_name;
@@ -28,6 +37,8 @@ onMounted(async () => {
         user.status = userData.status;
         user.image = userData.image;
     }
+
+    Swal.close();
 });
 </script>
 

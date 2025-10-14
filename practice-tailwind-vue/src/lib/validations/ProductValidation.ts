@@ -34,8 +34,8 @@ export function productValidation(form) {
             minLength: helpers.withMessage("Name must be at least 5 characters.", minLength(5)),
         },
         description: {
-            minLength: helpers.withMessage("Name must be at least 5 characters.", minLength(5)),
-            maxLength: helpers.withMessage("Name must be at not exceed 150 characters.", maxLength(150)),
+            minLength: helpers.withMessage("Description must be at least 5 characters.", minLength(5)),
+            maxLength: helpers.withMessage("Description must be at not exceed 150 characters.", maxLength(150)),
         },
         sku: {},
         unit: {

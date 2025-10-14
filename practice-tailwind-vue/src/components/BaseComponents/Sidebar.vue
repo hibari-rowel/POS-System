@@ -63,6 +63,16 @@
                 </span>
             </router-link>
 
+            <router-link :to="'/stocks'" class="sidebar-link group" active-class="sidebar-link-active">
+                <div class="sidebar-link-img group-hover:shadow-sm">
+                    <img src="/icons/stock.svg" alt="">
+                </div>
+
+                <span class="sidebar-link-label group-hover:text-black">
+                    Stocks
+                </span>
+            </router-link>
+
             <router-link :to="'/sales-history'" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
                     <img src="/icons/history.svg" alt="">

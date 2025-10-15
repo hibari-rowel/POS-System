@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\ProductStock;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateStockRequest extends FormRequest
@@ -29,6 +30,12 @@ class UpdateStockRequest extends FormRequest
         if ($this->has('subtotal')) {
             $this->merge([
                 'subtotal' => preg_replace('/[^\d.]/', '', $this->subtotal),
+            ]);
+        }
+
+        if ($this->has('stock_date')) {
+            $this->merge([
+                'stock_date' => Carbon::parse($this->stock_date),
             ]);
         }
     }

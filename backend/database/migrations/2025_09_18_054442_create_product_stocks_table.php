@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('quantity', 15, 2)->nullable();
             $table->string('unit', 50)->nullable();
             $table->decimal('subtotal', 15, 2)->nullable();
-            $table->dateTime('stock_date')->nullable();
+            $table->date('stock_date')->nullable();
             $table->uuid('created_by')->nullable();
             $table->uuid('updated_by')->nullable();
             $table->uuid('deleted_by')->nullable();

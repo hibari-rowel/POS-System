@@ -11,7 +11,7 @@ import TextField from '@/components/FieldComponents/TextField.vue';
 import TextAreaField from '@/components/FieldComponents/TextAreaField.vue';
 import DecimalField from '@/components/FieldComponents/DecimalField.vue';
 import DropdownApiSearchField from '@/components/FieldComponents/DropdownApiSearchField.vue';
-import VueTailwindDatepicker from "vue-tailwind-datepicker";
+import DateTimePickerField from '@/components/FieldComponents/DateTimePickerField.vue';
 
 import { stockValidation } from '@/lib/validations/StockValidation.ts';
 
@@ -33,7 +33,7 @@ const form = reactive({
     price: '0',
     quantity: '0',
     unit: '',
-    stock_date: '',
+    stock_date: null,
     description: '',
     subtotal: '',
 });
@@ -118,10 +118,10 @@ onBeforeRouteLeave(() => {
                                 :errors="stockStore.errors.supplier_name" 
                                 @clearErrors="stockStore.cleanErrors('supplier_name')" />
 
-                        <TextField id="stock_date" label="Stock Date" placeholder="Enter stock date" 
-                                :is_required="true" v-model="form.stock_date" 
-                                :errors="stockStore.errors.stock_date" 
-                                @clearErrors="stockStore.cleanErrors('stock_date')" />
+                        <DateTimePickerField id="stock_date" label="Stock Date" placeholder="Enter stock date" 
+                            :is_required="true" v-model="form.stock_date" :mode="'date'"
+                            :errors="stockStore.errors.stock_date" 
+                            @clearErrors="stockStore.cleanErrors('stock_date')"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -24,7 +24,7 @@ const onInput = () => {
     <div class="w-full">
         <label :for="id" class="form-label"> {{ label }} <span class="text-red-500" v-if="is_required">*</span></label>
 
-        <div class="text-box" :class="!_.isEmpty(errors) ? 'text-box-danger' : 'text-box-default'">                    
+        <div class="text-box" :class="!_.isEmpty(errors) ? 'text-box-danger' : 'text-box-default'">
             <input type="text" :id="id" class="border-0 outline-none bg-transparent w-full placeholder-gray-400" 
                 :placeholder="placeholder" v-model="model" :disabled="is_disabled" @input="onInput" 
                 v-input-mask="_.merge({ alias: 'numeric', placeholder: '0', rightAlign: false }, mask_params)">

@@ -8,12 +8,17 @@ import inputMask from './lib/inputmask'
 import VueSelect from 'vue-select'
 import "vue-select/dist/vue-select.css"
 
+import VCalendar from 'v-calendar';
+import 'v-calendar/style.css';
+
 const app = createApp(App)
 const pinia = createPinia()
 
 pinia.use(({ store }) => {
     store.router = markRaw(router);
 })
+
+app.use(VCalendar)
 
 app.directive('input-mask', inputMask)
 app.component("v-select", VueSelect)

@@ -15,6 +15,6 @@ export default class DateFormatter {
     static toShort(dateString: string): string {
         return dayjs(dateString.replace(" ", "T"))
             .tz("Asia/Manila")
-            .format("MMM D, YYYY");
+            .format("MMMM D, YYYY");
     }
 }

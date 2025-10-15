@@ -42,7 +42,7 @@ class StockController extends Controller
 
     public function get(ProductStock $stock)
     {
-        return response()->json(['data' => $stock]);
+        return response()->json(['data' => $stock->append(['product'])]);
     }
 
     public function store(CreateStockRequest $request)

@@ -48,7 +48,7 @@ const total = computed(() => {
 
 const submitForm = async () => {
     form.subtotal = total.value;
-    console.log(form)
+    
     const confirmation = await Swal.fire({
         icon: "question",
         title: "Confirmation",

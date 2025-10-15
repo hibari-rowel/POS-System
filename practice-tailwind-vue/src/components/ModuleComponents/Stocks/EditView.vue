@@ -1,48 +1,58 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useProductStore } from "@/stores/product.js";
+import { useStockStore } from "@/stores/stock.js";
 import Swal from 'sweetalert2';
 import { fireToast } from "@/lib/toast";
 
 import Base from '@/components/BaseComponents/Base.vue';
 import Header from '@/components/BaseComponents/Header.vue';
 import TextField from '@/components/FieldComponents/TextField.vue';
-import ImageUploadField from '@/components/FieldComponents/ImageUploadField.vue';
 import TextAreaField from '@/components/FieldComponents/TextAreaField.vue';
 import DecimalField from '@/components/FieldComponents/DecimalField.vue';
 import DropdownApiSearchField from '@/components/FieldComponents/DropdownApiSearchField.vue';
+import DateTimePickerField from '@/components/FieldComponents/DateTimePickerField.vue';
 
-import { productValidation } from '@/lib/validations/ProductValidation';
+import { stockValidation } from '@/lib/validations/StockValidation.ts';
 
-const productStore = useProductStore();
+const stockStore = useStockStore();
 const router = useRouter();
 const route = useRoute();
 const recordID = route.params.id;
 const header = { 
-    title: 'Products',
+    title: 'Stocks',
     bread_crumbs: [
-        {name: "Products", path: '/products'},
+        {name: "Stocks", path: '/stocks'},
         {name: "Edit",},
     ],
 };
 
-const rules = computed(() => productValidation(form));
+const rules = computed(() => stockValidation(form));
+
 const form = reactive({
-    name: '',
-    description: '',
-    sku: '',
+    supplier_name: '',
+    product: '',
+    price: '0',
+    quantity: '0',
     unit: '',
-    product_category: '',
-    selling_price: '',
-    image: null,
+    stock_date: null,
+    description: '',
+    subtotal: '',
+});
+
+const total = computed(() => {
+    let cleanQuantity = parseFloat((form.quantity || '').replace(/[₱,]/g, ''));
+    let cleanPrice = parseFloat((form.price || '').replace(/[₱,]/g, ''));
+    let subtotal = (cleanQuantity * cleanPrice).toFixed(2);
+
+    return subtotal;
 });
 
 const submitForm = async () => {
     const confirmation = await Swal.fire({
         icon: "question",
         title: "Confirmation",
-        text: "Are you sure you want to edit this product?",
+        text: "Are you sure you want to edit this stock?",
         showCancelButton: true,
         confirmButtonText: "Save",
         buttonsStyling: false,
@@ -61,29 +71,40 @@ const submitForm = async () => {
             }
         });
 
-        let isSuccessfull = await productStore.updateProduct(form, rules, recordID);
+        let isSuccessfull = await stockStore.updateStock(form, rules, recordID);
 
         Swal.close();
 
         if (isSuccessfull) {
-            fireToast("success", 'User updated successfully.');
-            router.push('/products');
+            fireToast("success", 'Stock updated successfully.');
+            router.push('/stocks');
         }
     }
 };
 
 onMounted(async () => {
-    const product = await productStore.getProduct(recordID);
+    Swal.fire({
+        title: 'Loading Record...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
 
-    if (product) {
-        form.name = product.name
-        form.description = product.description
-        form.sku = product.sku
-        form.unit = product.unit
-        form.product_category = product.product_category
-        form.selling_price = product.selling_price
-        form.image = product.image
+    const stock = await stockStore.getStock(recordID);
+    
+    if (stock) {
+        form.supplier_name = stock.supplier_name
+        form.product = stock.product
+        form.price = stock.price
+        form.quantity = stock.quantity
+        form.unit = stock.unit
+        form.stock_date = stock.stock_date
+        form.description = stock.description
+        form.subtotal = stock.subtotal
     }
+    
+    Swal.close();
 });
 </script>
 
@@ -93,58 +114,63 @@ onMounted(async () => {
             <Header :header="header">
                 <template v-slot:right-side>
                     <div class="flex items-center gap-1">
-                        <router-link :to="'/products/show/' + recordID" class="btn-danger"> Cancel </router-link>
+                        <router-link :to="'/stocks'" class="btn-danger"> Cancel </router-link>
                         <button class="btn-primary" @click="submitForm()"> Save </button>
                     </div>
                 </template>
             </Header>
-
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full mb-4 rounded-2xl">
-                <div class="bg-white md:col-span-2 xl:col-span-1 rounded-xl shadow-md p-5 flex flex-col items-center justify-start">
-                    <h3 class="text-lg font-bold text-gray-700 mb-4 border-b pb-2 w-full text-center">
-                        Product Image
-                    </h3>
-
-                    <ImageUploadField :size="'h-72'" :is_required="false" :errors="productStore.errors.image" v-model="form.image"/>
-                </div>
-
-                <div class="flex flex-col md:col-span-3 xl:col-span-4 gap-6 bg-white rounded-xl shadow-md p-6">
-                    <h3 class="text-lg font-bold text-gray-700 border-b pb-2"> Product Information </h3>
+            
+            <div class="flex flex-col h-full rounded-2xl">
+                <div class="flex flex-col gap-6 bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-lg font-bold text-gray-700 border-b pb-2"> Stock Information </h3>
 
                     <div class="grid grid-cols-1 gap-4">
-                        <TextField id="name" label="Product Name" placeholder="Enter product name" :is_required="true" 
-                                   v-model="form.name" :errors="productStore.errors.name" 
-                                   @clearErrors="productStore.cleanErrors('name')" />
+                        <DropdownApiSearchField :label="'Product'" :placeholder="'Enter product'" 
+                            :is_required="true" :is_disabled="false" v-model="form.product" 
+                            :api_url="'/api/products/get_dropdown_list'" 
+                            :errors="stockStore.errors.product"
+                            @clearErrors="stockStore.cleanErrors('product')"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <TextField id="sku" label="SKU" placeholder="Enter SKU" :is_required="false" 
-                                   v-model="form.sku" :errors="productStore.errors.sku" 
-                                   @clearErrors="productStore.cleanErrors('sku')" />
+                        <TextField id="supplier_name" label="Supplier Name" placeholder="Enter supplier name" 
+                                :is_required="true" v-model="form.supplier_name" 
+                                :errors="stockStore.errors.supplier_name" 
+                                @clearErrors="stockStore.cleanErrors('supplier_name')" />
 
-                        <DropdownApiSearchField :label="'Category'" :placeholder="'Enter category'" 
-                            :is_required="true" :is_disabled="false" v-model="form.product_category" 
-                            :api_url="'/api/product_categories/get_dropdown_list'" 
-                            :default_options="[form.product_category]"
-                            :errors="productStore.errors.product_category" 
-                            @clearErrors="productStore.cleanErrors('status')"/>
+                        <DateTimePickerField id="stock_date" label="Stock Date" placeholder="Enter stock date" 
+                            :is_required="true" v-model="form.stock_date" :mode="'date'"
+                            :errors="stockStore.errors.stock_date" 
+                            @clearErrors="stockStore.cleanErrors('stock_date')"/>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <DecimalField id="selling_price" label="Selling Price" placeholder="Enter selling price" :is_required="true" 
-                                v-model="form.selling_price" :errors="productStore.errors.selling_price" 
-                                @clearErrors="productStore.cleanErrors('selling_price')" 
-                                :mask_params="{prefix: '₱ ', groupSeparator: ',', digits: 2, digitsOptional: false,}"/>
+                        <DecimalField id="quantity" label="Quantity" placeholder="Enter quantity" :is_required="true" 
+                                v-model="form.quantity" :errors="stockStore.errors.quantity" 
+                                @clearErrors="stockStore.cleanErrors('quantity')" 
+                                :mask_params="{groupSeparator: ',', digits: 2, digitsOptional: false,}"/>
 
                         <TextField id="unit" label="Unit" placeholder="Enter unit" :is_required="true" 
-                                v-model="form.unit" :errors="productStore.errors.unit" 
-                                @clearErrors="productStore.cleanErrors('unit')" />
+                                v-model="form.unit" :errors="stockStore.errors.unit" 
+                                @clearErrors="stockStore.cleanErrors('unit')" />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">        
+                        <DecimalField id="price" label="Price" placeholder="Enter price" :is_required="true" 
+                                v-model="form.price" :errors="stockStore.errors.price" 
+                                :mask_params="{prefix: '₱ ', groupSeparator: ',', digits: 2, digitsOptional: false,}"
+                                @clearErrors="stockStore.cleanErrors('price')" />
+
+                        <DecimalField id="subtotal" label="Total Price" placeholder="Total Price" :is_required="true" 
+                                v-model="total" :errors="stockStore.errors.subtotal" :is_disabled="true"
+                                :mask_params="{prefix: '₱ ', groupSeparator: ',', digits: 2, digitsOptional: false,}"
+                                @clearErrors="stockStore.cleanErrors('subtotal')" />
                     </div>
 
                     <div class="grid grid-cols-1 gap-4">
                         <TextAreaField id="description" label="Description" placeholder="Enter category description (optional)"
-                                       :is_required="false" v-model="form.description" :errors="productStore.errors.description"
-                                       @clearErrors="productStore.cleanErrors('description')" />
+                                       :is_required="false" v-model="form.description" :errors="stockStore.errors.description"
+                                       @clearErrors="stockStore.cleanErrors('description')" />
                     </div>
                 </div>
             </div>

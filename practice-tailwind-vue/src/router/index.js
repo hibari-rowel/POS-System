@@ -27,7 +27,6 @@ import UsersEditView from '@/components/ModuleComponents/Users/EditView.vue';
 
 import StocksListView from '@/components/ModuleComponents/Stocks/ListView.vue';
 import StocksCreateView from '@/components/ModuleComponents/Stocks/CreateView.vue';
-import StocksShowView from '@/components/ModuleComponents/Stocks/ShowView.vue';
 import StocksEditView from '@/components/ModuleComponents/Stocks/EditView.vue';
 
 const router = createRouter({
@@ -103,7 +102,6 @@ const router = createRouter({
             children: [
                 { path: '', component: StocksListView },
                 { path: 'create', component: StocksCreateView },
-                { path: 'show/:id', component: StocksShowView },
                 { path: 'edit/:id', component: StocksEditView },
             ],
         },

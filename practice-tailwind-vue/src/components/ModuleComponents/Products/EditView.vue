@@ -73,6 +73,14 @@ const submitForm = async () => {
 };
 
 onMounted(async () => {
+    Swal.fire({
+        title: 'Loading Record...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
     const product = await productStore.getProduct(recordID);
 
     if (product) {
@@ -84,6 +92,8 @@ onMounted(async () => {
         form.selling_price = product.selling_price
         form.image = product.image
     }
+
+    Swal.close();
 });
 </script>
 

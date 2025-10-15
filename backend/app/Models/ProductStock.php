@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class ProductStock extends Model
 {
@@ -55,5 +57,19 @@ class ProductStock extends Model
         return [
 
         ];
+    }
+
+    // ##################### Accessors & Mutators ######################
+    protected function product(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                return DB::table('products')
+                    ->select(['id', 'name'])
+                    ->whereNull('deleted_at')
+                    ->where('id', $this->getOriginal('product_id'))
+                    ->first();
+            },
+        );
     }
 }

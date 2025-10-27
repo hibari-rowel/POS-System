@@ -85,7 +85,7 @@ onBeforeRouteLeave(() => {
             <Header :header="header">
                 <template v-slot:right-side>
                     <div class="flex items-center gap-1">
-                        <router-link :to="'/product-categories/show/' + recordID" class="btn-danger"> Cancel </router-link>
+                        <router-link :to="'/product-categories'" class="btn-danger"> Cancel </router-link>
                         <button class="btn-primary" @click="submitForm()"> Save </button>
                     </div>
                 </template>

@@ -8,6 +8,7 @@ export const useProductCategoryStore = defineStore('product-category-store', {
         productCategories: {},
         errors: {},
         total_records: 0,
+        categories: {},
     }),
 
     getters: {
@@ -100,6 +101,15 @@ export const useProductCategoryStore = defineStore('product-category-store', {
             } catch (error) {
                 console.error("Error deleting category:", error.response.data.message);
                 return false;
+            }
+        },
+        async getCategoriesForSales() {
+            try {
+                const response = await axios.get(`/api/product_categories/get_list_for_sales/`);
+                this.categories = response.data.data;
+            } catch (error) {
+                console.error("Error fetching user:", error.response.data.message);
+                this.categories = {};
             }
         },
         assignFrontEndValidationErrors(errors) {

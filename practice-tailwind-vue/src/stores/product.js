@@ -107,6 +107,15 @@ export const useProductStore = defineStore('product-store', {
                 return false;
             }
         },
+        async getProductsForSales() {
+            try {
+                const response = await axios.get(`/api/products/get_list_for_sales/`);
+                this.products = response.data.data;
+            } catch (error) {
+                console.error("Error fetching user:", error.response.data.message);
+                this.products = {};
+            }
+        },
         assignFrontEndValidationErrors(errors) {
             for (const key in errors) {
                 let field = errors[key].$property;

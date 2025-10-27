@@ -182,9 +182,7 @@ onMounted(async () => {
                                 </td>
 
                                 <td class="px-6 py-3 font-medium text-gray-900">
-                                    <router-link :to="`/product-categories/show/${productCategory.id}`" class="hover:underline">
-                                        {{ productCategory.name }}
-                                    </router-link>
+                                    {{ productCategory.name }}
                                 </td>
 
                                 <td class="px-6 py-3 capitalize">{{ productCategory.description }}</td>

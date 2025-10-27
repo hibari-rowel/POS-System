@@ -194,7 +194,7 @@ onMounted(async () => {
                                 
                                 <td class="px-6 py-3">{{ product.product_categories_name }}</td>
                                 <td class="px-6 py-3 capitalize">₱ {{ product.selling_price }} / {{ product.unit }}</td>
-                                <td class="px-6 py-3 capitalize">{{ product.selling_price }}</td>
+                                <td class="px-6 py-3 capitalize">{{ product.stock }} {{ product.unit }}</td>
                                 <td class="px-6 py-3 capitalize">{{ DateFormatter.toReadable(product.created_at) }}</td>
                             </tr>
                         </tbody>

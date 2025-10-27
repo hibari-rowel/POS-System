@@ -60,8 +60,8 @@ onMounted(async () => {
                 
                 <div class="flex flex-col gap-6">
                     <div class="flex flex-row lg:flex-row gap-6 lg:gap-5 items-center lg:items-start">
-                        <div class="flex flex-col items-center justify-between w-40 h-40">
-                            <img :src="user.image" alt="" class="w-40 h-40 rounded-xl object-cover shadow-md ring-2 ring-gray-400 hover:scale-101 transition-transform duration-300"/>
+                        <div class="flex flex-col items-center justify-between min-w-40 h-40">
+                            <img :src="user.image || '/icons/default_profile.svg'" alt="" class="min-w-40 h-40 rounded-xl object-cover shadow-md ring-2 ring-gray-400 hover:scale-101 transition-transform duration-300"/>
                         </div>
 
                         <div class="flex flex-col gap-4">

@@ -34,8 +34,8 @@ watch(model, (newVal) => {
     <div class="w-full">
         <label class="form-label"> {{ label }} <span class="text-red-500" v-if="is_required">*</span></label>
 
-        <div class="upload-image-container relative bg-center bg-no-repeat group" 
-             :class="[previewImage === default_image ? 'bg-contain' : 'bg-cover', size]"
+        <div class="upload-image-container relative bg-center bg-no-repeat bg-contain group" 
+             :class="[size]"
              :style="previewImage ? { backgroundImage: `url(${previewImage})` } : {}">
             <div class="absolute inset-0 bg-gray-300/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"></div>
 

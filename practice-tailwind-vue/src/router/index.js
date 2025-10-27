@@ -13,7 +13,6 @@ import ProductsEditView from '@/components/ModuleComponents/Products/EditView.vu
 
 import ProductCategoriesListView from '@/components/ModuleComponents/ProductCategories/ListView.vue';
 import ProductCategoriesCreateView from '@/components/ModuleComponents/ProductCategories/CreateView.vue';
-import ProductCategoriesShowView from '@/components/ModuleComponents/ProductCategories/ShowView.vue';
 import ProductCategoriesEditView from '@/components/ModuleComponents/ProductCategories/EditView.vue';
 
 import ReportsListView from '@/components/ModuleComponents/Reports/ListView.vue';
@@ -72,7 +71,6 @@ const router = createRouter({
             children: [
                 { path: '', component: ProductCategoriesListView },
                 { path: 'create', component: ProductCategoriesCreateView },
-                { path: 'show/:id', component: ProductCategoriesShowView },
                 { path: 'edit/:id', component: ProductCategoriesEditView },
             ],
         },

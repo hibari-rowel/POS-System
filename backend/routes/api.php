@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/update/{product_category}', [ProductCategoriesController::class, 'update']);
         Route::delete('/destroy/{product_category}', [ProductCategoriesController::class, 'destroy']);
         Route::get('/get_dropdown_list', [ProductCategoriesController::class, 'getDropdownList']);
+        Route::get('/get_list_for_sales', [ProductCategoriesController::class, 'getCategoriesListForSales']);
     });
 
     Route::prefix('products')->group(function () {
@@ -36,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/update/{product}', [ProductController::class, 'update']);
         Route::delete('/destroy/{product}', [ProductController::class, 'destroy']);
         Route::get('/get_dropdown_list', [ProductController::class, 'getDropdownList']);
+        Route::get('/get_list_for_sales', [ProductController::class, 'getProductsForSales']);
     });
 
     Route::prefix('stocks')->group(function () {
@@ -45,5 +48,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/update/{stock}', [StockController::class, 'update']);
         Route::delete('/destroy/{stock}', [StockController::class, 'destroy']);
         Route::get('/get_dropdown_list', [StockController::class, 'getDropdownList']);
+    });
+
+    Route::prefix('sales')->group(function () {
+        Route::post('/create', [SaleController::class, 'store']);
+        Route::delete('/destroy/{sale}', [SaleController::class, 'destroy']);
     });
 });

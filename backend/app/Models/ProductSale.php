@@ -18,13 +18,10 @@ class ProductSale extends Model
     protected $table = 'product_sales';
 
     protected $fillable = [
-        'name',
-        'description',
         'sale_id',
         'product_id',
         'quantity',
         'price',
-        'discount',
         'subtotal',
         'created_by',
         'updated_by',

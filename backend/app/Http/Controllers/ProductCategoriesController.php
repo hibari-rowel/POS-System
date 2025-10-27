@@ -144,4 +144,13 @@ class ProductCategoriesController extends Controller
 
         return response()->json($data);
     }
+
+    public function getCategoriesListForSales(Request $request)
+    {
+        $productCategoryModel = ProductCategory::select(['id', 'name', 'image_extension', 'image_name'])->get();
+
+        return response()->json([
+            'data' => $productCategoryModel,
+        ]);
+    }
 }

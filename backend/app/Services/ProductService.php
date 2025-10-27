@@ -60,8 +60,10 @@ class ProductService extends BaseRepository implements ServiceInterface
 
         $qb = DB::table('products')
             ->select($select)
-            ->leftJoin('product_categories', 'products.product_category_id', '=', 'product_categories.id')
+            ->leftjoin('product_categories', 'products.product_category_id', '=', 'product_categories.id')
+            ->leftjoin('product_stocks', 'product_stocks.product_id', '=', 'products.id')
             ->whereNull('products.deleted_at')
+            ->whereNull('product_stocks.deleted_at')
             ->whereNull('product_categories.deleted_at');
 
         if (!empty($params['search_key'])) {
@@ -69,6 +71,14 @@ class ProductService extends BaseRepository implements ServiceInterface
         }
 
         $qb->orderBy('products.created_at', 'DESC');
+        $qb->groupBy([
+            'products.id',
+            'products.name',
+            'product_categories.name',
+            'products.selling_price',
+            'products.created_at',
+            'products.unit'
+        ]);
 
         $result = $qb->paginate($params['limit'], ['*'], 'page', $params['page_num']);
 
@@ -93,6 +103,10 @@ class ProductService extends BaseRepository implements ServiceInterface
             [
                 'field' => 'products.selling_price',
                 'alias' => 'selling_price',
+            ],
+            [
+                'field' => DB::raw('IFNULL(SUM(product_stocks.quantity), 0) as stock'),
+                'alias' => 'stock',
             ],
             [
                 'field' => 'products.created_at',

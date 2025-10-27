@@ -142,4 +142,27 @@ class ProductController extends Controller
 
         return response()->json($data);
     }
+
+    public function getProductsForSales(Request $request)
+    {
+        $select = [
+            'products.id',
+            'products.name',
+            'products.image_extension',
+            'products.image_name',
+            DB::raw('products.selling_price as price'),
+            'products.unit',
+            DB::raw('IFNULL(SUM(product_stocks.quantity), 0) as stock'),
+        ];
+
+        $productModel = Product::select($select)
+            ->leftjoin('product_stocks', 'product_stocks.product_id', '=', 'products.id')
+            ->groupBy(['products.id', 'products.name', 'products.image_extension', 'products.selling_price', 'products.image_name', 'products.unit'])
+            ->get()
+            ->append(['image']);
+
+        return response()->json([
+            'data' => $productModel,
+        ]);
+    }
 }

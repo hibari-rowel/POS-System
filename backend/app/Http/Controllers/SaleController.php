@@ -31,7 +31,7 @@ class SaleController extends Controller
 
             return response()->json([
                 'message' => 'Sale record successfully created.',
-                'data' => $sale
+                'data' => $sale->load('productSale'),
             ], 200);
         }  catch (\Exception $e) {
             DB::rollBack();

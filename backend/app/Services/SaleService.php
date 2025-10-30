@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ProductSale;
+use Carbon\Carbon;
 
 class SaleService extends BaseRepository implements ServiceInterface
 {
@@ -10,6 +11,7 @@ class SaleService extends BaseRepository implements ServiceInterface
     {
         $data['created_by'] = $this->user->id;
         $data['updated_by'] = $this->user->id;
+        $data['sale_date'] = Carbon::now();
 
         return $this->save($data, $model);
     }
@@ -21,22 +23,25 @@ class SaleService extends BaseRepository implements ServiceInterface
 
     public function afterSave($data, $model)
     {
-        $productSaleService = new ProductSaleService();
+        if ($model->wasRecentlyCreated) {
+            $productSaleService = new ProductSaleService();
 
-        foreach ($data['items'] as $item) {
-            $productSaleModel = new ProductSale();
+            foreach ($data['items'] as $item) {
+                $productSaleModel = new ProductSale();
 
-            $productSaleData = [
-                'sale_id' => $model->id,
-                'product_id' => $item['id'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'subtotal' => $item['subtotal'],
-                'created_by' => $this->user->id,
-                'updated_by' => $this->user->id,
-            ];
+                $productSaleData = [
+                    'sale_id' => $model->id,
+                    'name' => $item['name'],
+                    'product_id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'subtotal' => $item['subtotal'],
+                    'created_by' => $this->user->id,
+                    'updated_by' => $this->user->id,
+                ];
 
-            $productSaleService->createRecord($productSaleData, $productSaleModel);
+                $productSaleService->createRecord($productSaleData, $productSaleModel);
+            }
         }
     }
 }

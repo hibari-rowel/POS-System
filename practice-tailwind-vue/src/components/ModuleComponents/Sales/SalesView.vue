@@ -14,9 +14,9 @@ const isLoading = ref(false);
 const isDrawerOpen = ref(window.innerWidth >= 768);
 const searchQuery = ref('');
 
-const toggleInvoiceDrawer = () => {
+const toggleOrderDrawer = () => {
     isDrawerOpen.value = !isDrawerOpen.value;
-    localStorage.setItem('is_open_invoice', JSON.stringify(isDrawerOpen.value));
+    localStorage.setItem('is_open_order', JSON.stringify(isDrawerOpen.value));
 };
 
 onMounted(() => {
@@ -82,39 +82,40 @@ onMounted(() => {
 
                                 <div class="mt-4">
                                     <button class="w-full py-2 text-sm font-medium text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed" :disabled="product.stock <= 0" @click="saleStore.addToInvoice(product)">
-                                        {{ product.stock > 0 ? 'Add to Invoice' : 'Unavailable' }}
+                                        {{ product.stock > 0 ? 'Add' : 'Unavailable' }}
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Invoice List -->
-                    <div class="flex flex-col shadow-sm px-0 pt-5 pb-3 transition-all duration-700 ease-in-out bg-white fixed rounded-md md:static top-0 right-0 h-full z-50" :class="isDrawerOpen ? 'w-full md:w-[35%] lg:w-[30%] xl:w-[25%]' : 'w-0'">
-                        <!-- Invoice Header -->
-                        <div class="relative flex justify-between mb-2 h-10 items-center"> 
+                    <!-- Order List -->
+                    <div class="sales-invoice-drawer" :class="isDrawerOpen ? 'w-full md:w-[35%] lg:w-[30%] xl:w-[25%]' : 'w-0'">
+                        <div class="sales-invoice-drawer-header"> 
                             <div class="flex flex-row justify-between w-full px-3">
                                 <div class="flex gap-4 w-full items-center overflow-hidden transition-opacity duration-300 ease-in-out lg:opacity-100" :class="isDrawerOpen ? '' : 'opacity-0'"> 
                                     <div class="h-10 w-10 flex shrink-0 items-center justify-center rounded-full group-hover:shadow-sm bg-gray-200 p-1 overflow-hidden">
                                         <img src="/icons/invoice.svg" alt="" class="overflow-hidden">
                                     </div>
 
-                                    <h1 class="text-nowrap overflow-hidden text-2xl font-bold"> Invoice </h1> 
+                                    <h1 class="text-nowrap overflow-hidden text-2xl font-bold"> Orders </h1> 
                                 </div>
 
                                 <div class="w-10 h-10">
-                                    <button @click="toggleInvoiceDrawer()" class="block leading-none items-center justify-center text-center text-black rounded-full md:hidden cursor-pointer transition-all duration-500 ease-in-out h-10 w-10 bg-gray-50 hover:bg-red-500 hover:text-white rotate-180">
-                                        <span class="h-full w-full text-2xl font-bold transform transition-transform duration-500 text-nowrap">✕</span>
+                                    <button @click="toggleOrderDrawer()" class="sales-invoice-drawer-header-close-btn">
+                                        <span class="sales-invoice-drawer-header-close-btn-icon">
+                                            ✕
+                                        </span>
                                     </button>
                                 </div>
                             </div>
 
-                            <button @click="toggleInvoiceDrawer()" class="absolute text-xl font-bold cursor-pointer border-t-4 border-transparent transition-all duration-250 ease-in-out -left-15 top-6 h-fit w-fit items-center justify-center shrink-0 rounded-t-md hover:border-blue-500 bg-white hidden md:flex rotate-270 py-1 px-2">
-                                Invoice
+                            <button @click="toggleOrderDrawer()" class="sales-invoice-drawer-header-toggle-btn">
+                                Orders
                             </button>
                         </div>
 
-                        <!-- Invoice Content -->
+                        <!-- Order Content -->
                         <div class="flex flex-col flex-1 overflow-y-auto px-3 pt-2 space-y-3 hide-scrollbar">                            
                             <div class="flex-1 flex flex-col bg-gradient-to-b from-gray-50 to-gray-100 shadow-inner rounded-xl overflow-y-auto p-3 space-y-2 hide-scrollbar">
                                 <div v-for="item in saleStore.items" :key="item.id" class="group flex items-center justify-between text-nowrap bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-3 border border-gray-100 hover:border-blue-300 hover:bg-blue-50/30">
@@ -194,21 +195,51 @@ onMounted(() => {
                                 </div>
                             </div>
 
+                            <!-- Cash Input -->
+                            <div class="flex flex-col bg-white shadow-inner py-3 rounded-md">
+                                <div class="border-b-2 border-gray-100 mb-2 px-2 pb-1 justify-center">
+                                    <h2 class="text-base font-semibold text-nowrap">Payment</h2>
+                                </div>
+
+                                <div class="flex flex-row justify-between items-center px-2">
+                                    <label class="text-sm font-medium text-gray-500 text-nowrap">
+                                        Cash Amount
+                                    </label>
+                                    
+                                    <div class="flex flex-row space-x-3">
+                                        <span> ₱ </span>
+
+                                        <input type="text" v-model.number="saleStore.cashAmount" v-input-mask="{ alias: 'numeric', placeholder: '0', rightAlign: false, digits: 2, digitsOptional: false, }"
+                                            class="w-30 text-right text-sm font-semibold text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 px-2 py-1"/>
+                                    </div>
+                                </div>
+
+                                <!-- Change Display -->
+                                <div class="flex flex-row justify-between px-2 mt-1">
+                                    <h2 class="text-md font-bold text-nowrap"> Change </h2>
+                                    <p class="text-md font-bold text-green-600 text-nowrap">
+                                        ₱ {{ saleStore.change.toFixed(2) }}
+                                    </p>
+                                </div>
+                            </div>
+
                             <!-- Place Order -->
                             <div class="flex flex-col justify-center items-center">
-                                <button class="btn-primary w-full text-nowrap">Place Order</button>
+                                <button class="btn-primary w-full text-nowrap" @click="saleStore.saveSale()" :disabled="_.isEmpty(saleStore.items) || saleStore.cashAmount < saleStore.total">
+                                    Place Order
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <button @click="toggleInvoiceDrawer()" class="fixed bottom-6 right-6 flex items-center justify-center text-white rounded-full shadow-xl md:hidden cursor-pointer transition-all duration-500 ease-in-out h-14 w-14 bg-blue-500 hover:bg-blue-400 rotate-0">
+                <button @click="toggleOrderDrawer()" class="sales-drawer-toggle">
                     <transition name="fade" mode="out-in">
-                        <span key="cart" class="text-3xl transform transition-transform duration-500">🛒</span>
+                        <span key="cart" class="sales-drawer-toggle-icon">🛒</span>
                     </transition>
 
-                    <!-- 🧾 Badge for item count -->
-                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow">
+                    <!-- Badge for item count -->
+                    <span class="sales-drawer-toggle-badge">
                         {{ saleStore.totalQuantity }}
                     </span>
                 </button>

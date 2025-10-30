@@ -70,11 +70,11 @@
     }
 
     .btn-primary {
-        @apply flex w-auto bg-blue-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold active:bg-blue-600 active:shadow-sm transition-all duration-300 ease-in-out;
+        @apply flex w-auto bg-blue-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold active:bg-blue-600 active:shadow-sm transition-all duration-300 ease-in-out disabled:bg-blue-300 disabled:cursor-not-allowed disabled:opacity-70;
     }
 
     .btn-danger {
-        @apply flex w-auto bg-red-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold active:bg-red-600 active:shadow-sm transition-all duration-300 ease-in-out;
+        @apply flex w-auto bg-red-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold active:bg-red-600 active:shadow-sm transition-all duration-300 ease-in-out disabled:bg-red-300 disabled:cursor-not-allowed disabled:opacity-70;
     }
 
     .form-label {
@@ -154,5 +154,37 @@
 
     .inactive-tab-navigation {
         @apply text-gray-500 border-transparent hover:text-black transition-all duration-300 ease-in-out
+    }
+
+    .sales-drawer-toggle {
+        @apply fixed bottom-6 right-6 flex items-center justify-center text-white rounded-full shadow-xl md:hidden cursor-pointer transition-all duration-500 ease-in-out h-14 w-14 bg-blue-500 hover:bg-blue-400 rotate-0;
+    }
+
+    .sales-drawer-toggle-icon {
+        @apply text-3xl transform transition-transform duration-500;
+    }
+
+    .sales-drawer-toggle-badge {
+        @apply absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow;
+    }
+
+    .sales-invoice-drawer {
+        @apply flex flex-col shadow-sm px-0 pt-5 pb-3 transition-all duration-700 ease-in-out bg-white fixed rounded-md md:static top-0 right-0 h-full z-50;
+    }
+
+    .sales-invoice-drawer-header {
+        @apply relative flex justify-between mb-2 h-10 items-center;
+    }
+
+    .sales-invoice-drawer-header-toggle-btn {
+        @apply absolute text-xl font-bold cursor-pointer border-t-4 border-transparent transition-all duration-250 ease-in-out -left-15 top-6 h-fit w-fit items-center justify-center shrink-0 rounded-t-md hover:border-blue-500 bg-white hidden md:flex rotate-270 py-1 px-2;
+    }
+
+    .sales-invoice-drawer-header-close-btn {
+        @apply block leading-none items-center justify-center text-center text-black rounded-full md:hidden cursor-pointer transition-all duration-500 ease-in-out h-10 w-10 bg-gray-50 hover:bg-red-500 hover:text-white rotate-180;
+    }
+
+    .sales-invoice-drawer-header-close-btn-icon {
+        @apply h-full w-full text-2xl font-bold transform transition-transform duration-500 text-nowrap;
     }
 }

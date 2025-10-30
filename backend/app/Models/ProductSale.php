@@ -18,6 +18,7 @@ class ProductSale extends Model
     protected $table = 'product_sales';
 
     protected $fillable = [
+        'name',
         'sale_id',
         'product_id',
         'quantity',
@@ -30,5 +31,14 @@ class ProductSale extends Model
 
     protected $appends = [
 
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by',
+        'deleted_at',
+        'deleted_by',
     ];
 }

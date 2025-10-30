@@ -2,12 +2,14 @@ import { defineStore } from "pinia";
 import axios from '@/lib/axios';
 import _, { round } from 'lodash';
 import Swal from 'sweetalert2';
+import { fireToast } from "@/lib/toast";
 
 export const useSaleStore = defineStore('sale-store', {
     state: () => ({
         items: [],
         tax: 0.02,
-        discount: 0.05
+        discount: 0.05,
+        cashAmount: 0,
     }),
 
     getters: {
@@ -16,6 +18,7 @@ export const useSaleStore = defineStore('sale-store', {
         taxableAmount: (state) => state.subtotal * state.tax,
         discountedAmount: (state) => (state.subtotal * state.discount) * -1,
         total: (state) => state.subtotal + state.taxableAmount + state.discountedAmount,
+        change: (state) => state.cashAmount > state.total ? round((state.cashAmount - state.total), 2) : 0,
     },
 
     actions: {
@@ -55,9 +58,66 @@ export const useSaleStore = defineStore('sale-store', {
             this.items = this.items.filter(item => item.id !== id)
         },
 
-        async saveSale(saleData) {
-            const response = await axios.post('/api/sales/create', saleData);
+        async saveSale() {
+            if (this.items.length === 0) {
+                fireToast("warning", 'Order is empty. Please add items to the order before saving.');
+                return;
+            }
 
+            if (this.cashAmount < this.total) {
+                fireToast("warning", 'Insufficient cash amount. Please enter a valid cash amount.');
+                return;
+            }
+
+            let confirmation = Swal.mixin();
+            let loading = Swal.mixin();
+
+            try {
+                let result = await confirmation.fire({
+                    icon: "question",
+                    title: "Confirm order?",
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: "btn-primary mx-10",
+                        cancelButton: "btn-danger mx-10",
+                    }
+                });
+
+                if (!result.isConfirmed) {
+                    return;
+                }
+
+                confirmation.close();
+
+                loading = loading.fire({
+                    title: 'Saving...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                const response = await axios.post('/api/sales/create', {
+                    items: this.items,
+                    subtotal_amount: this.subtotal,
+                    tax_amount: this.taxableAmount,
+                    discount_amount: this.discountedAmount,
+                    total_amount: this.total,
+                    cash_amount: this.cashAmount,
+                    change_amount: this.change,
+                });
+
+                loading.close();
+
+                // print receipt here
+                fireToast("success", 'Sale saved successfully.');
+                this.items = [];
+                this.cashAmount = 0;
+            } catch (error) {
+                fireToast("error", 'Somthing went wrong. Please contact support for assistance.');
+            }
         },
     },
 });

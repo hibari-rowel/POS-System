@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::table('product_sales', function (Blueprint $table) {
             if (Schema::hasColumn('product_sales', 'quantity')) {
-                $table->decimal('quantity', 15, 2)->change();
+                $table->decimal('quantity', 15, 2)->nullable()->change();
             }
 
             if (Schema::hasColumn('product_sales', 'price')) {
-                $table->decimal('price', 15, 2)->change();
+                $table->decimal('price', 15, 2)->nullable()->change();
             }
 
             if (Schema::hasColumn('product_sales', 'discount')) {
-                $table->decimal('discount', 15, 2)->change();
+                $table->decimal('discount', 15, 2)->nullable()->change();
             }
 
             if (Schema::hasColumn('product_sales', 'subtotal')) {
-                $table->decimal('subtotal', 15, 2)->change();
+                $table->decimal('subtotal', 15, 2)->nullable()->change();
             }
         });
     }
@@ -37,19 +37,19 @@ return new class extends Migration
     {
         Schema::table('product_sales', function (Blueprint $table) {
             if (Schema::hasColumn('product_sales', 'quantity')) {
-                $table->integer('quantity')->change();
+                $table->integer('quantity')->nullable()->change();
             }
 
             if (Schema::hasColumn('product_sales', 'price')) {
-                $table->float('price', 8)->change();
+                $table->float('price', 8)->nullable()->change();
             }
 
             if (Schema::hasColumn('product_sales', 'discount')) {
-                $table->float('discount', 2)->change();
+                $table->float('discount', 2)->nullable()->change();
             }
 
             if (Schema::hasColumn('product_sales', 'subtotal')) {
-                $table->float('subtotal', 8)->change();
+                $table->float('subtotal', 8)->nullable()->change();
             }
         });
     }

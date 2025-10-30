@@ -24,7 +24,8 @@
     "v-calendar": "^3.1.2",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1",
-    "vue-select": "^4.0.0-beta.6"
+    "vue-select": "^4.0.0-beta.6",
+    "vue-to-print": "^1.5.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",

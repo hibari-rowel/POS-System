@@ -21,7 +21,7 @@ class SalesItemRule implements ValidationRule
         foreach ($value as $item) {
             if (empty($item['id']) || empty($item['quantity']) || empty($item['subtotal']) || empty($item['price'])) {
                 Log::info('[Validation][SalesItemRule]: An error occurred while processing the request');
-                Log::info($item);
+                Log::info('[Validation][SalesItemRule]: Invoice Items has a missing parameters');
 
                 $fail('Invoice Items has a missing parameters');
             }
@@ -31,7 +31,7 @@ class SalesItemRule implements ValidationRule
                 || !filter_var($item['price'], FILTER_VALIDATE_FLOAT)
             ) {
                 Log::info('[Validation][SalesItemRule]: An error occurred while processing the request');
-                Log::info($item);
+                Log::info('[Validation][SalesItemRule]: Invoice Items has an invalid parameters');
 
                 $fail('Invoice Items has an invalid parameters');
             }
@@ -42,7 +42,7 @@ class SalesItemRule implements ValidationRule
 
             if (empty($product)) {
                 Log::info('[Validation][SalesItemRule]: An error occurred while processing the request');
-                Log::info($item);
+                Log::info('[Validation][SalesItemRule]: Invoice Items has an invalid/missing product');
 
                 $fail('Invoice Items has an invalid/missing product');
             }

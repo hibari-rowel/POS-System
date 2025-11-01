@@ -9,6 +9,7 @@ export const useProductStore = defineStore('product-store', {
         errors: {},
         products: {},
         total_records: 0,
+        is_loading: false,
     }),
 
     getters: {
@@ -107,13 +108,18 @@ export const useProductStore = defineStore('product-store', {
                 return false;
             }
         },
-        async getProductsForSales() {
+        async getProductsForSales(data) {
+            this.products = {};
+
             try {
-                const response = await axios.get(`/api/products/get_list_for_sales/`);
+                this.is_loading = true;
+                const response = await axios.get(`/api/products/get_list_for_sales/`, { params: data });
                 this.products = response.data.data;
             } catch (error) {
                 console.error("Error fetching user:", error.response.data.message);
                 this.products = {};
+            } finally {
+                this.is_loading = false;
             }
         },
         assignFrontEndValidationErrors(errors) {

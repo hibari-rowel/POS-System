@@ -145,6 +145,8 @@ class ProductController extends Controller
 
     public function getProductsForSales(Request $request)
     {
+        $requestData = $request->only(['search_key', 'category_id']);
+
         $select = [
             'products.id',
             'products.name',
@@ -157,12 +159,18 @@ class ProductController extends Controller
 
         $productModel = Product::select($select)
             ->leftjoin('product_stocks', 'product_stocks.product_id', '=', 'products.id')
-            ->groupBy(['products.id', 'products.name', 'products.image_extension', 'products.selling_price', 'products.image_name', 'products.unit'])
-            ->get()
-            ->append(['image']);
+            ->groupBy(['products.id', 'products.name', 'products.image_extension', 'products.selling_price', 'products.image_name', 'products.unit']);
+
+        if (!empty($requestData['search_key'])) {
+            $productModel->where('products.name', 'LIKE', $requestData['search_key'] . '%');
+        }
+
+        if (!empty($requestData['category_id'])) {
+            $productModel->where('products.product_category_id', $requestData['category_id']);
+        }
 
         return response()->json([
-            'data' => $productModel,
+            'data' => $productModel->get()->append(['image']),
         ]);
     }
 }

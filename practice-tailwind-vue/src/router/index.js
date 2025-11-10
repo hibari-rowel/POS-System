@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from "@/stores/auth.js";
+import { fireToast } from "@/lib/toast";
+import _ from 'lodash';
 
 import LoginView from '@/components/ModuleComponents/Auth/LoginView.vue';
 import SalesView from '@/components/ModuleComponents/Sales/SalesView.vue';
@@ -35,7 +37,7 @@ const router = createRouter({
             path: '/',
             name: 'login',
             component: LoginView,
-            meta: { requiresAuth: false, allowedUsers: ['admin', 'staff'] },
+            meta: { requiresAuth: false, allowedUsers: [] },
         },
         {
             path: '/dashboard',
@@ -85,18 +87,18 @@ const router = createRouter({
         },
         {
             path: '/users',
-            meta: { requiresAuth: true, allowedUsers: ['admin',] },
+            meta: { requiresAuth: true },
             children: [
-                { path: '', component: UsersListView },
-                { path: 'create', component: UsersCreateView },
-                { path: 'show/:id', component: UsersShowView },
-                { path: 'edit/:id', component: UsersEditView },
+                { path: '', component: UsersListView, meta: { allowedUsers: ['admin',] } },
+                { path: 'create', component: UsersCreateView, meta: { allowedUsers: ['admin',] } },
+                { path: 'show/:id', component: UsersShowView, meta: { allowedUsers: ['admin', 'staff'] } },
+                { path: 'edit/:id', component: UsersEditView, meta: { allowedUsers: ['admin', 'staff'] } },
             ],
         },
 
         {
             path: '/stocks',
-            meta: { requiresAuth: true, allowedUsers: ['admin',] },
+            meta: { requiresAuth: true, allowedUsers: ['admin', 'staff'] },
             children: [
                 { path: '', component: StocksListView },
                 { path: 'create', component: StocksCreateView },
@@ -111,10 +113,19 @@ router.beforeEach(async (to, from, next) => {
     await authStore.fetchUser();
 
     if (!authStore.isAuthenticated && to.meta.requiresAuth) {
+        fireToast("error", 'Access denied. Please log in to continue.');
         return next('/');
     }
 
     if (authStore.isAuthenticated && !to.meta.requiresAuth) {
+        return next('/dashboard');
+    }
+
+    if (authStore.isAuthenticated
+        && !_.isEmpty(to.meta.allowedUsers)
+        && !_.includes(to.meta.allowedUsers, authStore.user.role)
+    ) {
+        fireToast("error", "Access denied. You don't have permission to access this page. Please contact support for assistance.");
         return next('/dashboard');
     }
 

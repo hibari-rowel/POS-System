@@ -21,6 +21,13 @@ class UserPolicy
             : Response::deny('You do not have the necessary permissions to access this resource. Please contact support for assistance.');
     }
 
+    public function get(User $user, User $model)
+    {
+        return ($user->role === 'admin' || $user->id === $model->id)
+            ? Response::allow()
+            : Response::deny('You do not have the necessary permissions to access this resource. Please contact support for assistance.');
+    }
+
     public function destroy(User $user, User $model)
     {
         return ($user->role === 'admin' && $user->id !== $model->id)

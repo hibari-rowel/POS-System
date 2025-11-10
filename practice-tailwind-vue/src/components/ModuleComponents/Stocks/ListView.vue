@@ -117,7 +117,7 @@ onMounted(async () => {
             <Header :header="header">
                 <template v-slot:right-side>
                     <div class="flex items-center">
-                        <router-link :to="'/stocks/create'" class="btn-primary"> Create </router-link>
+                        <router-link :to="'/stocks/create'" class="btn-primary"> Add Stock </router-link>
                     </div>
                 </template>
             </Header>

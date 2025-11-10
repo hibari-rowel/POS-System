@@ -1,10 +1,38 @@
 <script setup lang="ts">
+import { computed, reactive } from 'vue';
+import { useAuthStore } from "@/stores/auth.js";
+
 import Sidebar from '@/components/BaseComponents/Sidebar.vue';
+import adminNavigations from '../../lib/navigations/admin.ts';
+import staffNavigations from '../../lib/navigations/staff.ts';
+
+const authStore = useAuthStore();
+
+const logout = () => {
+    localStorage.removeItem('is_open');
+    authStore.logout();
+}
+
+const roleNavMap = {
+    admin: adminNavigations,
+    staff: staffNavigations
+};
+
+const navLinks = reactive({
+    main_links: roleNavMap[authStore.user.role] || [],
+    bottom_link: {
+        name: 'Logout',
+        img_src: '/icons/logout.svg',
+        action: logout
+    }
+});
+
 </script>
 
 <template>
     <div class="base-container">
-        <Sidebar />
+        <Sidebar :nav_links="navLinks" />
+
         <div class="content-container">
             <div class="content-topbar">
                 <div class="flex items-center p-2 rounded-full">

@@ -43,6 +43,8 @@ class UserController extends Controller
 
     public function get(User $user)
     {
+        Gate::authorize('get', $user);
+
         return response()->json(['user' => $user]);
     }
 

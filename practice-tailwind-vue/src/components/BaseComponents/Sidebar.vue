@@ -1,29 +1,30 @@
 <script setup lang="ts">
-    import { ref, onMounted } from 'vue';
-    import {useRouter} from "vue-router";
-    import _ from 'lodash';
-    import { useAuthStore } from "@/stores/auth.js";
+import { ref, onMounted } from 'vue';
+import _ from 'lodash';
 
-    const isOpen = ref(window.innerWidth >= 768);
-    const router = useRouter();
-    const authStore = useAuthStore();
-
-    onMounted(() => {
-        const storedState = localStorage.getItem('is_open');
-        if (!_.isEmpty(storedState)) {
-            isOpen.value = JSON.parse(storedState);
-        }
-    });
-
-    const toggleSidebar = () => {
-        isOpen.value = !isOpen.value;
-        localStorage.setItem('is_open', JSON.stringify(isOpen.value));
-    };
-
-    const logout = () => {
-        localStorage.removeItem('is_open');
-        authStore.logout();
+const props = defineProps({
+    nav_links: {
+        type: Object,
+        required: true,
+        default: () => ({
+            main_links: []
+        })
     }
+});
+
+const isOpen = ref(window.innerWidth >= 768);
+
+onMounted(() => {
+    const storedState = localStorage.getItem('is_open');
+    if (!_.isEmpty(storedState)) {
+        isOpen.value = JSON.parse(storedState);
+    }
+});
+
+const toggleSidebar = () => {
+    isOpen.value = !isOpen.value;
+    localStorage.setItem('is_open', JSON.stringify(isOpen.value));
+};
 </script>
 
 <template>
@@ -43,93 +44,23 @@
         </div>
 
         <nav class="flex flex-col h-full gap-1 md:gap-2 overflow-x-hidden">
-            <router-link :to="'/dashboard'" class="sidebar-link group" active-class="sidebar-link-active">
+            <router-link v-for="main_link in nav_links.main_links" :to="main_link.route" class="sidebar-link group" active-class="sidebar-link-active">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/dashboard.svg" alt="">
+                    <img :src="main_link.img_src" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
-                    Dashboard
+                    {{ main_link.name }}
                 </span>
             </router-link>
 
-            <router-link :to="'/sales'" class="sidebar-link group" active-class="sidebar-link-active">
+            <a href="#" class="mt-auto sidebar-link group" @click="nav_links.bottom_link.action">
                 <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/sales.svg" alt="">
+                    <img :src="nav_links.bottom_link.img_src" alt="">
                 </div>
 
                 <span class="sidebar-link-label group-hover:text-black">
-                    Sales
-                </span>
-            </router-link>
-
-            <router-link :to="'/stocks'" class="sidebar-link group" active-class="sidebar-link-active">
-                <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/stock.svg" alt="">
-                </div>
-
-                <span class="sidebar-link-label group-hover:text-black">
-                    Stocks
-                </span>
-            </router-link>
-
-            <router-link :to="'/sales-history'" class="sidebar-link group" active-class="sidebar-link-active">
-                <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/history.svg" alt="">
-                </div>
-
-                <span class="sidebar-link-label group-hover:text-black">
-                    Sales History
-                </span>
-            </router-link>
-
-            <router-link :to="'/reports'" class="sidebar-link group" active-class="sidebar-link-active">
-                <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/report.svg" alt="">
-                </div>
-
-                <span class="sidebar-link-label group-hover:text-black">
-                    Reports
-                </span>
-            </router-link>
-
-            <router-link :to="'/product-categories'" class="sidebar-link group" active-class="sidebar-link-active">
-                <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/category.svg" alt="">
-                </div>
-
-                <span class="sidebar-link-label group-hover:text-black">
-                    Categories
-                </span>
-            </router-link>
-
-            <router-link :to="'/products'" class="sidebar-link group" active-class="sidebar-link-active">
-                <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/product.svg" alt="" class="object-cover rounded-full">
-                </div>
-
-                <span class="sidebar-link-label group-hover:text-black">
-                    Products
-                </span>
-            </router-link>
-
-            <router-link :to="'/users'" class="sidebar-link group" active-class="sidebar-link-active">
-                <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/user.svg" alt="" class="object-cover rounded-full">
-                </div>
-
-                <span class="sidebar-link-label group-hover:text-black">
-                    Users
-                </span>
-            </router-link>
-
-            <a href="#" class="mt-auto sidebar-link group" @click="logout()">
-                <div class="sidebar-link-img group-hover:shadow-sm">
-                    <img src="/icons/logout.svg" alt="">
-                </div>
-
-                <span class="sidebar-link-label group-hover:text-black">
-                    Logout
+                    {{ nav_links.bottom_link.name }}
                 </span>
             </a>
         </nav>

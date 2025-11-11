@@ -54,8 +54,9 @@ onBeforeRouteLeave(() => {
                         </div>
 
                         <div class="mb-4">
-                            <PasswordField :id="'password'" :label="'Password'" :placeholder="'Enter Password'" :is_required="true" :is_disabled="false" 
-                                :errors="authStore.errors.password" @clearErrors="authStore.cleanErrors('password')" v-model="form.password"/>
+                            <PasswordField :id="'password'" :label="'Password'" :placeholder="'Enter Password'" :is_required="true" 
+                                :is_disabled="false" :errors="authStore.errors.password" @clearErrors="authStore.cleanErrors('password')" 
+                                v-model="form.password" @keydown.enter="submitForm()"/>
                         </div>
 
                         <div class="mb-6 flex items-center justify-between">

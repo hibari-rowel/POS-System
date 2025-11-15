@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductSalesController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockController;
 use Illuminate\Http\Request;
@@ -51,7 +52,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('sales')->group(function () {
+        Route::post('/get_list', [SaleController::class, 'getList']);
         Route::post('/create', [SaleController::class, 'store']);
         Route::delete('/destroy/{sale}', [SaleController::class, 'destroy']);
+    });
+
+    Route::prefix('product_sales')->group(function () {
+        Route::post('/get_list', [ProductSalesController::class, 'getList']);
+        Route::post('/get_product_sales_breakdown_list', [ProductSalesController::class, 'getProductSalesBreakdownList']);
     });
 });

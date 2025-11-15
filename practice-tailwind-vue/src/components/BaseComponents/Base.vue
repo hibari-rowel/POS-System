@@ -54,12 +54,4 @@ const navLinks = reactive({
 </template>
 
 <style scoped>
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
-}
-
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari, Opera */
-}
 </style>

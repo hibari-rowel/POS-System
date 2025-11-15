@@ -3,47 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductSale;
+use App\Services\ProductSaleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductSalesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private $service;
+
+    public function __construct(ProductSaleService $productSaleService)
     {
-        //
+        $this->service = $productSaleService;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function getList(Request $request)
     {
-        //
+        $params = $request->only(['start', 'records_per_page', 'search', 'sale_id']);
+
+        try {
+            list($data, $total) = $this->service->getDTList($params);
+
+            return response()->json(['data' => $data, 'total_records' => $total], 200);
+        } catch (\Exception $e) {
+            Log::error('[ProductSale][getList]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[ProductSale][getList]: ' . $e->getMessage());
+            Log::error('[ProductSale][getList]: ' . $e->getLine());
+
+            return response()->json([
+                'data' => null,
+                'message' => 'Something went wrong. Please contact support for assistance.'
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProductSale $productSales)
+    public function getProductSalesBreakdownList(Request $request)
     {
-        //
-    }
+        $params = $request->validate(['sale_id' => ['required', 'exists:sales,id']]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ProductSale $productSales)
-    {
-        //
-    }
+        $select = [
+            'product_sales.id',
+            'products.unit',
+            DB::raw('products.name AS product_name'),
+            'product_sales.price',
+            'product_sales.quantity',
+            'product_sales.subtotal',
+        ];
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ProductSale $productSales)
-    {
-        //
+        $data = DB::table('product_sales')
+            ->select($select)
+            ->where('product_sales.sale_id', $params['sale_id'])
+            ->leftJoin('products', 'product_sales.product_id', '=', 'products.id')
+            ->whereNull('product_sales.deleted_at')
+            ->whereNull('products.deleted_at')
+            ->orderBy('product_sales.created_at', 'DESC')
+            ->get();
+
+        return response()->json(['data' => $data,], 200);
     }
 }

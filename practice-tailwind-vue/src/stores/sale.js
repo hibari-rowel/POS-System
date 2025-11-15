@@ -6,9 +6,12 @@ import { fireToast } from "@/lib/toast";
 
 export const useSaleStore = defineStore('sale-store', {
     state: () => ({
+        errors: {},
+        sales: {},
+        total_records: 0,
         items: [],
-        tax: 0.02,
-        discount: 0.05,
+        tax: 0,
+        discount: 0,
         cashAmount: 0,
     }),
 
@@ -117,6 +120,18 @@ export const useSaleStore = defineStore('sale-store', {
                 this.cashAmount = 0;
             } catch (error) {
                 fireToast("error", 'Somthing went wrong. Please contact support for assistance.');
+            }
+        },
+
+        async getSales(data) {
+            try {
+                const response = await axios.post('/api/sales/get_list', data);
+                let responseData = response.data;
+                this.sales = responseData.data;
+                this.total_records = responseData.total_records;
+            } catch (error) {
+                console.error("Error fetching sales:", error.response.data.message);
+                this.sales = {};
             }
         },
     },

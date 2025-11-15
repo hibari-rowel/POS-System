@@ -70,11 +70,15 @@
     }
 
     .btn-primary {
-        @apply flex w-auto bg-blue-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold active:bg-blue-600 active:shadow-sm transition-all duration-300 ease-in-out disabled:bg-blue-300 disabled:cursor-not-allowed disabled:opacity-70;
+        @apply flex w-auto bg-blue-500 text-white text-base md:text-lg px-2 py-1 rounded-md items-center justify-center cursor-pointer font-bold active:bg-blue-600 active:shadow-sm transition-all duration-300 ease-in-out disabled:bg-blue-300 disabled:cursor-not-allowed disabled:opacity-70;
     }
 
     .btn-danger {
-        @apply flex w-auto bg-red-500 text-white text-base md:text-lg p-2 rounded-md items-center justify-center cursor-pointer font-bold active:bg-red-600 active:shadow-sm transition-all duration-300 ease-in-out disabled:bg-red-300 disabled:cursor-not-allowed disabled:opacity-70;
+        @apply flex w-auto bg-red-500 text-white text-base md:text-lg px-2 py-1 rounded-md items-center justify-center cursor-pointer font-bold active:bg-red-600 active:shadow-sm transition-all duration-300 ease-in-out disabled:bg-red-300 disabled:cursor-not-allowed disabled:opacity-70;
+    }
+
+    .btn-default {
+        @apply flex w-auto bg-gray-300 text-black text-base md:text-lg px-2 py-1 rounded-md items-center justify-center cursor-pointer font-bold active:bg-gray-400 active:shadow-sm transition-all duration-300 ease-in-out disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70;
     }
 
     .form-label {
@@ -114,28 +118,24 @@
         @apply ring-gray-500 ring-2 border-gray-500 shadow-sm rounded-md
     }
 
-    .modal-container-bg {
-        @apply fixed inset-0 flex items-center justify-center bg-black/50 z-50
-    }
-
-    .modal-header {
-        @apply flex flex-row h-auto justify-between items-center border-b-2 border-gray-50 shadow-sm p-2
-    }
-
-    .modal-footer {
-        @apply flex flex-row h-auto justify-end items-center border-t-2 border-gray-50 p-2;
-        box-shadow: 0 -2px 1px rgba(0, 0, 0, 0.1);
-    }
-
-    .modal-body {
-        @apply h-auto p-2
-    }
-
     .upload-image-container {
         @apply flex items-center justify-center bg-gray-50 hover:bg-gray-300 p-3 rounded-sm transition-all duration-300 ease-in-out cursor-pointer
     }
 
     .upload-image-button {
         @apply flex items-center w-fit h-fit p-2 justify-center rounded-full cursor-pointer bg-gray-50 opacity-0 border-transparent border-2 active:bg-gray-300 active:border-gray-500 transition-all duration-300 ease-in-out
+    }
+
+    .hide-scrollbar {
+        /* IE and Edge */
+        -ms-overflow-style: none;
+
+        /* Firefox */
+        scrollbar-width: none;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+        /* Chrome, Safari, Opera */
+        display: none;
     }
 }

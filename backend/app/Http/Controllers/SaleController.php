@@ -19,6 +19,26 @@ class SaleController extends Controller
         $this->service = $saleService;
     }
 
+    public function getList(Request $request)
+    {
+        $params = $request->only(['start', 'records_per_page', 'search']);
+
+        try {
+            list($data, $total) = $this->service->getDTList($params);
+
+            return response()->json(['data' => $data, 'total_records' => $total], 200);
+        } catch (\Exception $e) {
+            Log::error('[Sale][getList]: An error occurred while processing the request' . $e->getMessage() . ' ' . $e->getLine());
+            Log::error('[Sale][getList]: ' . $e->getMessage());
+            Log::error('[Sale][getList]: ' . $e->getLine());
+
+            return response()->json([
+                'data' => null,
+                'message' => 'Something went wrong. Please contact support for assistance.'
+            ], 500);
+        }
+    }
+
     public function store(CreateSalesRequest $request)
     {
         $sale = new Sale();

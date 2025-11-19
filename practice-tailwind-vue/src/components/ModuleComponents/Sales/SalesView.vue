@@ -90,7 +90,7 @@ onMounted(() => {
                                 <img :src="category.image || '/images/placeholder.png'" :alt="category.name" class="w-full h-full object-cover"/>
                             </div>
 
-                            <span class="text-xs md:text-sm font-medium text-center truncate max-w-[100px]">
+                            <span class="text-xs md:text-sm font-medium text-center truncate max-w-[12ch]">
                                 {{ category.name }}
                             </span>
                         </button>

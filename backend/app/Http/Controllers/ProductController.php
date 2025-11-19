@@ -154,12 +154,20 @@ class ProductController extends Controller
             'products.image_name',
             DB::raw('products.selling_price as price'),
             'products.unit',
-            DB::raw('IFNULL(SUM(product_stocks.quantity), 0) as stock'),
+            DB::raw('IFNULL(SUM(product_stocks.quantity), 0) - IFNULL(SUM(product_sales.quantity), 0) as stock'),
         ];
 
         $productModel = Product::select($select)
             ->leftjoin('product_stocks', 'product_stocks.product_id', '=', 'products.id')
-            ->groupBy(['products.id', 'products.name', 'products.image_extension', 'products.selling_price', 'products.image_name', 'products.unit']);
+            ->leftJoin('product_sales', 'product_sales.product_id', '=', 'products.id')
+            ->groupBy([
+                'products.id',
+                'products.name',
+                'products.image_extension',
+                'products.selling_price',
+                'products.image_name',
+                'products.unit'
+            ]);
 
         if (!empty($requestData['search_key'])) {
             $productModel->where('products.name', 'LIKE', $requestData['search_key'] . '%');

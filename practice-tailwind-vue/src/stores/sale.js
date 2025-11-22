@@ -52,7 +52,7 @@ export const useSaleStore = defineStore('sale-store', {
             if (item) {
                 let newQuantity = (addedQuantity + item.quantity);
 
-                item.quantity = (newQuantity <= 0) ? item.quantity : newQuantity;
+                item.quantity = (newQuantity <= 0 || newQuantity > item.stock) ? item.quantity : newQuantity;
                 item.subtotal = round((item.quantity * item.price), 2);
             }
         },

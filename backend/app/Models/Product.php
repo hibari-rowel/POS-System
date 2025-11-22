@@ -89,4 +89,37 @@ class Product extends Model
             },
         );
     }
+
+    protected function productStatsData(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                $productID = $this->getOriginal('id');
+
+                $stockSub = DB::table('product_stocks')
+                    ->select(['product_id', DB::raw('IFNULL(SUM(quantity), 0) as total_stock')])
+                    ->whereNull('deleted_at')
+                    ->where('product_id', $productID)
+                    ->groupBy('product_id')
+                    ->first();
+
+                $salesSub = DB::table('product_sales')
+                    ->select(['product_id', DB::raw('IFNULL(SUM(quantity), 0) as total_stock'), DB::raw('IFNULL(SUM(subtotal), 0) as subtotal')])
+                    ->whereNull('deleted_at')
+                    ->where('product_id', $productID)
+                    ->groupBy('product_id')
+                    ->first();
+
+                $stockTableTotalStock = !empty($stockSub->total_stock) ? $stockSub->total_stock : 0;
+                $saleTableTotalStock = !empty($salesSub->total_stock) ? $salesSub->total_stock : 0;
+                $salesTableSubtotal = !empty($salesSub->subtotal) ? $salesSub->subtotal : 0;
+
+                return [
+                    'total_stock' => $stockTableTotalStock - $saleTableTotalStock,
+                    'units_sold' =>  $saleTableTotalStock,
+                    'revenue' => $salesTableSubtotal,
+                ];
+            },
+        );
+    }
 }

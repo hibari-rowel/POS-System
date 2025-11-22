@@ -43,7 +43,7 @@ class ProductController extends Controller
 
     public function get(Product $product)
     {
-        return response()->json(['product' => $product->append(['product_category', 'image'])]);
+        return response()->json(['product' => $product->append(['product_category', 'image', 'product_stats_data'])]);
     }
 
     public function store(StoreProductRequest $request)
@@ -147,27 +147,29 @@ class ProductController extends Controller
     {
         $requestData = $request->only(['search_key', 'category_id']);
 
-        $select = [
+        $stockSub = DB::table('product_stocks')
+            ->select('product_id', DB::raw('SUM(quantity) as total_stock'))
+            ->whereNull('deleted_at')
+            ->groupBy('product_id');
+
+        $salesSub = DB::table('product_sales')
+            ->select('product_id', DB::raw('SUM(quantity) as total_sold'))
+            ->whereNull('deleted_at')
+            ->groupBy('product_id');
+
+        $productModel = Product::select([
             'products.id',
             'products.name',
             'products.image_extension',
             'products.image_name',
             DB::raw('products.selling_price as price'),
             'products.unit',
-            DB::raw('IFNULL(SUM(product_stocks.quantity), 0) - IFNULL(SUM(product_sales.quantity), 0) as stock'),
-        ];
-
-        $productModel = Product::select($select)
-            ->leftjoin('product_stocks', 'product_stocks.product_id', '=', 'products.id')
-            ->leftJoin('product_sales', 'product_sales.product_id', '=', 'products.id')
-            ->groupBy([
-                'products.id',
-                'products.name',
-                'products.image_extension',
-                'products.selling_price',
-                'products.image_name',
-                'products.unit'
-            ]);
+            DB::raw('COALESCE(stock.total_stock, 0) - COALESCE(sales.total_sold, 0) as stock')
+        ])->leftJoinSub($stockSub, 'stock', function($join) {
+            $join->on('stock.product_id', '=', 'products.id');
+        })->leftJoinSub($salesSub, 'sales', function($join) {
+            $join->on('sales.product_id', '=', 'products.id');
+        });
 
         if (!empty($requestData['search_key'])) {
             $productModel->where('products.name', 'LIKE', $requestData['search_key'] . '%');

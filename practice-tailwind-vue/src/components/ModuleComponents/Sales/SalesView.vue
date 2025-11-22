@@ -16,6 +16,7 @@ const searchQuery = ref('');
 let searchTimeout : ReturnType <typeof setTimeout>;
 const activeCategoryId = ref <string | null> (null);
 const cashAmountInputMask = { alias: 'numeric', placeholder: '0', rightAlign: false, digits: 2, digitsOptional: false, };
+const quantityInputMask = {alias: 'numeric', digits: 2, digitsOptional: false, placeholder: '1', min: 1, rightAlign: false, allowMinus: false};
 
 const toggleOrderDrawer = () => {
     isDrawerOpen.value = !isDrawerOpen.value;
@@ -25,6 +26,14 @@ const toggleOrderDrawer = () => {
 const selectCategory = async (categoryId: string) => {
     activeCategoryId.value = (activeCategoryId.value === categoryId) ? null : categoryId;
 
+    await productStore.getProductsForSales({
+        search_key: searchQuery.value,
+        category_id: activeCategoryId.value,
+    });
+};
+
+const placeOrder = async () => {
+    await saleStore.saveSale();
     await productStore.getProductsForSales({
         search_key: searchQuery.value,
         category_id: activeCategoryId.value,
@@ -187,8 +196,9 @@ onMounted(() => {
                                                 -
                                             </button>
 
-                                            <input type="number" v-model.number="item.quantity" min="1" :max="item.stock" class="w-14 text-center text-sm font-semibold text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-                                                @input="saleStore.updateSubtotal(item.id)"/>
+                                            <input type="text" class="w-14 h-8 text-center text-sm font-semibold text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                                                @input="saleStore.updateSubtotal(item.id)" v-input-mask="_.merge(quantityInputMask, {max: item.stock})" 
+                                                v-model.number="item.quantity"/>
 
                                             <button @click="saleStore.updateQuantity(item.id, 1)" class="flex items-center justify-center h-7 w-7 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold transition cursor-pointer">
                                                 +
@@ -278,7 +288,7 @@ onMounted(() => {
 
                         <!-- Place Order -->
                         <div class="flex flex-col justify-center items-center">
-                            <button class="btn-primary w-full text-nowrap" @click="saleStore.saveSale()" :disabled="_.isEmpty(saleStore.items) || saleStore.cashAmount < saleStore.total">
+                            <button class="btn-primary w-full text-nowrap" @click="placeOrder" :disabled="_.isEmpty(saleStore.items) || saleStore.cashAmount <= saleStore.total">
                                 Place Order
                             </button>
                         </div>
